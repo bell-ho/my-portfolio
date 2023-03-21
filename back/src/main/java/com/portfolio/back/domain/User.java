@@ -35,7 +35,7 @@ public class User extends BaseEntity {
     @Column(name = "provider")
     private String provider;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
