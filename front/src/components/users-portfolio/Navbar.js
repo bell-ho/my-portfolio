@@ -12,9 +12,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { Link } from 'react-scroll/modules';
 
 const Navbar = (props) => {
-  const navItems = ['Home', 'About', 'Skills', 'Work', 'Contact'];
+  const navItems = ['Main', 'About', 'Skills', 'Work', 'Contact'];
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -29,8 +30,10 @@ const Navbar = (props) => {
         {Children.toArray(
           navItems.map((item) => (
             <ListItem key={item} disablePadding>
-              <ListItemButton sx={{ textAlign: 'center' }}>
-                <ListItemText primary={item} />
+              <ListItemButton sx={{ justifyContent: 'center' }}>
+                <Link to={item.toLowerCase()} spy={true} smooth={true} offset={-72} duration={500}>
+                  <ListItemText primary={item} />
+                </Link>
               </ListItemButton>
             </ListItem>
           )),
@@ -86,7 +89,9 @@ const Navbar = (props) => {
             {Children.toArray(
               navItems.map((item) => (
                 <Button key={item} sx={{ color: '#fff' }}>
-                  {item}
+                  <Link to={item} spy={true} smooth={true} offset={50} duration={500}>
+                    {item}
+                  </Link>
                 </Button>
               )),
             )}

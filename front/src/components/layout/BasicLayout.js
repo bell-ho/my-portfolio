@@ -3,19 +3,42 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const BasicLayout = ({ children }) => {
   const theme = createTheme({
+    breakpoints: {
+      xs: 0,
+      sm: 600,
+      md: 768,
+      lg: 1280,
+      xl: 1920,
+    },
     typography: {
       fontFamily: 'Pretendard, sans-serif',
       h1: {
         fontSize: 'var(--font-large)',
         fontWeight: '700',
         color: 'var(--color-black)',
-        margin: '16px 0px',
       },
       h2: {
         fontSize: 'var(--font-medium)',
         fontWeight: '600',
         color: 'var(--color-black)',
-        margin: '8px 0',
+      },
+      label: {
+        marginBottom: '0.5rem',
+        fontWeight: '700',
+        fontSize: '1.25rem',
+        textAlign: 'left',
+      },
+      labelValue: {
+        fontWeight: '700',
+        fontSize: '1rem',
+        color: 'var(--color-dark-grey)',
+      },
+      skillsTitle: {
+        fontWeight: '700',
+        fontSize: '1.5rem',
+        color: 'var(--color-pink)',
+        borderBottom: '1px solid #ccc',
+        margin: '1rem 0',
       },
     },
   });

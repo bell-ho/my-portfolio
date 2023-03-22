@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const Main = () => {
   return (
-    <Wrapper>
+    <Wrapper id={'main'}>
       <ImageCustom width={250} height={250} src={`/images/main_profile.jpg`} alt={'main_profile'} />
       <TypographyCustom variant={'h1'}>JH's Portfolio</TypographyCustom>
       <TypographyCustom variant={'h2'}>
@@ -19,6 +19,10 @@ const Wrapper = styled(Box)`
   background: url('/images/home_background.png') center/cover no-repeat;
   padding: 7.5rem 2.5rem 2.5rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `;
 
 const ImageCustom = styled(Image)`
