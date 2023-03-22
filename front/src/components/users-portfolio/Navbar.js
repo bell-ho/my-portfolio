@@ -77,9 +77,8 @@ const Navbar = (props) => {
       >
         <Toolbar>
           <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
+            variant={'h2'}
+            sx={{ fontWeight: 600, flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
           >
             포트폴리오
           </Typography>
@@ -103,8 +102,14 @@ const Navbar = (props) => {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {Children.toArray(
               navItems.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
-                  <Link to={item} spy={true} smooth={true} offset={50} duration={500}>
+                <Button key={item} sx={{ color: 'black' }}>
+                  <Link
+                    to={item.toLowerCase()}
+                    spy={true}
+                    smooth={true}
+                    offset={-72}
+                    duration={500}
+                  >
                     {item}
                   </Link>
                 </Button>
