@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
-import { Navigation } from '@mui/icons-material';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/users-portfolio/Navbar';
+import Main from '@/components/users-portfolio/Main';
 
 const UserPortfolio = () => {
   return (
     <Fragment>
       <Navbar />
+      <Main />
     </Fragment>
   );
 };

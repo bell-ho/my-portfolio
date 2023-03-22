@@ -45,14 +45,25 @@ const Navbar = (props) => {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      <AppBar component="nav" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        component="nav"
+        elevation={0}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          height: '72px',
+          justifyContent: 'center',
+          backgroundColor: '#FFFFFF',
+          color: '#000000',
+          padding: '0 1.5rem',
+        }}
+      >
         <Toolbar>
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'block', sm: 'none' } }}
+            sx={{ flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
           >
-            모바일
+            메인이름
           </Typography>
 
           <IconButton
@@ -60,18 +71,16 @@ const Navbar = (props) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ ml: 'auto', display: { xs: 'block', sm: 'none' } }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiSvgIcon-root': {
+                width: '42px',
+                height: '42px',
+              },
+            }}
           >
             <MenuIcon />
           </IconButton>
-
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            데탑
-          </Typography>
 
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {Children.toArray(
@@ -95,12 +104,13 @@ const Navbar = (props) => {
           ModalProps={{
             keepMounted: true,
           }}
+          transitionDuration={250}
           sx={{
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: '100%',
-              marginTop: '56px',
+              marginTop: '72px',
             },
           }}
         >

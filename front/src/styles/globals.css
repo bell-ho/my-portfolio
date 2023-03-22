@@ -1,4 +1,5 @@
 @import "reset.css";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 /* ∞∞ global ∞∞ */
 
@@ -54,6 +55,7 @@ body {
     line-height: 1;
     margin: 0;
     padding: 0;
+    font-family: "Pretendard", sans-serif;
 }
 
 
@@ -310,4 +312,18 @@ progress {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        --font-large: 30px;
+        --font-medium: 18px;
+        --font-regular: 16px;
+        --font-small: 14px;
+        --font-micro: 12px;
+
+        --weight-bold: 700;
+        --weight-semi-bold: 600;
+        --weight-regular: 400;
+    }
 }
