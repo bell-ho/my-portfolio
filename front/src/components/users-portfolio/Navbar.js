@@ -15,7 +15,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-scroll/modules';
 
 const Navbar = (props) => {
-  const navItems = ['Main', 'About', 'Skills', 'Work', 'Contact'];
+  const navItems = ['Main', 'About', 'Skills', 'Projects', 'Contact'];
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -25,13 +25,20 @@ const Navbar = (props) => {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box sx={{ textAlign: 'center' }}>
       <List>
         {Children.toArray(
           navItems.map((item) => (
             <ListItem key={item} disablePadding>
               <ListItemButton sx={{ justifyContent: 'center' }}>
-                <Link to={item.toLowerCase()} spy={true} smooth={true} offset={-72} duration={500}>
+                <Link
+                  to={item.toLowerCase()}
+                  spy={true}
+                  smooth={true}
+                  offset={-72}
+                  duration={500}
+                  onClick={handleDrawerToggle}
+                >
                   <ListItemText primary={item} />
                 </Link>
               </ListItemButton>

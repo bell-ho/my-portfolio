@@ -47,27 +47,25 @@ const Skills = () => {
   return (
     <Wrapper id={'skills'}>
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
-      <SkillsWrapper>
-        {Children.toArray(
-          skills.map((v) => (
-            <SkillsContainer>
-              <Typography variant={'skillsTitle'}>{v.name}</Typography>
-              {Children.toArray(
-                v.stacks.map((stack) => (
-                  <Image
-                    width={224}
-                    height={46}
-                    layout="responsive"
-                    unoptimized={true}
-                    src={`https://img.shields.io/badge/${stack}-${getRandomColor()}?style=for-the-badge&logo=${stack}&logoColor=white`}
-                    alt={'springboot'}
-                  />
-                )),
-              )}
-            </SkillsContainer>
-          )),
-        )}
-      </SkillsWrapper>
+      {Children.toArray(
+        skills.map((v) => (
+          <SkillsContainer>
+            <Typography variant={'skillsTitle'}>{v.name}</Typography>
+            {Children.toArray(
+              v.stacks.map((stack) => (
+                <Image
+                  width={224}
+                  height={46}
+                  layout="responsive"
+                  unoptimized={true}
+                  src={`https://img.shields.io/badge/${stack}-${getRandomColor()}?style=for-the-badge&logo=${stack}&logoColor=white`}
+                  alt={'springboot'}
+                />
+              )),
+            )}
+          </SkillsContainer>
+        )),
+      )}
     </Wrapper>
   );
 };

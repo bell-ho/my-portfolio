@@ -45,7 +45,6 @@
 }
 
 body {
-    width: 100vw;
     height: 100vh;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -314,6 +313,24 @@ progress {
     align-items: center;
 }
 
+.swiper {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.swiper-slide {
+    position: relative;
+    overflow: hidden;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 @media screen and (max-width: 768px) {
     :root {
         --font-large: 30px;
@@ -326,4 +343,5 @@ progress {
         --weight-semi-bold: 600;
         --weight-regular: 400;
     }
+
 }
