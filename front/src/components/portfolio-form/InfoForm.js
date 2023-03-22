@@ -30,11 +30,7 @@ const InfoForm = () => {
   return (
     <Wrapper>
       <InputWrapper>
-        <Typography variant={'h2'}>이름</Typography>
-        <TextField />
-      </InputWrapper>
-      <InputWrapper>
-        <Typography variant={'h2'}>메인 사진</Typography>
+        <Typography variant={'h2'}>메인 이미지</Typography>
 
         <ImageInputWrapper>
           <Box
