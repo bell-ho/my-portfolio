@@ -31,6 +31,12 @@ public class Project extends BaseEntity {
     @Column(name = "period")
     private String period;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "link")
     private String link;
 
