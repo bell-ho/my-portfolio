@@ -77,4 +77,5 @@ const Wrapper = styled(Box)`
 const TypographyCustom = styled(Typography)`
   font-weight: 900;
 `;
+
 export default Projects;

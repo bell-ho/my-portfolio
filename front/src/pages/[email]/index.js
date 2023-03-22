@@ -4,6 +4,7 @@ import Main from '@/components/users-portfolio/Main';
 import About from '@/components/users-portfolio/About';
 import Skills from '@/components/users-portfolio/Skills';
 import Projects from '@/components/users-portfolio/Projects';
+import Contact from '@/components/users-portfolio/Contact';
 
 const UserPortfolio = () => {
   return (
@@ -13,6 +14,7 @@ const UserPortfolio = () => {
       <About />
       <Skills />
       <Projects />
+      <Contact />
     </Fragment>
   );
 };

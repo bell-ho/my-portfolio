@@ -1,4 +1,4 @@
-import React, { Children, useState } from 'react';
+import React, { Children, useCallback, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,22 +15,30 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-scroll/modules';
 
 const Navbar = (props) => {
-  const navItems = ['Main', 'About', 'Skills', 'Projects', 'Contact'];
+  const navItems = ['MAIN', 'ABOUT', 'SKILLS', 'PROJECTS', 'CONTACT'];
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = useCallback(() => {
     setMobileOpen((prevState) => !prevState);
-  };
+  }, []);
 
   const drawer = (
     <Box sx={{ textAlign: 'center' }}>
-      <List>
+      <List sx={{ gap: 2 }}>
         {Children.toArray(
           navItems.map((item) => (
             <ListItem key={item} disablePadding>
-              <ListItemButton sx={{ justifyContent: 'center' }}>
+              <ListItemButton
+                sx={{
+                  justifyContent: 'center',
+                  '&:hover': {
+                    backgroundColor: 'var(--color-yellow)',
+                    color: 'black',
+                  },
+                }}
+              >
                 <Link
                   to={item.toLowerCase()}
                   spy={true}
@@ -39,7 +47,7 @@ const Navbar = (props) => {
                   duration={500}
                   onClick={handleDrawerToggle}
                 >
-                  <ListItemText primary={item} />
+                  <Typography sx={{ fontWeight: 500 }}>{item}</Typography>
                 </Link>
               </ListItemButton>
             </ListItem>
@@ -73,7 +81,7 @@ const Navbar = (props) => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
           >
-            메인이름
+            포트폴리오
           </Typography>
 
           <IconButton
