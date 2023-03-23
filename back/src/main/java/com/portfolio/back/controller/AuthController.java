@@ -22,25 +22,21 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/validation-user/{key}")
-    public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey, HttpServletResponse response) {
-        try {
-            User user = userService.findByUniqueKey(uniqueKey);
+    public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
+        User user = userService.findByUniqueKey(uniqueKey);
 
-            RequestResultEnum result = (user != null) ? RequestResultEnum.SUCCESS : RequestResultEnum.NOT_FOUND;
-            ResponseData data;
+        RequestResultEnum result = (user != null) ? RequestResultEnum.SUCCESS : RequestResultEnum.NOT_FOUND;
+        ResponseData data;
 
-            if (user != null) {
-                UserRes userRes = new UserRes(user);
-                final String token = tokenProvider.create(userRes.toEntity());
-                userRes.setToken(token);
-                data = ResponseData.fromResult(result).add("user", userRes);
-            } else {
-                data = ResponseData.fromResult(result).add("user", null);
-            }
-            return ResponseEntity.ok(data);
-        } catch (Exception e) {
-            return ResponseEntity.ok(RequestResultEnum.NOT_FOUND);
+        if (user != null) {
+            UserRes userRes = new UserRes(user);
+            final String token = tokenProvider.create(userRes.toEntity());
+            userRes.setToken(token);
+            data = ResponseData.fromResult(result).add("user", userRes);
+        } else {
+            data = ResponseData.fromResult(result).add("user", null);
         }
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/signup")
