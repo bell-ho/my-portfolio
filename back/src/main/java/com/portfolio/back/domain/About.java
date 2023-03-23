@@ -1,35 +1,17 @@
 package com.portfolio.back.domain;
-
-import lombok.*;
-
 import javax.persistence.*;
 
-import static javax.persistence.FetchType.LAZY;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Table(name = "about")
-@Builder
-@Getter
-@Setter
-@Entity
-public class About extends BaseEntity {
+@Embeddable
+public class About {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "name")
+    @Column(name = "about_name")
     private String name;
 
-    @Column(name = "phone")
+    @Column(name = "about_phone")
     private String phone;
 
-    @Column(name = "email")
+    @Column(name = "about_email")
     private String email;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "portfolio_id")
-    private Portfolio portfolio;
 }

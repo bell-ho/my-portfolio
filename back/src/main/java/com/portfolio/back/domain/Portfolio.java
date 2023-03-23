@@ -16,7 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @Entity
-public class Portfolio {
+public class Portfolio extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -32,7 +32,12 @@ public class Portfolio {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(mappedBy = "portfolio", fetch = LAZY)
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "about_name")),
+            @AttributeOverride(name = "email", column = @Column(name = "about_email")),
+            @AttributeOverride(name = "phone", column = @Column(name = "about_phone"))
+    })
     private About about;
 
     @ManyToOne(fetch = LAZY)
