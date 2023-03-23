@@ -31,9 +31,6 @@ public class Project extends BaseEntity {
     @Column(name = "period")
     private String period;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "description")
     private String description;
 
@@ -41,12 +38,8 @@ public class Project extends BaseEntity {
     private String link;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "about_id")
-    private About about;
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();

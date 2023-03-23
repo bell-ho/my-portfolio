@@ -36,7 +36,7 @@ public class User extends BaseEntity {
     private String provider;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Project> projects = new ArrayList<>();
+    private List<Portfolio> portfolios = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserStackMap> userStacks = new ArrayList<>();

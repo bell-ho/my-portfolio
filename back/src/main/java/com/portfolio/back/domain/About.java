@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "about")
@@ -26,4 +28,8 @@ public class About extends BaseEntity {
 
     @Column(name = "email")
     private String email;
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
 }
