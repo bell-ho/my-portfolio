@@ -62,13 +62,13 @@ const nextAuthOptions = (req, res) => {
 
           if (!existUser) {
             await axios.post(`/api/v1/auth/signup`, params).then((response) => {
-              const newMember = response.data.data.user;
+              const newMember = response.data.data.member;
               privateToken = newMember.token;
               role = newMember.role;
             });
           }
         } catch (e) {
-          console.error(e);
+          console.error('error', e);
         }
 
         return true;
