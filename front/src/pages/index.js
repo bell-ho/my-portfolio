@@ -32,4 +32,6 @@ const LoginWrapper = styled(Box)`
 
 const Wrapper = styled(Box)`
   padding: 2rem;
+  display: flex;
+  justify-content: center;
 `;
