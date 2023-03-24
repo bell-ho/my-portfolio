@@ -7,6 +7,7 @@ import { usePortfoliosQuery } from '@/react-query/query-hooks/usePortfoliosHook'
 import BasicModal from '@/components/common/BasicModal';
 import MakePortfolio from '@/components/main/MakePortfolio';
 import Portfolio from '@/components/main/Portfolio';
+import { getSession } from 'next-auth/react';
 
 const Portfolios = () => {
   const { data: session, status } = useSession();
@@ -44,4 +45,24 @@ const Wrapper = styled(Box)`
   align-items: center;
   gap: 20px;
 `;
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (!session && !session?.accessToken) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+}
+
 export default Portfolios;
