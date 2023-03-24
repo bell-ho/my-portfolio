@@ -63,7 +63,7 @@ const Navbar = () => {
             'aria-labelledby': 'basic-button',
           }}
         >
-          <MenuItem>포트폴리오 목록</MenuItem>
+          <MenuItem onClick={() => router.push(`/portfolios`)}>포트폴리오 목록</MenuItem>
           <MenuItem onClick={logOutHandler}>LOGOUT</MenuItem>
         </Menu>
       </BarWrapper>

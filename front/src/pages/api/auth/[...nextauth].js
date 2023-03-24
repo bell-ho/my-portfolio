@@ -7,6 +7,7 @@ import { axios } from '@/util/axios';
 const nextAuthOptions = (req, res) => {
   let privateToken;
   let role;
+  let userId;
   return {
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
     providers: [
@@ -59,12 +60,14 @@ const nextAuthOptions = (req, res) => {
 
           privateToken = existUser?.token;
           role = existUser?.role;
+          userId = existUser?.id;
 
           if (!existUser) {
             await axios.post(`/api/v1/auth/signup`, params).then((response) => {
-              const newMember = response.data.data.member;
+              const newMember = response.data.data.user;
               privateToken = newMember.token;
               role = newMember.role;
+              userId = newMember.id;
             });
           }
         } catch (e) {
@@ -77,7 +80,7 @@ const nextAuthOptions = (req, res) => {
         if (account) {
           token.role = role;
           token.accessToken = privateToken;
-          token.id = user?.id;
+          token.id = userId;
         }
         return token;
       },

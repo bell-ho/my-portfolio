@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { commentOptions } from '@/react-query/queryOptions';
+import { getPortfolios } from '@/pages/api/portfolio';
 
 export const usePortfoliosQuery = (userId) => {
   const { data = [], isLoading } = useQuery(
