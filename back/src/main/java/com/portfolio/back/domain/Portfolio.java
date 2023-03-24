@@ -46,4 +46,12 @@ public class Portfolio extends BaseEntity {
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
+
+    public static Portfolio createPortfolio(String name, User user) {
+        Portfolio portfolio = new Portfolio();
+        portfolio.setUser(user);
+        portfolio.setName(name);
+
+        return portfolio;
+    }
 }

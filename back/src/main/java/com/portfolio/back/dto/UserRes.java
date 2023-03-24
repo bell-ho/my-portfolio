@@ -19,6 +19,7 @@ public class UserRes {
     @Builder
     public UserRes(User entity) {
         if (entity != null) {
+            this.id = entity.getId();
             this.email = entity.getEmail() != null ? entity.getEmail() : "";
             this.name = entity.getName();
             this.nickName = entity.getNickName();
