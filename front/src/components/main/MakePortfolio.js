@@ -23,12 +23,21 @@ const MakePortfolio = ({ handleClose }) => {
 
   const onClickCreate = useCallback(async () => {
     const name = nameInputRef.current.value;
+    const portfolios = queryClient.getQueryData([queryKey.portfolios, session?.user?.id]);
+
+    if (portfolios.length >= 3) {
+      alert('포트폴리오는 최대 3개까지 가능합니다');
+      handleClose();
+      return;
+    }
+
     const params = {
       name,
       userId: session?.user?.id,
     };
+
     await createPortfolioMutation.mutate(params);
-  }, [createPortfolioMutation, session?.user?.id]);
+  }, [createPortfolioMutation, handleClose, queryClient, session?.user?.id]);
 
   return (
     <Wrapper>

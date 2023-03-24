@@ -13,6 +13,7 @@ const Portfolios = () => {
   const { data: session, status } = useSession();
 
   const { data: portfolios, isLoading } = usePortfoliosQuery(session?.user?.id);
+
   if (!portfolios) {
     return <div>Loading...</div>;
   }
