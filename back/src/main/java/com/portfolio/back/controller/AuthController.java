@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
 @RestController
@@ -23,18 +21,18 @@ public class AuthController {
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
-        User user = userService.findByUniqueKey(uniqueKey);
-
-        RequestResultEnum result = (user != null) ? RequestResultEnum.SUCCESS : RequestResultEnum.NOT_FOUND;
         ResponseData data;
 
-        if (user != null) {
+        try {
+            User user = userService.findByUniqueKey(uniqueKey);
             UserRes userRes = new UserRes(user);
+
             final String token = tokenProvider.create(userRes.toEntity());
             userRes.setToken(token);
-            data = ResponseData.fromResult(result).add("user", userRes);
-        } else {
-            data = ResponseData.fromResult(result).add("user", null);
+
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
+        } catch (IllegalArgumentException e) {
+            data = ResponseData.fromException(e).add("user", null);
         }
         return ResponseEntity.ok(data);
     }
