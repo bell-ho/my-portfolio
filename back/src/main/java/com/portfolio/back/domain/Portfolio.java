@@ -47,11 +47,21 @@ public class Portfolio extends BaseEntity {
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "image_id")
+    private Image image;
+
     public static Portfolio createPortfolio(String name, User user) {
         Portfolio portfolio = new Portfolio();
         portfolio.setUser(user);
         portfolio.setName(name);
 
         return portfolio;
+    }
+
+    public Portfolio update(String title, String description) {
+        this.title = title;
+        this.description = description;
+        return this;
     }
 }

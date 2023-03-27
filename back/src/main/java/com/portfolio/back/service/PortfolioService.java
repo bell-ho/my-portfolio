@@ -12,4 +12,10 @@ public interface PortfolioService {
     Portfolio createPortfolio(String name, Long userId);
 
     void removePortfolio(Long portfolioId);
+
+    Portfolio createPortfolioContent(Long portfolioId, String title, String description);
+
+    Portfolio detailPortfolio(Long portfolioId);
+
+    Portfolio updatePortfolioMainImage(Long portfolioId, String src);
 }

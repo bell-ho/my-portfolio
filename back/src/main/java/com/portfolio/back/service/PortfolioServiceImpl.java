@@ -1,7 +1,9 @@
 package com.portfolio.back.service;
 
+import com.portfolio.back.domain.Image;
 import com.portfolio.back.domain.Portfolio;
 import com.portfolio.back.domain.User;
+import com.portfolio.back.repository.ImageRepository;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     private final PortfolioRepository portfolioRepository;
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     @Override
     public List<Portfolio> getPortfolios(Long userId) {
@@ -36,5 +39,28 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Transactional
     public void removePortfolio(Long portfolioId) {
         portfolioRepository.deleteById(portfolioId);
+    }
+
+    @Override
+    @Transactional
+    public Portfolio createPortfolioContent(Long portfolioId, String title, String description) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        return portfolio.update(title, description);
+    }
+
+    @Override
+    public Portfolio detailPortfolio(Long portfolioId) {
+        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+    }
+
+    @Override
+    @Transactional
+    public Portfolio updatePortfolioMainImage(Long portfolioId, String src) {
+        Image image = Image.createImage(src, null);
+        Image savedImage = imageRepository.save(image);
+
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        portfolio.setImage(savedImage);
+        return portfolio;
     }
 }

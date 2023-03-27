@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "image")
 @Builder
@@ -27,4 +27,10 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public static Image createImage(String src, Project project) {
+        Image image = new Image();
+        image.setSrc(src);
+        image.setProject(project);
+        return image;
+    }
 }

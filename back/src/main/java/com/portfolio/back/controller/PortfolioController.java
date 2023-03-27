@@ -1,7 +1,6 @@
 package com.portfolio.back.controller;
 
-import com.portfolio.back.dto.PortfolioInsertReq;
-import com.portfolio.back.dto.PortfolioRes;
+import com.portfolio.back.dto.*;
 import com.portfolio.back.service.PortfolioService;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
@@ -19,7 +18,7 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
-    @GetMapping("/{userId}")
+    @GetMapping("/by-user/{userId}")
     public ResponseEntity<?> getPortfolios(@PathVariable("userId") Long userId) {
 
         List<PortfolioRes> portfolios =
@@ -44,7 +43,7 @@ public class PortfolioController {
     }
 
     @DeleteMapping("/{portfolioId}")
-    public ResponseEntity<?> removePortfolio(@PathVariable Long portfolioId) {
+    public ResponseEntity<?> removePortfolio(@PathVariable("portfolioId") Long portfolioId) {
         ResponseData data;
         try {
             portfolioService.removePortfolio(portfolioId);
@@ -53,6 +52,45 @@ public class PortfolioController {
             data = ResponseData.fromException(e);
         }
         return ResponseEntity.ok(data);
+    }
 
+    @PutMapping("/{portfolioId}")
+    public ResponseEntity<?> createPortfolioContent(@PathVariable("portfolioId") Long portfolioId, @RequestBody PortfolioContentInsertReq params) {
+        ResponseData data;
+        try {
+            portfolioService.createPortfolioContent(
+                    portfolioId,
+                    params.getTitle(),
+                    params.getDescription());
+
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e);
+        }
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/{portfolioId}")
+    public ResponseEntity<?> detailPortfolio(@PathVariable("portfolioId") Long portfolioId) {
+        ResponseData data;
+        try {
+            PortfolioBasicRes portfolio = new PortfolioBasicRes(portfolioService.detailPortfolio(portfolioId));
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolio", portfolio);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e);
+        }
+        return ResponseEntity.ok(data);
+    }
+
+    @PutMapping("/image/{portfolioId}")
+    public ResponseEntity<?> updatePortfolioMainImage(@PathVariable("portfolioId") Long portfolioId, @RequestBody ImageInsertReq params) {
+        ResponseData data;
+        try {
+            portfolioService.updatePortfolioMainImage(portfolioId, params.getSrc());
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e);
+        }
+        return ResponseEntity.ok(data);
     }
 }
