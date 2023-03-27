@@ -1,33 +1,23 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import { Box, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
 import { uploadImages } from '@/util/uploadFileToS3';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import { updatePortfolio, updatePortfolioImage } from '@/pages/api/portfolio';
-import { usePortfoliosDetailQuery } from '@/react-query/query-hooks/usePortfoliosHook';
 import { queryKey } from '@/react-query/constants';
 
-const Main = () => {
+const Main = ({ id, imageSrc, title, description }) => {
   const queryClient = useQueryClient();
-  const router = useRouter();
-  const { portfolioId } = router.query;
-
-  const {
-    data: { imageSrc, title, description },
-    isLoading,
-  } = usePortfoliosDetailQuery(portfolioId);
 
   const titleInputRef = useRef(null);
   const descriptionInputRef = useRef(null);
   const imageInputRef = useRef(null);
-  const [imagePaths, setImagePaths] = useState([]);
 
   const updateImageMutation = useMutation((params) => updatePortfolioImage(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.portfolios, portfolioId]);
+      queryClient.invalidateQueries([queryKey.portfolios, id]);
     },
   });
 
@@ -42,10 +32,9 @@ const Main = () => {
       }
 
       const imageUrls = await uploadImages(files);
-      await updateImageMutation.mutate({ id: portfolioId, src: imageUrls[0] });
-      // setImagePaths((prev) => prev.concat(imageUrls));
+      await updateImageMutation.mutate({ id, src: imageUrls[0] });
     },
-    [portfolioId, updateImageMutation],
+    [id, updateImageMutation],
   );
 
   const imageButtonClick = useCallback((e) => {
@@ -54,7 +43,7 @@ const Main = () => {
 
   const portfolioUpdateMutation = useMutation((params) => updatePortfolio(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.portfolios, portfolioId]);
+      queryClient.invalidateQueries([queryKey.portfolios, id]);
     },
   });
 
@@ -63,13 +52,13 @@ const Main = () => {
     const description = descriptionInputRef.current.value;
 
     const params = {
-      id: portfolioId,
+      id,
       title,
       description,
     };
 
     await portfolioUpdateMutation.mutate(params);
-  }, [portfolioId, portfolioUpdateMutation]);
+  }, [id, portfolioUpdateMutation]);
 
   return (
     <Wrapper id={'main'}>
@@ -109,15 +98,15 @@ const Main = () => {
         />
       </ImageContentWrapper>
 
+      <TypographyCustom variant={'h1'}>{title}</TypographyCustom>
+      <TypographyCustom variant={'h2'}>{description}</TypographyCustom>
+
       <TextField required id="outlined-required" label="타이틀" inputRef={titleInputRef} />
       <TextField required id="outlined-required" label="설명" inputRef={descriptionInputRef} />
 
       <Button onClick={onClickUpdate} variant={'contained'} sx={{ fontSize: '15px' }}>
-        저장
+        수정
       </Button>
-
-      <TypographyCustom variant={'h1'}>{title}</TypographyCustom>
-      <TypographyCustom variant={'h2'}>{description}</TypographyCustom>
     </Wrapper>
   );
 };

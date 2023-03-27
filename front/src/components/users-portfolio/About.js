@@ -5,31 +5,25 @@ import styled from '@emotion/styled';
 import { Box, Grid, Typography } from '@mui/material';
 
 const About = () => {
+  const items = [
+    { icon: faUser, label: '이름', value: '이종호' },
+    { icon: faPhone, label: '연락처', value: '010-8560-1074' },
+    { icon: faEnvelope, label: '이메일', value: 'jj0101065@gmail.com' },
+  ];
+
   return (
     <Wrapper id={'about'}>
       <TypographyCustom variant={'h1'}>ABOUT ME</TypographyCustom>
       <ContentWrapper container>
-        <ContentItem xs={12} md={3}>
-          <IconCustom icon={faUser} />
-          <LabelWrapper>
-            <TypographyCustom variant={'label'}>이름</TypographyCustom>
-            <TypographyCustom variant={'labelValue'}>이종호</TypographyCustom>
-          </LabelWrapper>
-        </ContentItem>
-        <ContentItem xs={12} md={3}>
-          <IconCustom icon={faPhone} />
-          <LabelWrapper>
-            <TypographyCustom variant={'label'}>연락처</TypographyCustom>
-            <TypographyCustom variant={'labelValue'}>010-8560-1074</TypographyCustom>
-          </LabelWrapper>
-        </ContentItem>
-        <ContentItem xs={12} md={3}>
-          <IconCustom icon={faEnvelope} />
-          <LabelWrapper>
-            <TypographyCustom variant={'label'}>이메일</TypographyCustom>
-            <TypographyCustom variant={'labelValue'}>jj0101065@gmail.com</TypographyCustom>
-          </LabelWrapper>
-        </ContentItem>
+        {items.map((item) => (
+          <ContentItem key={item.label} xs={12} md={3}>
+            <IconCustom icon={item.icon} />
+            <LabelWrapper>
+              <TypographyCustom variant={'label'}>{item.label}</TypographyCustom>
+              <TypographyCustom variant={'labelValue'}>{item.value}</TypographyCustom>
+            </LabelWrapper>
+          </ContentItem>
+        ))}
       </ContentWrapper>
     </Wrapper>
   );

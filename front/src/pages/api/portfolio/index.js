@@ -27,6 +27,9 @@ export const getPortfolioDetail = async (params) => {
 };
 
 export const updatePortfolioImage = async (params) => {
-  // console.log(params);
   const { data } = await axios.put(`${apiKey.portfolios}/image/${params.id}`, params);
+};
+
+export const updatePortfolioAbout = async (params) => {
+  const { data } = await axios.put(`${apiKey.portfolios}/about/${params.id}`, params);
 };
