@@ -10,14 +10,16 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { removePortfolio } from '@/pages/api/portfolio';
 import { queryKey } from '@/react-query/constants';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Portfolio = ({ portfolio: { id, name, createDate, modifiedDate } }) => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const queryClient = useQueryClient();
 
   const removePortfolioMutation = useMutation((params) => removePortfolio(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.portfolios, session?.user?.id]);
+      queryClient.invalidateQueries([queryKey.portfoliosByUser, session?.user?.id]);
     },
   });
 
@@ -34,7 +36,9 @@ const Portfolio = ({ portfolio: { id, name, createDate, modifiedDate } }) => {
         <Typography variant={'h3'}>마지막 수정일 : {modifiedDate}</Typography>
       </CardContentCustom>
       <CardActions>
-        <Button size="large">수정</Button>
+        <Button size="large" onClick={() => router.push(`/product/${id}`)}>
+          수정
+        </Button>
         <Button onClick={onClickDelete} size="large">
           삭제
         </Button>

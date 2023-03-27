@@ -7,7 +7,6 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -80,7 +79,7 @@ const Navbar = (props) => {
             variant={'h2'}
             sx={{ fontWeight: 600, flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
           >
-            포트폴리오
+            테스트
           </Typography>
 
           <IconButton

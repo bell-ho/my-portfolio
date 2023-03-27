@@ -16,14 +16,14 @@ const MakePortfolio = ({ handleClose }) => {
 
   const createPortfolioMutation = useMutation((params) => createPortfolio(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.portfolios, session?.user?.id]);
+      queryClient.invalidateQueries([queryKey.portfoliosByUser, session?.user?.id]);
       handleClose();
     },
   });
 
   const onClickCreate = useCallback(async () => {
     const name = nameInputRef.current.value;
-    const portfolios = queryClient.getQueryData([queryKey.portfolios, session?.user?.id]);
+    const portfolios = queryClient.getQueryData([queryKey.portfoliosByUser, session?.user?.id]);
 
     if (portfolios.length >= 3) {
       alert('포트폴리오는 최대 3개까지 가능합니다');

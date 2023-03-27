@@ -39,5 +39,5 @@ export const uploadImages = async (files) => {
 
   const promises = files.map((file) => uploadFileToS3(file));
   const results = await Promise.all(promises);
-  return results.map((result) => result.Location);
+  return results.map((result) => result?.Location);
 };
