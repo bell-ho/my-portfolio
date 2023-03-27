@@ -11,7 +11,6 @@ import { queryKey } from '@/react-query/constants';
 const About = ({ id, name, phone, email }) => {
   const queryClient = useQueryClient();
 
-  console.log(name, phone, email);
   const nameInputRef = useRef(null);
   const phoneInputRef = useRef(null);
   const emailInputRef = useRef(null);

@@ -4,39 +4,29 @@ import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
 import Image from 'next/image';
 import { getRandomColor } from '@/util/utils';
+import SkillsAutoComplete from '@/components/portfolio-product/SkillsAutoComplete';
 
 const Skills = () => {
   const skills = [
     {
       name: 'Front End',
-      stacks: [
-        'react',
-        'react query',
-        'redux saga',
-        'next.js',
-        'javascript',
-        'html',
-        'css',
-        'mui',
-        'bootstrap',
-        'vue.js',
-      ],
+      stacks: ['react'],
     },
     {
       name: 'Back End',
-      stacks: ['spring boot', 'spring', 'jpa', 'java', 'mysql', 'mariaDB', 'oracle'],
+      stacks: ['spring boot'],
     },
     {
       name: 'Version Control',
-      stacks: ['github', 'gitlab'],
+      stacks: ['github'],
     },
     {
       name: 'Communication',
-      stacks: ['jira', 'notion', 'figma'],
+      stacks: ['jira'],
     },
     {
       name: 'Deployment',
-      stacks: ['Amazon AWS', 'Amazon RDS', 'Amazon S3', 'AWS Lambda'],
+      stacks: ['Amazon AWS'],
     },
     {
       name: 'Certificate',
@@ -47,29 +37,10 @@ const Skills = () => {
   return (
     <Wrapper id={'skills'}>
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
-      {Children.toArray(
-        skills.map((v) => (
-          <SkillsContainer>
-            <Typography variant={'skillsTitle'}>{v.name}</Typography>
-            {Children.toArray(
-              v.stacks.map((stack) => (
-                <Image
-                  width={224}
-                  height={46}
-                  layout="responsive"
-                  unoptimized={true}
-                  src={`https://img.shields.io/badge/${stack}-${getRandomColor()}?style=for-the-badge&logo=${stack}&logoColor=white`}
-                  alt={`skills-${stack}`}
-                />
-              )),
-            )}
-          </SkillsContainer>
-        )),
-      )}
+      <SkillsAutoComplete />
     </Wrapper>
   );
 };
-
 const SkillsContainer = styled(Box)`
   width: 17rem;
   margin: 0 auto 2rem;
