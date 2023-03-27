@@ -1,5 +1,6 @@
 package com.portfolio.back.service;
 
+import com.portfolio.back.domain.About;
 import com.portfolio.back.domain.Portfolio;
 import com.portfolio.back.dto.PortfolioRes;
 
@@ -18,4 +19,6 @@ public interface PortfolioService {
     Portfolio detailPortfolio(Long portfolioId);
 
     Portfolio updatePortfolioMainImage(Long portfolioId, String src);
+
+    Portfolio updatePortfolioAbout(Long portfolioId, About about);
 }

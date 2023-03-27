@@ -1,5 +1,6 @@
 package com.portfolio.back.service;
 
+import com.portfolio.back.domain.About;
 import com.portfolio.back.domain.Image;
 import com.portfolio.back.domain.Portfolio;
 import com.portfolio.back.domain.User;
@@ -61,6 +62,14 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         portfolio.setImage(savedImage);
+        return portfolio;
+    }
+
+    @Override
+    @Transactional
+    public Portfolio updatePortfolioAbout(Long portfolioId, About about) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        portfolio.setAbout(about);
         return portfolio;
     }
 }

@@ -1,5 +1,6 @@
 package com.portfolio.back.controller;
 
+import com.portfolio.back.domain.About;
 import com.portfolio.back.dto.*;
 import com.portfolio.back.service.PortfolioService;
 import com.portfolio.back.utils.RequestResultEnum;
@@ -87,6 +88,19 @@ public class PortfolioController {
         ResponseData data;
         try {
             portfolioService.updatePortfolioMainImage(portfolioId, params.getSrc());
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e);
+        }
+        return ResponseEntity.ok(data);
+    }
+
+    @PutMapping("/about/{portfolioId}")
+    public ResponseEntity<?> updatePortfolioAbout(@PathVariable("portfolioId") Long portfolioId, @RequestBody AboutInsertReq params) {
+        ResponseData data;
+        try {
+            About about = new About(params.getName(), params.getPhone(), params.getEmail());
+            portfolioService.updatePortfolioAbout(portfolioId, about);
             data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
         } catch (Exception e) {
             data = ResponseData.fromException(e);

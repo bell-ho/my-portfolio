@@ -34,11 +34,11 @@ public class Portfolio extends BaseEntity {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "about_name")),
-            @AttributeOverride(name = "email", column = @Column(name = "about_email")),
-            @AttributeOverride(name = "phone", column = @Column(name = "about_phone"))
+            @AttributeOverride(name = "userName", column = @Column(name = "about_name")),
+            @AttributeOverride(name = "userEmail", column = @Column(name = "about_email")),
+            @AttributeOverride(name = "userPhone", column = @Column(name = "about_phone"))
     })
-    private About about;
+    private About about = new About();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
