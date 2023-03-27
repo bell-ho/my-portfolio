@@ -1,46 +1,93 @@
-import React, { Children } from 'react';
+import React, { Children, useCallback, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
-import Image from 'next/image';
-import { getRandomColor } from '@/util/utils';
-import SkillsAutoComplete from '@/components/portfolio-product/SkillsAutoComplete';
+import { Autocomplete, Chip, Stack, TextField, Typography } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
+import Button from '@mui/material/Button';
 
 const Skills = () => {
-  const skills = [
-    {
-      name: 'Front End',
-      stacks: ['react'],
-    },
-    {
-      name: 'Back End',
-      stacks: ['spring boot'],
-    },
-    {
-      name: 'Version Control',
-      stacks: ['github'],
-    },
-    {
-      name: 'Communication',
-      stacks: ['jira'],
-    },
-    {
-      name: 'Deployment',
-      stacks: ['Amazon AWS'],
-    },
-    {
-      name: 'Certificate',
-      stacks: ['정보처리기사'],
-    },
+  const handleClick = (index) => {
+    const newSelectedChips = [...selectedChips];
+    newSelectedChips[index] = !newSelectedChips[index];
+    console.log(chipsData[index], newSelectedChips[index]);
+    setSelectedChips(newSelectedChips);
+  };
+
+  const [selectedChips, setSelectedChips] = useState([]);
+
+  const chipsData = [
+    { name: 'react', classi: 'FE' },
+    { name: 'react-redux', classi: 'FE' },
+    { name: 'react-query', classi: 'FE' },
+    { name: 'react-saga', classi: 'FE' },
   ];
+
+  const classi = ['FRONT', 'BACK'];
+
+  const skillClassificationRef = useRef(null);
+  const skillNameRef = useRef(null);
+
+  const onClickSkillInsert = useCallback(() => {
+    const skillName = skillNameRef.current.value;
+    const skillClassification = skillClassificationRef.current.value;
+  }, []);
 
   return (
     <Wrapper id={'skills'}>
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
-      <SkillsAutoComplete />
+
+      <SkillsContainer>
+        <TypographyCustom variant={'h7'}>원하는 스킬이 없나요?</TypographyCustom>
+        <SkillInputWrapper>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={classi}
+            renderInput={(params) => (
+              <TextField inputRef={skillClassificationRef} {...params} label="분류" />
+            )}
+          />
+          <Box className={'input-btn'}>
+            <TextField inputRef={skillNameRef} />
+            <Button variant={'contained'} onClick={onClickSkillInsert}>
+              등록
+            </Button>
+          </Box>
+        </SkillInputWrapper>
+        <Stack direction="column" spacing={1}>
+          {Children.toArray(
+            chipsData.map((chip, index) => (
+              <Chip
+                key={index}
+                label={chip.name}
+                onClick={() => handleClick(index)}
+                deleteIcon={<DoneIcon />}
+                style={{
+                  backgroundColor: selectedChips[index] ? '#1976d2' : '',
+                  color: selectedChips[index] ? '#ffffff' : '',
+                }}
+              />
+            )),
+          )}
+        </Stack>
+      </SkillsContainer>
     </Wrapper>
   );
 };
+
+const SkillInputWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+
+  .input-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+`;
+
 const SkillsContainer = styled(Box)`
   width: 17rem;
   margin: 0 auto 2rem;
