@@ -31,5 +31,6 @@ export const usePortfoliosDetailQuery = (portfolioId) => {
       keepPreviousData: true,
     },
   );
+
   return { data, isLoading };
 };

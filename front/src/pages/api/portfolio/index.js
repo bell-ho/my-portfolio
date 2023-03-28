@@ -2,7 +2,7 @@ import { axios } from '@/util/axios';
 import { apiKey } from '@/pages/api/constants';
 
 export const getPortfoliosByUser = async (params) => {
-  const { data } = await axios.get(`${apiKey.portfolios}/by-user/${params}`);
+  const { data } = await axios.get(`${apiKey.portfolios}/users/${params}`);
 
   return data.data.portfolios;
 };

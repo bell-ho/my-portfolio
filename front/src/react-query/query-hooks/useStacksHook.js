@@ -1,0 +1,19 @@
+import { useQuery } from '@tanstack/react-query';
+import { queryKey } from '@/react-query/constants';
+import { commentOptions } from '@/react-query/queryOptions';
+import { getStacksByUser } from '@/pages/api/stack';
+
+export const useStacksByUserQuery = (userId) => {
+  const { data = [], isLoading } = useQuery(
+    [queryKey.stacksByUser, userId],
+    () => getStacksByUser(userId),
+    {
+      enabled: !!userId,
+      ...commentOptions(5000, 300000),
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      keepPreviousData: true,
+    },
+  );
+  return { data, isLoading };
+};

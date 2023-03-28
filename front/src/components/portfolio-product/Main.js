@@ -66,7 +66,7 @@ const Main = ({ id, imageSrc, title, description }) => {
         {!imageSrc ? (
           <Button
             onClick={imageButtonClick}
-            fullwidth
+            fullWidth
             variant={'contained'}
             sx={{ fontSize: '20px' }}
           >
@@ -77,7 +77,7 @@ const Main = ({ id, imageSrc, title, description }) => {
             <ImageCustom width={250} height={250} src={imageSrc} alt={'image'} />
             <Button
               onClick={imageButtonClick}
-              fullwidth
+              fullWidth
               variant={'contained'}
               sx={{ fontSize: '15px', position: 'absolute', bottom: 100, opacity: 0.8 }}
             >

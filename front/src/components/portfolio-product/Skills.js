@@ -1,48 +1,92 @@
-import React, { Children, useCallback, useRef, useState } from 'react';
+import React, { Children, useCallback, useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import { Autocomplete, Chip, Stack, TextField, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import Button from '@mui/material/Button';
+import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
+import { useSession, getSession } from 'next-auth/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createSkill, userSkillUpdate } from '@/pages/api/stack';
+import { queryKey } from '@/react-query/constants';
+import { useDelayed } from '@/util/usePageSearchUtil';
 
-const Skills = () => {
-  const handleClick = (index) => {
-    const newSelectedChips = [...selectedChips];
-    newSelectedChips[index] = !newSelectedChips[index];
-    console.log(chipsData[index], newSelectedChips[index]);
-    setSelectedChips(newSelectedChips);
-  };
+const skillGroup = [
+  { name: 'Front End', code: 'FE' },
+  { name: 'Back End', code: 'BE' },
+  { name: 'Deployment', code: 'DP' },
+  { name: 'Communication', code: 'CM' },
+  { name: 'Version Control', code: 'VC' },
+  { name: '자격증', code: 'CT' },
+];
 
-  const [selectedChips, setSelectedChips] = useState([]);
+const Skills = ({ userId }) => {
+  const queryClient = useQueryClient();
 
-  const chipsData = [
-    { name: 'react', classi: 'FE' },
-    { name: 'react-redux', classi: 'FE' },
-    { name: 'react-query', classi: 'FE' },
-    { name: 'react-saga', classi: 'FE' },
-  ];
+  const { data: stacks } = useStacksByUserQuery(userId);
 
-  const classi = ['FRONT', 'BACK'];
+  const delayedFn = useDelayed();
+
+  const userStackUpdateMutation = useMutation((params) => userSkillUpdate(params), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKey.stacksByUser, userId]);
+    },
+  });
+
+  const handleClick = useCallback(
+    async (stack) => {
+      const params = {
+        stackId: stack.id,
+        userId: userId,
+      };
+
+      delayedFn(async () => {
+        await userStackUpdateMutation.mutate(params);
+      }, 300);
+    },
+    [delayedFn, userId, userStackUpdateMutation],
+  );
 
   const skillClassificationRef = useRef(null);
   const skillNameRef = useRef(null);
 
-  const onClickSkillInsert = useCallback(() => {
+  const userSkillInsertMutation = useMutation((params) => createSkill(params), {
+    enabled: !!userId,
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKey.stacksByUser, userId]);
+    },
+  });
+
+  const onClickSkillInsert = useCallback(async () => {
     const skillName = skillNameRef.current.value;
     const skillClassification = skillClassificationRef.current.value;
-  }, []);
+
+    const selectedCode = skillGroup.find((c) => c.name === skillClassification)?.code;
+
+    const newSkill = {
+      userId: userId,
+      name: skillName,
+      code: selectedCode,
+    };
+
+    await userSkillInsertMutation.mutate(newSkill);
+
+    skillNameRef.current.value = '';
+    skillClassificationRef.current.value = '';
+  }, [userId, userSkillInsertMutation]);
 
   return (
     <Wrapper id={'skills'}>
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
 
       <SkillsContainer>
-        <TypographyCustom variant={'h7'}>원하는 스킬이 없나요?</TypographyCustom>
+        <TypographyCustom variant={'h7'}>사용하는 STACK을 클릭해주세요</TypographyCustom>
+        <TypographyCustom variant={'h7'}>없으면 추가해주세요.</TypographyCustom>
         <SkillInputWrapper>
           <Autocomplete
-            disablePortal
             id="combo-box-demo"
-            options={classi}
+            options={skillGroup}
+            getOptionLabel={(option) => option.name}
             renderInput={(params) => (
               <TextField inputRef={skillClassificationRef} {...params} label="분류" />
             )}
@@ -50,21 +94,29 @@ const Skills = () => {
           <Box className={'input-btn'}>
             <TextField inputRef={skillNameRef} />
             <Button variant={'contained'} onClick={onClickSkillInsert}>
-              등록
+              추가
             </Button>
           </Box>
         </SkillInputWrapper>
-        <Stack direction="column" spacing={1}>
+        <Stack
+          direction="row"
+          sx={{
+            flexWrap: 'wrap',
+            gap: 1,
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
           {Children.toArray(
-            chipsData.map((chip, index) => (
-              <Chip
+            stacks.map((stack, index) => (
+              <ChipCustom
                 key={index}
-                label={chip.name}
-                onClick={() => handleClick(index)}
+                label={stack.name}
+                onClick={() => handleClick(stack)}
                 deleteIcon={<DoneIcon />}
                 style={{
-                  backgroundColor: selectedChips[index] ? '#1976d2' : '',
-                  color: selectedChips[index] ? '#ffffff' : '',
+                  backgroundColor: stack.userStack ? '#1976d2' : '',
+                  color: stack.userStack ? '#ffffff' : '',
                 }}
               />
             )),
@@ -74,6 +126,12 @@ const Skills = () => {
     </Wrapper>
   );
 };
+
+const ChipCustom = styled(Chip)`
+  font-family: 'Pretendard', serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+`;
 
 const SkillInputWrapper = styled(Box)`
   display: flex;
@@ -103,14 +161,7 @@ const SkillsContainer = styled(Box)`
 
   transform: translateY(10px);
   transition: all var(--animation-duration) ease;
-
-  &:hover {
-    transform: translateY(0px);
-    transition: transform 0.3s ease;
-  }
 `;
-
-const SkillsWrapper = styled(Box)``;
 
 const Wrapper = styled(Box)`
   background-color: #f9c51d;

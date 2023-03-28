@@ -7,12 +7,8 @@ import Content from '@/components/users-portfolio/Content';
 
 const Projects = () => {
   const images = [
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo1.jpg',
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo2.jpg',
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo3.jpg',
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo4.jpg',
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo5.jpg',
-    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/memo6.jpg',
+    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/1679894537665_myblog1.jpg',
+    'https://jh-mybucket.s3.ap-northeast-2.amazonaws.com/uploads/1679894537665_myblog1.jpg',
   ];
   const mainContent = {
     content: `나만의 메모를 공유하는 프로젝트.\n 나의 일상 생활을 공유하고\n 남의 일상을 공감하는 서비스 입니다. `,

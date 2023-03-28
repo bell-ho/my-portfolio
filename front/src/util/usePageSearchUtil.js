@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
 
 export const useDelayed = () => {
   const timerRef = useRef(null);
