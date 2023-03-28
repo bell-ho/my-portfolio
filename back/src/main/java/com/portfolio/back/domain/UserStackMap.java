@@ -25,4 +25,15 @@ public class UserStackMap extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stack_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Stack stack;
+
+    public static UserStackMap createUserStack(User user, Stack stack) {
+        UserStackId userStackId = new UserStackId(user.getId(), stack.getId());
+
+        UserStackMap userStack = new UserStackMap();
+        userStack.setId(userStackId);
+        userStack.setUser(user);
+        userStack.setStack(stack);
+
+        return userStack;
+    }
 }

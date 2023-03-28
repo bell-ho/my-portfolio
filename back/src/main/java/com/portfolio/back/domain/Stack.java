@@ -22,5 +22,12 @@ public class Stack extends BaseEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private StackType role;
+    private StackType code;
+
+    public static Stack createStack(String name, String code) {
+        Stack stack = new Stack();
+        stack.setName(name);
+        stack.setCode(StackType.valueOf(code));
+        return stack;
+    }
 }
