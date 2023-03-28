@@ -46,4 +46,14 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectStackMap> projectStacks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MainFn> mainFns = new HashSet<>();
+
+    public static Project createProject(Portfolio portfolio, String name) {
+        Project project = new Project();
+        project.setPortfolio(portfolio);
+        project.setName(name);
+        return project;
+    }
 }

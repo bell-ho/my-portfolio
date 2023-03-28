@@ -19,7 +19,7 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
-    @GetMapping("/by-user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<?> getPortfolios(@PathVariable("userId") Long userId) {
 
         List<PortfolioRes> portfolios =
