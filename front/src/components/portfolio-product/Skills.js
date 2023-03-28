@@ -1,11 +1,10 @@
-import React, { Children, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Children, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import { Autocomplete, Chip, Stack, TextField, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import Button from '@mui/material/Button';
 import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
-import { useSession, getSession } from 'next-auth/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createSkill, userSkillUpdate } from '@/pages/api/stack';
 import { queryKey } from '@/react-query/constants';
@@ -55,6 +54,10 @@ const Skills = ({ userId }) => {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.stacksByUser, userId]);
     },
+    onSettled: () => {
+      skillNameRef.current.value = '';
+      skillClassificationRef.current.value = '';
+    },
   });
 
   const onClickSkillInsert = useCallback(async () => {
@@ -70,9 +73,6 @@ const Skills = ({ userId }) => {
     };
 
     await userSkillInsertMutation.mutate(newSkill);
-
-    skillNameRef.current.value = '';
-    skillClassificationRef.current.value = '';
   }, [userId, userSkillInsertMutation]);
 
   return (
