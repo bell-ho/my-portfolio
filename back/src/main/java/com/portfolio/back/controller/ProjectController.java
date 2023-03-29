@@ -1,6 +1,5 @@
 package com.portfolio.back.controller;
 
-import com.portfolio.back.domain.Project;
 import com.portfolio.back.dto.ProjectInsertReq;
 import com.portfolio.back.dto.ProjectRes;
 import com.portfolio.back.service.ProjectService;

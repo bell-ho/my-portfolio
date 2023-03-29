@@ -1,7 +1,7 @@
-import React, { Children, useCallback, useRef } from 'react';
+import React, { Children, Fragment, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
-import { Autocomplete, Chip, Stack, TextField, Typography } from '@mui/material';
+import { Autocomplete, Chip, Divider, Stack, TextField, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import Button from '@mui/material/Button';
 import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
@@ -109,16 +109,25 @@ const Skills = ({ userId }) => {
         >
           {Children.toArray(
             stacks.map((stack, index) => (
-              <ChipCustom
-                key={index}
-                label={stack.name}
-                onClick={() => handleClick(stack)}
-                deleteIcon={<DoneIcon />}
-                style={{
-                  backgroundColor: stack.userStack ? '#1976d2' : '',
-                  color: stack.userStack ? '#ffffff' : '',
-                }}
-              />
+              <Fragment>
+                {index !== 0 && stack.code !== stacks[index - 1].code && (
+                  <Divider
+                    orientation="horizontal"
+                    flexItem
+                    sx={{ margin: '5px 0', height: '1px', width: '100%' }}
+                  />
+                )}
+                <ChipCustom
+                  key={stack.name}
+                  label={stack.name}
+                  onClick={() => handleClick(stack)}
+                  deleteIcon={<DoneIcon />}
+                  style={{
+                    backgroundColor: stack.userStack ? '#1976d2' : '',
+                    color: stack.userStack ? '#ffffff' : '',
+                  }}
+                />
+              </Fragment>
             )),
           )}
         </Stack>
