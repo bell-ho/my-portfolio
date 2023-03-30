@@ -27,6 +27,16 @@ const BasicLayout = ({ children }) => {
         fontWeight: 'var(--weight-regular)',
         color: 'var(--color-black)',
       },
+      h5: {
+        fontSize: 'var(--font-small)',
+        fontWeight: 'var(--weight-regular)',
+        color: 'var(--color-black)',
+      },
+      h6: {
+        fontSize: 'var(--font-micro)',
+        fontWeight: 'var(--weight-regular)',
+        color: 'var(--color-black)',
+      },
       label: {
         marginBottom: '0.5rem',
         fontWeight: '700',

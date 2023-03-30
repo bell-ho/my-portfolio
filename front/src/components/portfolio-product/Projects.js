@@ -1,4 +1,4 @@
-import React, { Children, useCallback } from 'react';
+import React, { Children, useCallback, useState } from 'react';
 import { Grid, Typography } from '@mui/material';
 import ImageBox from '@/components/users-portfolio/ImageBox';
 import styled from '@emotion/styled';
@@ -11,8 +11,12 @@ import Content from '@/components/portfolio-product/Content';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { removeProject } from '@/pages/api/project';
+import dynamic from 'next/dynamic';
+const MdEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 const Projects = ({ portfolioId }) => {
+  const [value, setValue] = useState('**Hello, Markdown!**');
+
   const queryClient = useQueryClient();
   const { data: projects, isLoading } = useProjectsByPortfolioQuery(portfolioId);
 
@@ -44,12 +48,17 @@ const Projects = ({ portfolioId }) => {
               <Typography variant={'h1'}>{project?.name}</Typography>
               <Typography variant={'h3'}>{project?.period}</Typography>
             </Grid>
+            <Grid item xs={12}>
+              <MdEditor value={value} onChange={setValue} />
+            </Grid>
+
             <Grid item container spacing={4}>
               <Grid item xs={12} md={6}>
                 <ImageBox images={project?.images ?? []} />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Content
+                  portfolioId={portfolioId}
                   description={project?.description}
                   link={project?.link}
                   mainFns={project?.mainFns ?? []}
