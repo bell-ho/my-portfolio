@@ -1,10 +1,8 @@
 package com.portfolio.back.controller;
 
-import com.portfolio.back.dto.ImageRes;
-import com.portfolio.back.dto.ProjectImagesInsertReq;
-import com.portfolio.back.dto.ProjectInsertReq;
-import com.portfolio.back.dto.ProjectRes;
+import com.portfolio.back.dto.*;
 import com.portfolio.back.service.ImageService;
+import com.portfolio.back.service.MainFnService;
 import com.portfolio.back.service.ProjectService;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
@@ -22,7 +20,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ImageService imageService;
-
+    private final MainFnService mainFnService;
     @PostMapping("/portfolios/{portfolioId}")
     public ResponseEntity<?> createProject(@PathVariable("portfolioId") Long portfolioId, @RequestBody ProjectInsertReq params) {
         projectService.createProject(portfolioId, params.getName());
@@ -58,4 +56,19 @@ public class ProjectController {
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
         return ResponseEntity.ok(data);
     }
+
+    @GetMapping("/main-fn/{projectId}")
+    public ResponseEntity<?> getProjectMainFns(@PathVariable("projectId") Long projectId) {
+        List<MainFnRes> mainFns = mainFnService.getMainFnsByProject(projectId).stream().map(MainFnRes::new).collect(Collectors.toList());
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("mainFns", mainFns);
+        return ResponseEntity.ok(data);
+    }
+
+    @PostMapping("/main-fn/{projectId}")
+    public ResponseEntity<?> createMainFns(@PathVariable("projectId") Long projectId,@RequestBody MainFnInsertReq params) {
+        mainFnService.createMainFn(projectId, params.getName());
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
+        return ResponseEntity.ok(data);
+    }
+
 }

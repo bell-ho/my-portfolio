@@ -26,4 +26,11 @@ public class MainFn  extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public static MainFn createMainFn(Project project, String name) {
+        MainFn mainFn = new MainFn();
+        mainFn.setProject(project);
+        mainFn.setName(name);
+        return mainFn;
+    }
 }
