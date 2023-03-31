@@ -64,7 +64,7 @@ const ImageMaker = ({ projectId }) => {
   );
 
   return (
-    <Box>
+    <Wrapper>
       <Button variant={'contained'} onClick={imageButtonClick}>
         ADD IMAGES
       </Button>
@@ -110,10 +110,15 @@ const ImageMaker = ({ projectId }) => {
         ref={imageInputRef}
         onChange={onUploadImage}
       />
-    </Box>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 const SlideWrapper = styled(Box)`
   display: flex;
   flex-direction: column;

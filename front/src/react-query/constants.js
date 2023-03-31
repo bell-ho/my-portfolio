@@ -5,4 +5,5 @@ export const queryKey = {
   stacksByProject: 'stacksByProject',
   projectsByPortfolio: 'projectsByPortfolio',
   imagesByProject: 'imagesByProject',
+  mainFnByProject: 'mainFnByProject',
 };

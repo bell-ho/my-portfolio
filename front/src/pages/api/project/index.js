@@ -25,3 +25,13 @@ export const updateProjectImages = async (params) => {
   const { data } = await axios.put(`${apiKey.projects}/images/${params.projectId}`, params);
   return data.data;
 };
+
+export const createMainFn = async (params) => {
+  const { data } = await axios.post(`${apiKey.projects}/main-fn/${params.projectId}`, params);
+  return data.data;
+};
+
+export const getProjectMainFns = async (params) => {
+  const { data } = await axios.get(`${apiKey.projects}/main-fn/${params}`);
+  return data.data.mainFns;
+};
