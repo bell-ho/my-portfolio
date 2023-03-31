@@ -3,4 +3,5 @@ export const apiKey = {
   portfolios: `${apiVersion}/portfolios`,
   stacks: `${apiVersion}/stacks`,
   projects: `${apiVersion}/projects`,
+  images: `${apiVersion}/images`,
 };

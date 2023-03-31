@@ -11,6 +11,7 @@ import Content from '@/components/portfolio-product/Content';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { removeProject } from '@/pages/api/project';
+import ImageMaker from '@/components/portfolio-product/ImageMaker';
 
 const Projects = ({ portfolioId }) => {
   const queryClient = useQueryClient();
@@ -46,7 +47,7 @@ const Projects = ({ portfolioId }) => {
             </Grid>
             <Grid item container spacing={4}>
               <Grid item xs={12} md={6}>
-                <ImageBox images={project?.images ?? []} />
+                <ImageMaker projectId={project?.id} />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Content
@@ -59,16 +60,13 @@ const Projects = ({ portfolioId }) => {
               </Grid>
             </Grid>
             <ButtonWrapper>
-              <Button fullWidth variant={'contained'}>
-                저장
-              </Button>
               <Button
                 onClick={() => onClickRemoveProject(project?.id)}
                 fullWidth
                 variant="contained"
                 color={'error'}
               >
-                삭제
+                프로젝트 삭제
               </Button>
             </ButtonWrapper>
           </ProjectWrapper>

@@ -15,3 +15,13 @@ export const removeProject = async (params) => {
   const { data } = await axios.delete(`${apiKey.projects}/${params}`);
   return data.data;
 };
+
+export const getProjectImages = async (params) => {
+  const { data } = await axios.get(`${apiKey.projects}/images/${params}`);
+  return data.data.images;
+};
+
+export const updateProjectImages = async (params) => {
+  const { data } = await axios.put(`${apiKey.projects}/images/${params.projectId}`, params);
+  return data.data;
+};
