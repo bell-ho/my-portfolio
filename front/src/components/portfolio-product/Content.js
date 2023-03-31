@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import React, { Children, Fragment, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
-import { Chip, Link, Typography } from '@mui/material';
+import { Autocomplete, Chip, Divider, Link, Stack, TextField, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import dynamic from 'next/dynamic';
+import Button from '@mui/material/Button';
+import DoneIcon from '@mui/icons-material/Done';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createSkill } from '@/pages/api/stack';
+import { queryKey } from '@/react-query/constants';
+import ProjectSkillsMaker from '@/components/portfolio-product/ProjectSkillsMaker';
 
-const Content = ({ portfolioId, description, projectStacks }) => {
-  return <Wrapper></Wrapper>;
+const Content = ({ projectId, description, projectStacks }) => {
+  return (
+    <Wrapper>
+      <ProjectSkillsMaker projectId={projectId} />
+    </Wrapper>
+  );
 };
 
 const SkillsContainer = styled(Box)`
+  width: 17rem;
+  margin: 0 auto 2rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  box-shadow: 1rem 1rem 1rem 0 rgb(68 68 68 / 20%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,35 +32,6 @@ const SkillsContainer = styled(Box)`
 
   transform: translateY(10px);
   transition: all var(--animation-duration) ease;
-`;
-
-const SkillInputWrapper = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-
-  .input-btn {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-  }
-`;
-
-const ChipCustom = styled(Chip)`
-  font-family: 'Pretendard', serif;
-  font-size: 0.9rem;
-  font-weight: 500;
-`;
-
-const Label = styled(Box)`
-  display: table;
-  width: auto;
-  padding-left: 0.5rem;
-  margin-bottom: 0.5rem;
-  border-left: 5px solid #222;
-  font-weight: 900;
-  font-size: 1rem;
 `;
 
 const LinkCustom = styled(Link)`
@@ -71,4 +58,5 @@ const Wrapper = styled(Box)`
 const TypographyCustom = styled(Typography)`
   font-weight: 900;
 `;
+
 export default Content;

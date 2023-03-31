@@ -6,7 +6,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import Button from '@mui/material/Button';
 import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSkill, userSkillUpdate } from '@/pages/api/stack';
+import { createSkill, targetSkillUpdate } from '@/pages/api/stack';
 import { queryKey } from '@/react-query/constants';
 import { useDelayed } from '@/util/usePageSearchUtil';
 
@@ -26,7 +26,7 @@ const Skills = ({ userId }) => {
 
   const delayedFn = useDelayed();
 
-  const userStackUpdateMutation = useMutation((params) => userSkillUpdate(params), {
+  const userStackUpdateMutation = useMutation((params) => targetSkillUpdate(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.stacksByUser, userId]);
     },
@@ -35,8 +35,9 @@ const Skills = ({ userId }) => {
   const handleClick = useCallback(
     async (stack) => {
       const params = {
+        target: 'user',
         stackId: stack.id,
-        userId: userId,
+        targetId: userId,
       };
 
       delayedFn(async () => {
@@ -67,7 +68,8 @@ const Skills = ({ userId }) => {
     const selectedCode = skillGroup.find((c) => c.name === skillClassification)?.code;
 
     const newSkill = {
-      userId: userId,
+      target: 'user',
+      targetId: userId,
       name: skillName,
       code: selectedCode,
     };

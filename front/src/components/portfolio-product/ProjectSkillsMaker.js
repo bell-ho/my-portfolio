@@ -10,7 +10,7 @@ import { queryKey } from '@/react-query/constants';
 import { useStacksByProjectQuery } from '@/react-query/query-hooks/useStacksHook';
 import { useDelayed } from '@/util/usePageSearchUtil';
 
-const ProjectSkills = ({ projectId }) => {
+const ProjectSkillsMaker = ({ projectId }) => {
   const queryClient = useQueryClient();
   const delayedFn = useDelayed();
 
@@ -103,7 +103,7 @@ const ProjectSkills = ({ projectId }) => {
           gap: 1,
           display: 'flex',
           justifyContent: 'center',
-          maxHeight: '300px',
+          maxHeight: '200px',
           overflowY: 'auto',
         }}
       >
@@ -165,4 +165,4 @@ const TypographyCustom = styled(Typography)`
   font-weight: 900;
 `;
 
-export default ProjectSkills;
+export default ProjectSkillsMaker;

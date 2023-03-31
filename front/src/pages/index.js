@@ -1,5 +1,5 @@
 import Navbar from '@/components/main/Navbar';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import BasicModal from '@/components/common/BasicModal';
@@ -9,7 +9,6 @@ import { getSession, signIn, useSession } from 'next-auth/react';
 
 export default function Home() {
   const { data: session } = useSession();
-
   return (
     <Fragment>
       <Navbar />
