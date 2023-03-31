@@ -1,6 +1,7 @@
 package com.portfolio.back.controller;
 
 import com.portfolio.back.domain.Stack;
+import com.portfolio.back.dto.StackByProjectRes;
 import com.portfolio.back.dto.StackByUserRes;
 import com.portfolio.back.dto.StackInsertReq;
 import com.portfolio.back.service.StackService;
@@ -19,8 +20,17 @@ public class StackController {
 
     private final StackService stackService;
 
+    @GetMapping("/projects/{projectId}")
+    public ResponseEntity<?> getProjectStacks(@PathVariable("projectId") Long projectId) {
+
+        List<StackByProjectRes> stacks = stackService.getStacksWithProject(projectId);
+
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("stacks", stacks);
+        return ResponseEntity.ok(data);
+    }
+
     @GetMapping("/users/{userId}")
-    public ResponseEntity<?> getPortfolios(@PathVariable("userId") Long userId) {
+    public ResponseEntity<?> getUserStacks(@PathVariable("userId") Long userId) {
         List<StackByUserRes> stacks = stackService.getStacksWithUser(userId);
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("stacks", stacks);
@@ -29,15 +39,18 @@ public class StackController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createStackByUser(@RequestBody StackInsertReq params) {
-        Stack stack = stackService.createStack(params.getUserId(), params.getName(), params.getCode());
+    public ResponseEntity<?> createStack(@RequestBody StackInsertReq params) {
+        Stack stack = stackService.createStack(params.getTarget(), params.getTargetId(), params.getName(), params.getCode());
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("stack", stack);
         return ResponseEntity.ok(data);
     }
 
-    @PostMapping("/{stackId}/users/{userId}")
-    public ResponseEntity<?> updateUserStacks(@PathVariable("stackId") Long stackId, @PathVariable("userId") Long userId) {
-        stackService.updateUserStack(stackId, userId);
+    @PostMapping("/{stackId}/{target}/{userId}")
+    public ResponseEntity<?> updateUserStacks(@PathVariable("stackId") Long stackId,
+                                              @PathVariable("target") String target,
+                                              @PathVariable("userId") Long targetId) {
+
+        stackService.updateTargetStacks(stackId, target, targetId);
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
         return ResponseEntity.ok(data);

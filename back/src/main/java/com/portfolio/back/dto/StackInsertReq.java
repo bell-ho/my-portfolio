@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public class StackInsertReq {
 
-    private Long userId;
+    private String target;
+    private Long targetId;
     private String name;
     private String code;
 }

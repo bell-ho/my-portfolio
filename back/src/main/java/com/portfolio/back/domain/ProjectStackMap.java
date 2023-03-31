@@ -25,4 +25,13 @@ public class ProjectStackMap extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stack_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Stack stack;
+
+    public static ProjectStackMap createProjectStack(Project project, Stack stack) {
+        ProjectStackId projectStackId = new ProjectStackId(project.getId(), stack.getId());
+        ProjectStackMap projectStack = new ProjectStackMap();
+        projectStack.setId(projectStackId);
+        projectStack.setProject(project);
+        projectStack.setStack(stack);
+        return projectStack;
+    }
 }

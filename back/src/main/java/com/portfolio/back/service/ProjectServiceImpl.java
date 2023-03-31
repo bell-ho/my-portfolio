@@ -33,13 +33,12 @@ public class ProjectServiceImpl implements ProjectService {
         QProject project = QProject.project;
         QMainFn mainFn = QMainFn.mainFn;
         QImage image = QImage.image;
-        QProjectStackMap projectStackMap = QProjectStackMap.projectStackMap;
 
-        List<Project> projects = queryFactory.selectDistinct(project)
+        List<Project> projects = queryFactory
+                .selectDistinct(project)
                 .from(project)
                 .leftJoin(project.mainFns,mainFn).fetchJoin()
                 .leftJoin(project.images, image).fetchJoin()
-                .leftJoin(project.projectStacks, projectStackMap).fetchJoin()
                 .orderBy(project.modifiedDate.desc())
                 .fetch();
 

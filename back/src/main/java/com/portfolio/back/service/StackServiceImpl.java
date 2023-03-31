@@ -1,10 +1,9 @@
 package com.portfolio.back.service;
 
 import com.portfolio.back.domain.*;
+import com.portfolio.back.dto.StackByProjectRes;
 import com.portfolio.back.dto.StackByUserRes;
-import com.portfolio.back.repository.StackRepository;
-import com.portfolio.back.repository.UserRepository;
-import com.portfolio.back.repository.UserStackMapRepository;
+import com.portfolio.back.repository.*;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -25,6 +24,8 @@ public class StackServiceImpl implements StackService {
     private final UserRepository userRepository;
     private final StackRepository stackRepository;
     private final UserStackMapRepository userStackMapRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectStackMapRepository projectStackMapRepository;
 
     @Override
     public List<StackByUserRes> getStacksWithUser(Long userId) {
@@ -61,29 +62,79 @@ public class StackServiceImpl implements StackService {
     }
 
     @Override
-    @Transactional
-    public Stack createStack(Long userId, String name, String code) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+    public List<StackByProjectRes> getStacksWithProject(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
 
+        QStack stack = QStack.stack;
+        QProjectStackMap projectStackMap = QProjectStackMap.projectStackMap;
+
+        List<StackByProjectRes> stacks = queryFactory
+                .select(
+                        Projections.constructor(
+                                StackByProjectRes.class,
+                                stack.id,
+                                stack.name,
+                                stack.code,
+                                projectStackMap.stack.id.coalesce(0L).as("projectStackId"),
+                                ExpressionUtils.as(
+                                        JPAExpressions
+                                                .selectOne()
+                                                .from(projectStackMap)
+                                                .where(projectStackMap.project.eq(project), projectStackMap.stack.eq(stack))
+                                                .exists(),
+                                        "isProjectStack"
+                                )
+                        )
+                )
+                .from(stack)
+                .leftJoin(projectStackMap)
+                .on(projectStackMap.project.eq(project), projectStackMap.stack.eq(stack))
+                .where(stack.code.in(StackType.FE, StackType.BE, StackType.DP))
+                .orderBy(stack.code.asc(), stack.name.asc())
+                .fetch();
+
+        return stacks;
+    }
+
+    @Override
+    @Transactional
+    public Stack createStack(String target, Long targetId, String name, String code) {
         Stack stack = stackRepository.findByName(name)
                 .orElseGet(() -> stackRepository.save(Stack.createStack(name, code)));
 
-        userStackMapRepository.save(UserStackMap.createUserStack(user, stack));
+        if (target.equals("user")) {
+            User user = userRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            userStackMapRepository.save(UserStackMap.createUserStack(user, stack));
+        } else {
+            Project project = projectRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            projectStackMapRepository.save(ProjectStackMap.createProjectStack(project, stack));
+        }
 
         return stack;
     }
 
     @Override
     @Transactional
-    public Stack updateUserStack(Long stackId, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+    public Stack updateTargetStacks(Long stackId, String target, Long targetId) {
         Stack stack = stackRepository.findById(stackId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
 
-        Optional<UserStackMap> foundUserStack = userStackMapRepository.findByUserIdAndStackId(userId, stackId);
-        if (foundUserStack.isPresent()) {
-            userStackMapRepository.delete(foundUserStack.get());
+        if (target.equals("user")) {
+            User user = userRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+
+            Optional<UserStackMap> foundUserStack = userStackMapRepository.findByUserIdAndStackId(targetId, stackId);
+            foundUserStack.ifPresentOrElse(
+                    userStackMapRepository::delete,
+                    () -> userStackMapRepository.save(UserStackMap.createUserStack(user, stack))
+            );
+
         } else {
-            userStackMapRepository.save(UserStackMap.createUserStack(user, stack));
+            Project project = projectRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            Optional<ProjectStackMap> foundProjectStack = projectStackMapRepository.findByProjectIdAndStackId(targetId, stackId);
+
+            foundProjectStack.ifPresentOrElse(
+                    projectStackMapRepository::delete,
+                    () -> projectStackMapRepository.save(ProjectStackMap.createProjectStack(project, stack))
+            );
         }
         return stack;
     }
