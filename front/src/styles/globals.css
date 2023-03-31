@@ -331,6 +331,24 @@ progress {
     object-position: center;
 }
 
+.rdrCalendarWrapper {
+    position: relative;
+    width: 100%;
+
+}
+
+.rdrMonthAndYearWrapper,
+.rdrMonths,
+.rdrMonth{
+    position: relative;
+    width: 100%;
+}
+
+.rdrMonth .rdrWeekDays{
+    position: relative;
+
+}
+
 @media screen and (max-width: 768px) {
     :root {
         --font-large: 30px;

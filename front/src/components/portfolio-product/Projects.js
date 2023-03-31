@@ -13,6 +13,8 @@ import { queryKey } from '@/react-query/constants';
 import { removeProject } from '@/pages/api/project';
 import ImageMaker from '@/components/portfolio-product/ImageMaker';
 import BasicConfirmModal from '@/components/common/BasicConfirmModal';
+import EditableTitle from '@/components/common/EditableTitle';
+import ProjectInfo from '@/components/portfolio-product/ProjectInfo';
 
 const Projects = ({ portfolioId }) => {
   const [open, setOpen] = useState(false);
@@ -61,8 +63,7 @@ const Projects = ({ portfolioId }) => {
         projects.map((project) => (
           <ProjectWrapper container>
             <Grid item xs={12}>
-              <Typography variant={'h1'}>{project?.name}</Typography>
-              <Typography variant={'h3'}>{project?.period}</Typography>
+              <ProjectInfo name={project?.name} period={project?.period} />
             </Grid>
             <Grid item container spacing={4}>
               <Grid item xs={12} md={6}>
