@@ -36,7 +36,13 @@ const MakeProject = ({ handleClose }) => {
   return (
     <Wrapper>
       <InputWrapper>
-        <TextField required id="outlined-required" label="이름 필수" inputRef={nameInputRef} />
+        <TextField
+          fullWidth
+          required
+          id="outlined-required"
+          label="이름 필수"
+          inputRef={nameInputRef}
+        />
       </InputWrapper>
       <Button onClick={onClickCreate} fullWidth variant={'contained'}>
         등록

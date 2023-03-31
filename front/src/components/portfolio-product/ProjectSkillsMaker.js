@@ -76,7 +76,7 @@ const ProjectSkillsMaker = ({ projectId }) => {
   return (
     <Wrapper>
       <Box>
-        <TypographyCustom variant={'h5'}>사용한 STACK을 클릭해주세요</TypographyCustom>
+        <TypographyCustom variant={'h5'}>프로젝트에 사용한 STACK을 선택해주세요.</TypographyCustom>
         <TypographyCustom variant={'h5'}>없으면 추가해주세요.</TypographyCustom>
       </Box>
       <SkillInputWrapper>

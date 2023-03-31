@@ -107,6 +107,8 @@ const Skills = ({ userId }) => {
             gap: 1,
             display: 'flex',
             justifyContent: 'center',
+            maxHeight: '300px',
+            overflowY: 'auto',
           }}
         >
           {Children.toArray(

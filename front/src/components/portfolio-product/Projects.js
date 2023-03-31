@@ -12,8 +12,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { removeProject } from '@/pages/api/project';
 import ImageMaker from '@/components/portfolio-product/ImageMaker';
+import BasicConfirmModal from '@/components/common/BasicConfirmModal';
 
 const Projects = ({ portfolioId }) => {
+  const [open, setOpen] = useState(false);
+
   const queryClient = useQueryClient();
   const { data: projects, isLoading } = useProjectsByPortfolioQuery(portfolioId);
 
@@ -28,6 +31,22 @@ const Projects = ({ portfolioId }) => {
       await projectRemoveMutation.mutate(id);
     },
     [projectRemoveMutation],
+  );
+
+  const handleClickOpen = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
+  const handleConfirm = useCallback(
+    (id) => {
+      onClickRemoveProject(id);
+      setOpen(false);
+    },
+    [onClickRemoveProject],
   );
 
   return (
@@ -60,14 +79,15 @@ const Projects = ({ portfolioId }) => {
               </Grid>
             </Grid>
             <ButtonWrapper>
-              <Button
-                onClick={() => onClickRemoveProject(project?.id)}
-                fullWidth
-                variant="contained"
-                color={'error'}
-              >
+              <Button onClick={handleClickOpen} fullWidth variant="contained" color={'error'}>
                 프로젝트 삭제
               </Button>
+              <BasicConfirmModal
+                open={open}
+                handleClose={handleClose}
+                handleConfirm={() => handleConfirm(project?.id)}
+                message={'프로젝트를 삭제하시겠습니까?'}
+              />
             </ButtonWrapper>
           </ProjectWrapper>
         )),

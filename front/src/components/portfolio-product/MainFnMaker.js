@@ -1,13 +1,13 @@
-import React, { Children, Fragment, useCallback, useRef } from 'react';
+import React, { Children, useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
-import { Chip, Divider, Stack, TextField, Typography } from '@mui/material';
+import { Chip, Stack, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import DoneIcon from '@mui/icons-material/Done';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { createMainFn } from '@/pages/api/project';
 import { useMainFnsByProjectQuery } from '@/react-query/query-hooks/useMainFnsHook';
+import { removeMainFn } from '@/pages/api/mainFn';
 
 const MainFnMaker = ({ projectId }) => {
   const queryClient = useQueryClient();
@@ -15,13 +15,24 @@ const MainFnMaker = ({ projectId }) => {
 
   const { data: mainFns, isLoading } = useMainFnsByProjectQuery(projectId);
 
-  const handleClick = useCallback((fn) => {
-    console.log(fn);
-  }, []);
+  const removeMainFnMutation = useMutation((params) => removeMainFn(params), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKey.mainFnByProject, projectId]);
+    },
+  });
+  const handleDelete = useCallback(
+    async (id) => {
+      await removeMainFnMutation.mutate(id);
+    },
+    [removeMainFnMutation],
+  );
 
   const mainFnInsertMutation = useMutation((params) => createMainFn(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.mainFnByProject, projectId]);
+    },
+    onSettled: () => {
+      fnNameRef.current.value = '';
     },
   });
 
@@ -59,7 +70,7 @@ const MainFnMaker = ({ projectId }) => {
       >
         {Children.toArray(
           mainFns.map((fn, index) => (
-            <ChipCustom key={fn.name} label={fn.name} onClick={() => handleClick(fn)} />
+            <ChipCustom key={fn.name} label={fn.name} onDelete={() => handleDelete(fn.id)} />
           )),
         )}
       </Stack>
