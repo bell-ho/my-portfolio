@@ -15,6 +15,7 @@ import { queryKey } from '@/react-query/constants';
 import Image from 'next/image';
 import { updateProjectImages } from '@/pages/api/project';
 import { removeImage } from '@/pages/api/image';
+import { Typography } from '@mui/material';
 
 const ImageMaker = ({ projectId }) => {
   const queryClient = useQueryClient();
@@ -65,9 +66,7 @@ const ImageMaker = ({ projectId }) => {
 
   return (
     <Wrapper>
-      <Button variant={'contained'} onClick={imageButtonClick}>
-        ADD IMAGES
-      </Button>
+      <TypographyCustom variant={'h5'}>프로젝트 관련 사진을 올려주세요.</TypographyCustom>
 
       <Swiper
         effect={'coverflow'}
@@ -100,6 +99,10 @@ const ImageMaker = ({ projectId }) => {
         )}
       </Swiper>
 
+      <Button variant={'contained'} onClick={imageButtonClick}>
+        사진 올리기
+      </Button>
+
       <input
         type="file"
         name="image"
@@ -118,10 +121,18 @@ const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  padding: 1rem;
+
+  border: 1px solid #4d4d4d;
+  border-radius: 10px;
 `;
 const SlideWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+const TypographyCustom = styled(Typography)`
+  font-weight: 900;
 `;
 export default ImageMaker;

@@ -140,6 +140,10 @@ const Wrapper = styled(Box)`
   gap: 20px;
   display: flex;
   flex-direction: column;
+
+  padding: 1rem;
+  border: 1px solid #4d4d4d;
+  border-radius: 10px;
 `;
 
 const SkillInputWrapper = styled(Box)`

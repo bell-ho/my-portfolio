@@ -332,6 +332,7 @@ progress {
 }
 .rdrCalendarWrapper{
     width: 100%;
+    border-radius: 10px;
 }
 .rdrCalendarWrapper .rdrMonths .rdrMonth{
     width: 100%;

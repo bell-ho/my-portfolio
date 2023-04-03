@@ -14,7 +14,6 @@ const Content = ({ projectId, mainFns }) => {
 };
 
 const Wrapper = styled(Box)`
-  font-size: 24px;
   gap: 20px;
   display: flex;
   flex-direction: column;

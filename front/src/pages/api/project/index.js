@@ -35,3 +35,8 @@ export const getProjectMainFns = async (params) => {
   const { data } = await axios.get(`${apiKey.projects}/main-fn/${params}`);
   return data.data.mainFns;
 };
+
+export const updateProjectBasicInfo = async (params) => {
+  const { data } = await axios.put(`${apiKey.projects}/basic-info/${params.projectId}`, params);
+  return data.data;
+};

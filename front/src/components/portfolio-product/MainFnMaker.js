@@ -91,9 +91,13 @@ const InputWrapper = styled(Box)`
 
 const Wrapper = styled(Box)`
   font-size: 24px;
-  gap: 20px;
+  gap: 10px;
   display: flex;
   flex-direction: column;
+
+  padding: 1rem;
+  border: 1px solid #4d4d4d;
+  border-radius: 10px;
 `;
 
 const TypographyCustom = styled(Typography)`
