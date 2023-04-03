@@ -1,5 +1,6 @@
 package com.portfolio.back.controller;
 
+import com.portfolio.back.domain.Project;
 import com.portfolio.back.dto.*;
 import com.portfolio.back.service.ImageService;
 import com.portfolio.back.service.MainFnService;
@@ -66,10 +67,16 @@ public class ProjectController {
     }
 
     @PostMapping("/main-fn/{projectId}")
-    public ResponseEntity<?> createMainFns(@PathVariable("projectId") Long projectId,@RequestBody MainFnInsertReq params) {
+    public ResponseEntity<?> createMainFns(@PathVariable("projectId") Long projectId, @RequestBody MainFnInsertReq params) {
         mainFnService.createMainFn(projectId, params.getName());
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
         return ResponseEntity.ok(data);
     }
 
+    @PutMapping("/basic-info/{projectId}")
+    public ResponseEntity<?> updateProjectBasicInfo(@PathVariable("projectId") Long projectId, @RequestBody BasicInfoInsertReq params) {
+        ProjectRes project = new ProjectRes(projectService.basicInfo(projectId, params.getName(), params.getDescription(), params.getPeriod(), params.getLink()));
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("project", project);
+        return ResponseEntity.ok(data);
+    }
 }

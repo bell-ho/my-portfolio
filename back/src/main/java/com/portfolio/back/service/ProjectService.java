@@ -11,4 +11,6 @@ public interface ProjectService {
     List<Project> getProjects(Long portfolioId);
 
     void removeProject(Long projectId);
+
+    Project basicInfo(Long projectId, String name, String description, String period, String link);
 }

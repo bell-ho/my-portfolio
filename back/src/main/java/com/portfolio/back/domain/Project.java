@@ -56,4 +56,11 @@ public class Project extends BaseEntity {
         project.setName(name);
         return project;
     }
+
+    public void updateBasicInfo(String name, String description, String period, String link) {
+        this.name = name;
+        this.description = description;
+        this.period = period;
+        this.link = link;
+    }
 }

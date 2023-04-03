@@ -37,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = queryFactory
                 .selectDistinct(project)
                 .from(project)
-                .leftJoin(project.mainFns,mainFn).fetchJoin()
+                .leftJoin(project.mainFns, mainFn).fetchJoin()
                 .leftJoin(project.images, image).fetchJoin()
                 .orderBy(project.modifiedDate.desc())
                 .fetch();
@@ -49,5 +49,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public void removeProject(Long projectId) {
         projectRepository.deleteById(projectId);
+    }
+
+    @Override
+    @Transactional
+    public Project basicInfo(Long projectId, String name, String description, String period, String link) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        project.updateBasicInfo(name, description, period, link);
+        return project;
     }
 }
