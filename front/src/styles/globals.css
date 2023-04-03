@@ -330,23 +330,11 @@ progress {
     object-fit: cover;
     object-position: center;
 }
-
-.rdrCalendarWrapper {
-    position: relative;
-    width: 100%;
-
-}
-
-.rdrMonthAndYearWrapper,
-.rdrMonths,
-.rdrMonth{
-    position: relative;
+.rdrCalendarWrapper{
     width: 100%;
 }
-
-.rdrMonth .rdrWeekDays{
-    position: relative;
-
+.rdrCalendarWrapper .rdrMonths .rdrMonth{
+    width: 100%;
 }
 
 @media screen and (max-width: 768px) {

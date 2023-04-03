@@ -96,12 +96,14 @@ const Projects = ({ portfolioId }) => {
     </Wrapper>
   );
 };
+
 const ButtonWrapper = styled(Box)`
   display: flex;
   flex-direction: row;
   gap: 10px;
   width: 100%;
 `;
+
 const ProjectWrapper = styled(Grid)`
   background-color: rgb(255, 255, 255);
   padding: 2rem;

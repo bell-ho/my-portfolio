@@ -6,10 +6,11 @@ import { DateRange } from 'react-date-range';
 import { ko } from 'date-fns/locale';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
+
 const ProjectInfo = ({ name, period }) => {
   const [state, setState] = useState([
     {
-      startDate: new Date(),
+      startDate: null,
       endDate: null,
       key: 'selection',
     },
@@ -23,7 +24,7 @@ const ProjectInfo = ({ name, period }) => {
   }, []);
 
   return (
-    <Fragment>
+    <Wrapper>
       {!isNameEditing ? (
         <Typography
           onClick={() => {
@@ -41,15 +42,29 @@ const ProjectInfo = ({ name, period }) => {
           onBlur={() => setIsNameEditing(false)}
         />
       )}
-      <DateRange
-        editableDateInputs={true}
-        onChange={(item) => setState([item.selection])}
-        moveRangeOnFirstSelection={false}
-        ranges={state}
-        locale={ko}
-      />
-    </Fragment>
+      <DateInputWrapper>
+        <Typography variant={'h5'}>프로젝트 제작 기간</Typography>
+        <DateRange
+          editableDateInputs={true}
+          onChange={(item) => setState([item.selection])}
+          moveRangeOnFirstSelection={false}
+          ranges={state}
+          locale={ko}
+        />
+      </DateInputWrapper>
+    </Wrapper>
   );
 };
 
+const DateInputWrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const Wrapper = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
 export default ProjectInfo;
