@@ -3,14 +3,12 @@ import styled from '@emotion/styled';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 
-const Main = () => {
+const Main = ({ imageSrc, title, description }) => {
   return (
     <Wrapper id={'main'}>
-      <ImageCustom width={250} height={250} src={`/images/main_profile.jpg`} alt={'main_profile'} />
-      <TypographyCustom variant={'h1'}>JH's Portfolio</TypographyCustom>
-      <TypographyCustom variant={'h2'}>
-        안녕하세요 <br />웹 개발자 이종호 입니다.
-      </TypographyCustom>
+      <ImageCustom width={250} height={250} src={imageSrc} alt={'main_profile'} />
+      <TypographyCustom variant={'h1'}>{title}</TypographyCustom>
+      <TypographyCustom variant={'h2'}>{description}</TypographyCustom>
     </Wrapper>
   );
 };

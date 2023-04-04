@@ -12,8 +12,6 @@ import { isEmptyString } from '@/util/utils';
 
 const Main = ({ id, imageSrc, title, description }) => {
   const queryClient = useQueryClient();
-  const titleInputRef = useRef(null);
-  const descriptionInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
   const {
@@ -125,7 +123,7 @@ const Main = ({ id, imageSrc, title, description }) => {
             <ImageCustom width={250} height={250} src={imageSrc} alt={'image'} />
             <Button
               onClick={imageButtonClick}
-              fullWidth
+              size={'large'}
               variant={'contained'}
               sx={{ fontSize: '15px', position: 'absolute', bottom: 100, opacity: 0.8 }}
             >

@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 const Portfolio = ({ portfolio: { id, name, createDate, modifiedDate } }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
+  const { email } = session.user;
   const queryClient = useQueryClient();
 
   const removePortfolioMutation = useMutation((params) => removePortfolio(params), {
@@ -36,6 +37,9 @@ const Portfolio = ({ portfolio: { id, name, createDate, modifiedDate } }) => {
         <Typography variant={'h3'}>마지막 수정일 : {modifiedDate}</Typography>
       </CardContentCustom>
       <CardActions>
+        <Button size="large" onClick={() => router.push(`/view/${email}/${id}`)}>
+          보기
+        </Button>
         <Button size="large" onClick={() => router.push(`/product/${id}`)}>
           수정
         </Button>

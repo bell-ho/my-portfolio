@@ -28,8 +28,8 @@ const ImageBox = ({ images }) => {
               height={224}
               layout="responsive"
               unoptimized={true}
-              src={v}
-              alt={v}
+              src={v.src}
+              alt={v.id}
             />
           </SwiperSlide>
         )),

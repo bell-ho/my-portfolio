@@ -4,11 +4,11 @@ import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled';
 import { Box, Grid, Typography } from '@mui/material';
 
-const About = () => {
+const About = ({ about: { name, phone, email } }) => {
   const items = [
-    { icon: faUser, label: '이름', value: '이종호' },
-    { icon: faPhone, label: '연락처', value: '010-8560-1074' },
-    { icon: faEnvelope, label: '이메일', value: 'jj0101065@gmail.com' },
+    { icon: faUser, label: '이름', value: name },
+    { icon: faPhone, label: '연락처', value: phone },
+    { icon: faEnvelope, label: '이메일', value: email },
   ];
 
   return (
@@ -16,7 +16,7 @@ const About = () => {
       <TypographyCustom variant={'h1'}>ABOUT ME</TypographyCustom>
       <ContentWrapper container>
         {items.map((item) => (
-          <ContentItem key={item.label} xs={12} md={3}>
+          <ContentItem item key={item.label} xs={12} md={3}>
             <IconCustom icon={item.icon} />
             <LabelWrapper>
               <TypographyCustom variant={'label'}>{item.label}</TypographyCustom>
@@ -42,7 +42,7 @@ const ContentItem = styled(Grid)`
 
   ${({ theme }) => theme.breakpoints.up('xs')} {
     gap: 30px;
-    padding: 0 3rem;
+    padding: 0 2rem;
     justify-content: flex-start;
   }
 `;

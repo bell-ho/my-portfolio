@@ -1,71 +1,49 @@
 import React, { Children } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import { getRandomColor } from '@/util/utils';
+import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
 
-const Skills = () => {
-  const skills = [
-    {
-      name: 'Front End',
-      stacks: [
-        'react',
-        'react query',
-        'redux saga',
-        'next.js',
-        'javascript',
-        'html',
-        'css',
-        'mui',
-        'bootstrap',
-        'vue.js',
-      ],
-    },
-    {
-      name: 'Back End',
-      stacks: ['spring boot', 'spring', 'jpa', 'java', 'mysql', 'mariaDB', 'oracle'],
-    },
-    {
-      name: 'Version Control',
-      stacks: ['github', 'gitlab'],
-    },
-    {
-      name: 'Communication',
-      stacks: ['jira', 'notion', 'figma'],
-    },
-    {
-      name: 'Deployment',
-      stacks: ['Amazon AWS', 'Amazon RDS', 'Amazon S3', 'AWS Lambda'],
-    },
-    {
-      name: 'Certificate',
-      stacks: ['정보처리기사'],
-    },
-  ];
+const SkillBadge = ({ skill }) => (
+  <Image
+    width={224}
+    height={46}
+    layout="responsive"
+    unoptimized={true}
+    src={`https://img.shields.io/badge/${skill.name}-${getRandomColor()}?style=for-the-badge&logo=${
+      skill.name
+    }&logoColor=white`}
+    alt={`skills-${skill.name}`}
+  />
+);
+const SkillsSection = ({ title, skills }) => (
+  <SkillsContainer container spacing={2}>
+    <Grid item xs={12}>
+      <Typography variant={'skillsTitle'}>{title}</Typography>
+    </Grid>
+    {Children.toArray(skills.map((skill) => <SkillBadge skill={skill} />))}
+  </SkillsContainer>
+);
+
+const Skills = ({ skills }) => {
+  const be = skills.filter((v) => v.code === 'BE');
+  const fe = skills.filter((v) => v.code === 'FE');
+  const dp = skills.filter((v) => v.code === 'DP');
+  const vc = skills.filter((v) => v.code === 'VC');
+  const cm = skills.filter((v) => v.code === 'CM');
+  const ct = skills.filter((v) => v.code === 'CT');
 
   return (
     <Wrapper id={'skills'}>
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
-      {Children.toArray(
-        skills.map((v) => (
-          <SkillsContainer>
-            <Typography variant={'skillsTitle'}>{v.name}</Typography>
-            {Children.toArray(
-              v.stacks.map((stack) => (
-                <Image
-                  width={224}
-                  height={46}
-                  layout="responsive"
-                  unoptimized={true}
-                  src={`https://img.shields.io/badge/${stack}-${getRandomColor()}?style=for-the-badge&logo=${stack}&logoColor=white`}
-                  alt={`skills-${stack}`}
-                />
-              )),
-            )}
-          </SkillsContainer>
-        )),
-      )}
+      <SkillsSection title="Back End" skills={be} />
+      <SkillsSection title="Front End" skills={fe} />
+      <SkillsSection title="Deployment" skills={dp} />
+      <SkillsSection title="Version Control" skills={vc} />
+      <SkillsSection title="Communication" skills={cm} />
+      <SkillsSection title="Certification" skills={ct} />
     </Wrapper>
   );
 };
@@ -91,8 +69,6 @@ const SkillsContainer = styled(Box)`
     transition: transform 0.3s ease;
   }
 `;
-
-const SkillsWrapper = styled(Box)``;
 
 const Wrapper = styled(Box)`
   background-color: #f9c51d;

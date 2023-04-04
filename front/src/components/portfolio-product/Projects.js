@@ -1,18 +1,10 @@
-import React, { Children, useCallback, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import React, { Children } from 'react';
+import { Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import BasicModal from '@/components/common/BasicModal';
 import MakeProject from '@/components/portfolio-product/MakeProject';
 import { useProjectsByPortfolioQuery } from '@/react-query/query-hooks/useProjectsHook';
-import Button from '@mui/material/Button';
-import Content from '@/components/portfolio-product/Content';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { queryKey } from '@/react-query/constants';
-import { removeProject } from '@/pages/api/project';
-import ImageMaker from '@/components/portfolio-product/ImageMaker';
-import BasicConfirmModal from '@/components/common/BasicConfirmModal';
-import ProjectInfo from '@/components/portfolio-product/ProjectInfo';
 import Project from '@/components/portfolio-product/Project';
 
 const Projects = ({ portfolioId }) => {

@@ -7,25 +7,29 @@ import Projects from '@/components/users-portfolio/Projects';
 import Contact from '@/components/users-portfolio/Contact';
 import { getSession, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { usePortfoliosDetailQuery } from '@/react-query/query-hooks/usePortfoliosHook';
+import { usePortfolioInfoQuery } from '@/react-query/query-hooks/usePortfoliosHook';
 
 const UserPortfolio = ({ session }) => {
   const router = useRouter();
   const { portfolioId } = router.query;
 
   const {
-    data: { imageSrc, title, description, about },
+    data: { name, imageSrc, title, description, about, userSkills, projects },
     isLoading,
-  } = usePortfoliosDetailQuery(portfolioId);
+  } = usePortfolioInfoQuery(portfolioId);
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <Fragment>
-      <Navbar portfolioName={'ddd'} />
-      <Main />
-      <About />
-      <Skills />
-      <Projects />
-      <Contact />
+      <Navbar portfolioName={name} />
+      <Main imageSrc={imageSrc} title={title} description={description} />
+      <About about={about} />
+      <Skills skills={userSkills} />
+      <Projects projects={projects} />
+      {/*<Contact />*/}
     </Fragment>
   );
 };

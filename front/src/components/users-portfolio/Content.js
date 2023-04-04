@@ -2,49 +2,38 @@ import React, { Children, Fragment } from 'react';
 import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import { Chip, Link, Stack, Typography } from '@mui/material';
+const Section = ({ title, items }) => {
+  if (items.length > 0) {
+    return (
+      <Box>
+        <Label>{title}</Label>
+        <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, ml: 1 }}>
+          {Children.toArray(items?.map((v) => <ChipCustom label={v?.name} variant="outlined" />))}
+        </Stack>
+      </Box>
+    );
+  }
+};
+const Content = ({ mainFns, skills, description }) => {
+  const be = skills.filter((v) => v.code === 'BE');
+  const fe = skills.filter((v) => v.code === 'FE');
+  const dp = skills.filter((v) => v.code === 'DP');
 
-const Content = ({ content: { content, mainFn, front, back, deploy, git } }) => {
   return (
     <Wrapper>
       <Typography variant={'h3'}>
-        {content.split('\n').map((line, index) => (
+        {description?.split('\n').map((line, index) => (
           <Fragment key={index}>
             {line}
-            {index !== content.split('\n').length - 1 && <br />}
+            {index !== description.split('\n').length - 1 && <br />}
           </Fragment>
         ))}
       </Typography>
       <ContentWrapper>
-        <Box>
-          <Label>주요 기능</Label>
-          <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, ml: 1 }}>
-            {Children.toArray(mainFn.map((v) => <ChipCustom label={v} variant="outlined" />))}
-          </Stack>
-        </Box>
-        <Box>
-          <Label>Front-End</Label>
-          <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, ml: 1 }}>
-            {Children.toArray(front.map((v) => <ChipCustom label={v} variant="outlined" />))}
-          </Stack>
-        </Box>
-        <Box>
-          <Label>Back-End</Label>
-          <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, ml: 1 }}>
-            {Children.toArray(back.map((v) => <ChipCustom label={v} variant="outlined" />))}
-          </Stack>
-        </Box>
-        <Box>
-          <Label>Deployment</Label>
-          <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, ml: 1 }}>
-            {Children.toArray(deploy.map((v) => <ChipCustom label={v} variant="outlined" />))}
-          </Stack>
-        </Box>
-        <Box>
-          <Label>GitHub</Label>
-          <LinkCustom href={git.href} target="_blank" rel="noopener noreferrer" underline="none">
-            {git.title}
-          </LinkCustom>
-        </Box>
+        {mainFns && <Section title={'주요 기능'} items={mainFns} />}
+        {be && <Section title={'Back End'} items={be} />}
+        {fe && <Section title={'Front End'} items={fe} />}
+        {dp && <Section title={'Deployment'} items={dp} />}
       </ContentWrapper>
     </Wrapper>
   );

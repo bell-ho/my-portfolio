@@ -79,7 +79,7 @@ const Navbar = (props) => {
             variant={'h2'}
             sx={{ fontWeight: 600, flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
           >
-            테스트
+            {props.portfolioName}
           </Typography>
 
           <IconButton
