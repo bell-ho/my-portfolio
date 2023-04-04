@@ -1,12 +1,10 @@
 package com.portfolio.back.service;
 
-import com.portfolio.back.domain.About;
-import com.portfolio.back.domain.Image;
-import com.portfolio.back.domain.Portfolio;
-import com.portfolio.back.domain.User;
+import com.portfolio.back.domain.*;
 import com.portfolio.back.repository.ImageRepository;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.UserRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +19,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Portfolio> getPortfolios(Long userId) {
@@ -51,6 +50,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Portfolio detailPortfolio(Long portfolioId) {
+        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+    }
+
+    @Override
+    public Portfolio detailInfoPortfolio(Long portfolioId) {
         return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
     }
 

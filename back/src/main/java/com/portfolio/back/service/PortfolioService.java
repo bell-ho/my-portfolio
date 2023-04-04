@@ -17,6 +17,7 @@ public interface PortfolioService {
     Portfolio createPortfolioContent(Long portfolioId, String title, String description);
 
     Portfolio detailPortfolio(Long portfolioId);
+    Portfolio detailInfoPortfolio(Long portfolioId);
 
     Portfolio updatePortfolioMainImage(Long portfolioId, String src);
 

@@ -83,6 +83,18 @@ public class PortfolioController {
         return ResponseEntity.ok(data);
     }
 
+    @GetMapping("/info/{portfolioId}")
+    public ResponseEntity<?> detailInfoPortfolio(@PathVariable("portfolioId") Long portfolioId) {
+        ResponseData data;
+        try {
+            PortfolioInfoRes portfolio = new PortfolioInfoRes(portfolioService.detailInfoPortfolio(portfolioId));
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolio", portfolio);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e);
+        }
+        return ResponseEntity.ok(data);
+    }
+
     @PutMapping("/image/{portfolioId}")
     public ResponseEntity<?> updatePortfolioMainImage(@PathVariable("portfolioId") Long portfolioId, @RequestBody ImageInsertReq params) {
         ResponseData data;

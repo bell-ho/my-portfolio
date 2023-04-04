@@ -12,6 +12,7 @@ public class PortfolioBasicRes {
 
     private Long id;
     private String imageSrc;
+    private String name;
     private String title;
     private String description;
     private AboutDTO about;
@@ -19,6 +20,7 @@ public class PortfolioBasicRes {
     @Builder
     public PortfolioBasicRes(Portfolio portfolio) {
         this.id = portfolio.getId();
+        this.name = portfolio.getName();
         this.imageSrc = portfolio.getImage() != null ? portfolio.getImage().getSrc() : null;
         this.title = portfolio.getTitle() != null ? portfolio.getTitle() : null;
         this.description = portfolio.getDescription() != null ? portfolio.getDescription() : null;
