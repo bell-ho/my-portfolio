@@ -1,25 +1,73 @@
-import React, { useCallback, useRef } from 'react';
-import { faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
+import React, { useCallback } from 'react';
 import styled from '@emotion/styled';
-import { Box, Grid, TextField, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Box, TextField, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePortfolioAbout } from '@/pages/api/portfolio';
 import { queryKey } from '@/react-query/constants';
+import useInputHook from '@/util/useInputHook';
+import { isEmailFormat, isEmptyString, isPhoneNumFormat } from '@/util/utils';
 
 const About = ({ id, name, phone, email }) => {
   const queryClient = useQueryClient();
 
-  const nameInputRef = useRef(null);
-  const phoneInputRef = useRef(null);
-  const emailInputRef = useRef(null);
+  const {
+    input: editedEmail,
+    errorMessage: emailErrorMessage,
+    changeHandler: emailChangeHandler,
+    handleInputError: handleEmailInputError,
+    isError: isEmailError,
+  } = useInputHook({
+    initialValue: email,
+    errorHandler: (error) => {
+      switch (error) {
+        case 'formErr':
+          return '이메일 형식으로 입력해주세요.';
+        case 'emptyErr':
+          return '이메일을 입력해주세요.';
+        default:
+          return '';
+      }
+    },
+  });
 
-  const items = [
-    { icon: faUser, label: '이름', value: name ?? '' },
-    { icon: faPhone, label: '연락처', value: phone ?? '' },
-    { icon: faEnvelope, label: '이메일', value: email ?? '' },
-  ];
+  const {
+    input: editedPhone,
+    errorMessage: phoneErrorMessage,
+    changeHandler: phoneChangeHandler,
+    handleInputError: handlePhoneInputError,
+    isError: isPhoneError,
+  } = useInputHook({
+    initialValue: phone,
+    errorHandler: (error) => {
+      switch (error) {
+        case 'formErr':
+          return '번호 형식이 유효하지 않습니다.';
+        case 'emptyErr':
+          return '번호를 입력해주세요.';
+        default:
+          return '';
+      }
+    },
+  });
+
+  const {
+    input: editedName,
+    errorMessage: nameErrorMessage,
+    changeHandler: nameChangeHandler,
+    handleInputError: handleNameInputError,
+    isError: isNameError,
+  } = useInputHook({
+    initialValue: name,
+    errorHandler: (error) => {
+      switch (error) {
+        case 'emptyErr':
+          return '이름을 입력해주세요.';
+        default:
+          return '';
+      }
+    },
+  });
 
   const updateAboutMutation = useMutation((params) => updatePortfolioAbout(params), {
     onSuccess: () => {
@@ -27,39 +75,84 @@ const About = ({ id, name, phone, email }) => {
     },
   });
 
-  const onClickUpdate = useCallback(async () => {
-    const name = nameInputRef.current.value;
-    const phone = phoneInputRef.current.value;
-    const email = emailInputRef.current.value;
+  const onClickUpdate = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    const params = {
+      // 유효성 검사
+      if (isEmptyString(editedName)) {
+        return handleNameInputError('emptyErr');
+      }
+      if (isEmptyString(editedPhone)) {
+        return handlePhoneInputError('emptyErr');
+      }
+      if (!isPhoneNumFormat(editedPhone)) {
+        return handlePhoneInputError('formErr');
+      }
+      if (isEmptyString(editedEmail)) {
+        return handleEmailInputError('emptyErr');
+      }
+      if (!isEmailFormat(editedEmail)) {
+        return handleEmailInputError('formErr');
+      }
+
+      const params = {
+        id,
+        name: editedName,
+        phone: editedPhone,
+        email: editedEmail,
+      };
+
+      await updateAboutMutation.mutate(params);
+    },
+    [
+      editedName,
+      editedPhone,
+      editedEmail,
       id,
-      name,
-      phone,
-      email,
-    };
-
-    await updateAboutMutation.mutate(params);
-  }, [id, updateAboutMutation]);
+      updateAboutMutation,
+      handleNameInputError,
+      handlePhoneInputError,
+      handleEmailInputError,
+    ],
+  );
 
   return (
     <Wrapper id={'about'}>
       <TypographyCustom variant={'h1'}>ABOUT ME</TypographyCustom>
-      <ContentWrapper container>
-        {items.map((item) => (
-          <ContentItem item key={item.label} xs={12} md={3}>
-            <IconCustom icon={item.icon} />
-            <LabelWrapper>
-              <TypographyCustom variant={'label'}>{item.label}</TypographyCustom>
-              <TypographyCustom variant={'labelValue'}>{item.value}</TypographyCustom>
-            </LabelWrapper>
-          </ContentItem>
-        ))}
-      </ContentWrapper>
 
-      <TextField required id="outlined-required" label="이름" inputRef={nameInputRef} />
-      <TextField required id="outlined-required" label="연락처" inputRef={phoneInputRef} />
-      <TextField required id="outlined-required" label="이메일" inputRef={emailInputRef} />
+      <TextField
+        required
+        id="outlined-required"
+        label="이름"
+        value={editedName}
+        onChange={nameChangeHandler}
+        helperText={nameErrorMessage}
+        error={isNameError}
+      />
+
+      <TextField
+        required
+        id="outlined-required"
+        label="연락처"
+        value={editedPhone
+          .replace(/[^0-9]/g, '')
+          .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, '$1-$2-$3')
+          .replace(/(\-{1,2})$/g, '')}
+        onChange={phoneChangeHandler}
+        helperText={phoneErrorMessage}
+        error={isPhoneError}
+      />
+
+      <TextField
+        required
+        id="outlined-required"
+        label="이메일"
+        value={editedEmail}
+        onChange={emailChangeHandler}
+        helperText={emailErrorMessage}
+        error={isEmailError}
+      />
 
       <Button onClick={onClickUpdate} variant={'contained'} sx={{ fontSize: '15px' }}>
         수정
@@ -67,41 +160,6 @@ const About = ({ id, name, phone, email }) => {
     </Wrapper>
   );
 };
-
-const LabelWrapper = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-
-const ContentItem = styled(Grid)`
-  display: flex;
-  justify-content: center;
-  gap: 50px;
-
-  ${({ theme }) => theme.breakpoints.up('xs')} {
-    gap: 30px;
-    padding: 0 3rem;
-    justify-content: flex-start;
-  }
-`;
-
-const IconCustom = styled(FontAwesomeIcon)`
-  width: 30px;
-  height: 30px;
-
-  ${({ theme }) => theme.breakpoints.up('md')} {
-    width: 50px;
-    height: 50px;
-    font-size: 50px;
-  }
-`;
-
-const ContentWrapper = styled(Grid)`
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-`;
 
 const Wrapper = styled(Box)`
   padding: 2rem;

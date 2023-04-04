@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Navbar from '@/components/users-portfolio/Navbar';
+import Navbar from '@/components/main/Navbar';
 import Main from '@/components/portfolio-product/Main';
 import About from '@/components/portfolio-product/About';
 import { useRouter } from 'next/router';
@@ -16,6 +16,10 @@ const Product = ({ session }) => {
     data: { imageSrc, title, description, about },
     isLoading,
   } = usePortfoliosDetailQuery(portfolioId);
+
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
 
   return (
     <Fragment>

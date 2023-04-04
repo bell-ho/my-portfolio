@@ -13,8 +13,6 @@ import Box from '@mui/material/Box';
 const Navbar = () => {
   const { data: session } = useSession();
 
-  // console.log(session);
-
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -46,7 +44,7 @@ const Navbar = () => {
           variant={'h2'}
           sx={{ fontWeight: 600, flexGrow: 1, display: { xs: 'block', sm: 'block' } }}
         >
-          1
+          팩토리
         </Typography>
 
         {session ? (

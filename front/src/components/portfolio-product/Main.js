@@ -7,13 +7,50 @@ import { uploadImages } from '@/util/uploadFileToS3';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePortfolio, updatePortfolioImage } from '@/pages/api/portfolio';
 import { queryKey } from '@/react-query/constants';
+import useInputHook from '@/util/useInputHook';
+import { isEmptyString } from '@/util/utils';
 
 const Main = ({ id, imageSrc, title, description }) => {
   const queryClient = useQueryClient();
-
   const titleInputRef = useRef(null);
   const descriptionInputRef = useRef(null);
   const imageInputRef = useRef(null);
+
+  const {
+    input: editedTitle,
+    errorMessage: titleErrorMessage,
+    changeHandler: titleChangeHandler,
+    handleInputError: handleTitleInputError,
+    isError: isTitleError,
+  } = useInputHook({
+    initialValue: title,
+    errorHandler: (error) => {
+      switch (error) {
+        case 'emptyErr':
+          return '타이틀을 입력해주세요.';
+        default:
+          return '';
+      }
+    },
+  });
+
+  const {
+    input: editedDescription,
+    errorMessage: descriptionErrorMessage,
+    changeHandler: DescriptionChangeHandler,
+    handleInputError: handleDescriptionInputError,
+    isError: isDescriptionError,
+  } = useInputHook({
+    initialValue: description,
+    errorHandler: (error) => {
+      switch (error) {
+        case 'emptyErr':
+          return '소제목을 입력해주세요.';
+        default:
+          return '';
+      }
+    },
+  });
 
   const updateImageMutation = useMutation((params) => updatePortfolioImage(params), {
     onSuccess: () => {
@@ -48,17 +85,28 @@ const Main = ({ id, imageSrc, title, description }) => {
   });
 
   const onClickUpdate = useCallback(async () => {
-    const title = titleInputRef.current.value;
-    const description = descriptionInputRef.current.value;
+    if (isEmptyString(editedTitle)) {
+      return handleTitleInputError('emptyErr');
+    }
+    if (isEmptyString(editedDescription)) {
+      return handleDescriptionInputError('emptyErr');
+    }
 
     const params = {
       id,
-      title,
-      description,
+      title: editedTitle,
+      description: editedDescription,
     };
 
     await portfolioUpdateMutation.mutate(params);
-  }, [id, portfolioUpdateMutation]);
+  }, [
+    id,
+    editedDescription,
+    editedTitle,
+    handleDescriptionInputError,
+    handleTitleInputError,
+    portfolioUpdateMutation,
+  ]);
 
   return (
     <Wrapper id={'main'}>
@@ -98,11 +146,24 @@ const Main = ({ id, imageSrc, title, description }) => {
         />
       </ImageContentWrapper>
 
-      <TypographyCustom variant={'h1'}>{title}</TypographyCustom>
-      <TypographyCustom variant={'h2'}>{description}</TypographyCustom>
-
-      <TextField required id="outlined-required" label="타이틀" inputRef={titleInputRef} />
-      <TextField required id="outlined-required" label="설명" inputRef={descriptionInputRef} />
+      <TextField
+        required
+        id="outlined-required"
+        label="타이틀"
+        value={editedTitle}
+        onChange={titleChangeHandler}
+        helperText={titleErrorMessage}
+        error={isTitleError}
+      />
+      <TextField
+        required
+        id="outlined-required"
+        label="설명"
+        value={editedDescription}
+        onChange={DescriptionChangeHandler}
+        helperText={descriptionErrorMessage}
+        error={isDescriptionError}
+      />
 
       <Button onClick={onClickUpdate} variant={'contained'} sx={{ fontSize: '15px' }}>
         수정
@@ -125,7 +186,7 @@ const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 `;
 
 const ImageContentWrapper = styled(Box)`
@@ -143,8 +204,5 @@ const ImageCustom = styled(Image)`
   border-radius: 50%;
   background-color: #e06b6b;
   border: 2px solid var(--color-light-white);
-`;
-const TypographyCustom = styled(Typography)`
-  color: var(--color-white);
 `;
 export default Main;
