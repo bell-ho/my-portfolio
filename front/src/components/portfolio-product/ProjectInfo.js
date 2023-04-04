@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { TextField, Typography } from '@mui/material';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -8,14 +8,13 @@ import styled from '@emotion/styled';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { TextareaAutosize } from '@mui/base';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { updateProjectBasicInfo } from '@/pages/api/project';
 import { formatDate } from '@/util/utils';
 
 const ProjectInfo = ({ projectId, name, description, period, link }) => {
-  const [startDate, endDate] = period.split(',');
+  const [startDate, endDate] = (period ? period : '').split(',');
 
-  const queryClient = useQueryClient();
   const [state, setState] = useState([
     {
       startDate: startDate ? new Date(startDate) : new Date(),
@@ -86,7 +85,7 @@ const ProjectInfo = ({ projectId, name, description, period, link }) => {
         onChange={handleDescChange}
         minRows={3}
         placeholder="프로젝트의 간략한 설명을 적어주세요."
-        style={{ width: 200, border: '1px solid black' }}
+        style={{ width: 'auto', border: '1px solid black' }}
       />
 
       <TextField

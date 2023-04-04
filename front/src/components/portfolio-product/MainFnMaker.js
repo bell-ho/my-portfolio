@@ -63,7 +63,7 @@ const MainFnMaker = ({ projectId }) => {
           flexWrap: 'wrap',
           gap: 1,
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           maxHeight: '200px',
           overflowY: 'auto',
         }}

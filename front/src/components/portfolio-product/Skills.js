@@ -106,7 +106,7 @@ const Skills = ({ userId }) => {
             flexWrap: 'wrap',
             gap: 1,
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             maxHeight: '300px',
             overflowY: 'auto',
           }}
