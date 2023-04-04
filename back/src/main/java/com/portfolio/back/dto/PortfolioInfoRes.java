@@ -1,5 +1,6 @@
 package com.portfolio.back.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.portfolio.back.domain.*;
 import com.portfolio.back.dto.ProjectRes.ImageDTO;
 import com.portfolio.back.dto.ProjectRes.MainFnDTO;
@@ -7,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +46,10 @@ public class PortfolioInfoRes {
         private Long id;
         private String name;
         private String description;
-        private String period;
+        @JsonFormat(pattern = "yyyy.MM.dd")
+        private LocalDateTime startDate;
+        @JsonFormat(pattern = "yyyy.MM.dd")
+        private LocalDateTime endDate;
         private String link;
         @Builder.Default
         private List<ImageDTO> images = new ArrayList<>();
@@ -57,7 +62,8 @@ public class PortfolioInfoRes {
             this.id = project.getId();
             this.name = project.getName();
             this.description = project.getDescription();
-            this.period = project.getPeriod();
+            this.startDate = project.getStartDate();
+            this.endDate = project.getEndDate();
             this.link = project.getLink();
             this.images = project.getImages().stream().map(ImageDTO::new).collect(Collectors.toList());
             this.mainFns = project.getMainFns().stream().map(MainFnDTO::new).collect(Collectors.toList());

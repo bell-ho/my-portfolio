@@ -12,9 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { updateProjectBasicInfo } from '@/pages/api/project';
 import { formatDate } from '@/util/utils';
 
-const ProjectInfo = ({ projectId, name, description, period, link }) => {
-  const [startDate, endDate] = (period ? period : '').split(',');
-
+const ProjectInfo = ({ projectId, name, description, startDate, endDate, link }) => {
   const [state, setState] = useState([
     {
       startDate: startDate ? new Date(startDate) : new Date(),
@@ -26,7 +24,6 @@ const ProjectInfo = ({ projectId, name, description, period, link }) => {
   const [editedName, setEditedName] = useState(name);
   const [editedDescription, setEditedDescription] = useState(description ?? '');
   const [editedLink, setEditedLink] = useState(link ?? '');
-  const [isNameEditing, setIsNameEditing] = useState(false);
 
   const handleNameChange = useCallback((e) => {
     setEditedName(e.target.value);
@@ -40,7 +37,7 @@ const ProjectInfo = ({ projectId, name, description, period, link }) => {
 
   const updateInfoMutation = useMutation((params) => updateProjectBasicInfo(params), {
     onSuccess: (data) => {
-      const { name, description, period, link } = data.project;
+      const { name, description, link } = data.project;
       setEditedName(name);
       setEditedDescription(description);
       setEditedLink(link);
@@ -53,7 +50,8 @@ const ProjectInfo = ({ projectId, name, description, period, link }) => {
       projectId,
       name: editedName,
       description: editedDescription,
-      period: `${formatDate(new Date(startDate))},${formatDate(new Date(endDate))}`,
+      startDate: formatDate(new Date(startDate)),
+      endDate: formatDate(new Date(endDate)),
       link: editedLink,
     };
     await updateInfoMutation.mutate(params);
@@ -123,20 +121,3 @@ const TypographyCustom = styled(Typography)`
 `;
 
 export default ProjectInfo;
-// {!isNameEditing ? (
-//   <Typography
-//     onClick={() => {
-//       setIsNameEditing(true);
-//     }}
-//     variant={'h1'}
-//   >
-//     {name}
-//   </Typography>
-// ) : (
-//   <TextField
-//     autoFocus
-//     value={editedName}
-//     onChange={handleNameChange}
-//     onBlur={() => setIsNameEditing(false)}
-//   />
-// )}

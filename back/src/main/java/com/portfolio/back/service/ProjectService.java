@@ -2,6 +2,7 @@ package com.portfolio.back.service;
 
 import com.portfolio.back.domain.Project;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProjectService {
@@ -12,5 +13,5 @@ public interface ProjectService {
 
     void removeProject(Long projectId);
 
-    Project basicInfo(Long projectId, String name, String description, String period, String link);
+    Project basicInfo(Long projectId, String name, String description, LocalDateTime startDate, LocalDateTime endDate, String link);
 }

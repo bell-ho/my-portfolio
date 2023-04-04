@@ -62,7 +62,8 @@ const Project = ({ project }) => {
             <ProjectInfo
               projectId={project?.id}
               name={project?.name}
-              period={project?.period}
+              startDate={project?.startDate}
+              endDate={project?.endDate}
               description={project?.description}
               link={project?.link}
             />

@@ -3,12 +3,12 @@ package com.portfolio.back.service;
 import com.portfolio.back.domain.*;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.ProjectRepository;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -34,15 +34,13 @@ public class ProjectServiceImpl implements ProjectService {
         QMainFn mainFn = QMainFn.mainFn;
         QImage image = QImage.image;
 
-        List<Project> projects = queryFactory
+        return queryFactory
                 .selectDistinct(project)
                 .from(project)
                 .leftJoin(project.mainFns, mainFn).fetchJoin()
                 .leftJoin(project.images, image).fetchJoin()
                 .orderBy(project.modifiedDate.desc())
                 .fetch();
-
-        return projects;
     }
 
     @Override
@@ -53,9 +51,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public Project basicInfo(Long projectId, String name, String description, String period, String link) {
+    public Project basicInfo(Long projectId,
+                             String name,
+                             String description,
+                             LocalDateTime startDate,
+                             LocalDateTime endDate,
+                             String link) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
-        project.updateBasicInfo(name, description, period, link);
+        project.updateBasicInfo(name, description, startDate, endDate, link);
         return project;
     }
 }

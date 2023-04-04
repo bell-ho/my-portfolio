@@ -15,7 +15,9 @@ const Projects = ({ projects }) => {
           <ProjectWrapper container>
             <Grid item xs={12}>
               <Typography variant={'h1'}>{project?.name}</Typography>
-              <Typography variant={'h3'}>{project?.period}</Typography>
+              <Typography
+                variant={'h3'}
+              >{`${project?.startDate} ~ ${project?.endDate}`}</Typography>
             </Grid>
             <Grid item container spacing={4}>
               <Grid item xs={12} md={6}>

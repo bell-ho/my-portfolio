@@ -29,7 +29,7 @@ const UserPortfolio = ({ session }) => {
       <About about={about} />
       <Skills skills={userSkills} />
       <Projects projects={projects} />
-      {/*<Contact />*/}
+      <Contact />
     </Fragment>
   );
 };

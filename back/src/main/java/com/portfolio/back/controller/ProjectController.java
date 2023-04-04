@@ -75,7 +75,7 @@ public class ProjectController {
 
     @PutMapping("/basic-info/{projectId}")
     public ResponseEntity<?> updateProjectBasicInfo(@PathVariable("projectId") Long projectId, @RequestBody BasicInfoInsertReq params) {
-        ProjectRes project = new ProjectRes(projectService.basicInfo(projectId, params.getName(), params.getDescription(), params.getPeriod(), params.getLink()));
+        ProjectRes project = new ProjectRes(projectService.basicInfo(projectId, params.getName(), params.getDescription(), params.getStartDate(), params.getEndDate(), params.getLink()));
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("project", project);
         return ResponseEntity.ok(data);
     }

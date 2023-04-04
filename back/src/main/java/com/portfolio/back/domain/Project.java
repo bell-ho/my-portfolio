@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,14 +29,17 @@ public class Project extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "period")
-    private String period;
-
     @Column(name = "description")
     private String description;
 
     @Column(name = "link")
     private String link;
+
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "portfolio_id")
@@ -57,10 +61,15 @@ public class Project extends BaseEntity {
         return project;
     }
 
-    public void updateBasicInfo(String name, String description, String period, String link) {
+    public void updateBasicInfo(String name,
+                                String description,
+                                LocalDateTime startDate,
+                                LocalDateTime endDate,
+                                String link) {
         this.name = name;
         this.description = description;
-        this.period = period;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.link = link;
     }
 }
