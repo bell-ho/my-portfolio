@@ -38,12 +38,12 @@ const BasicLayout = ({ children }) => {
         color: 'var(--color-black)',
       },
       label: {
-        fontWeight: '700',
+        fontWeight: 'var(--weight-bold)',
         fontSize: '1.25rem',
         textAlign: 'left',
       },
       labelValue: {
-        fontWeight: '700',
+        fontWeight: 'var(--weight-bold)',
         fontSize: '1rem',
         color: 'var(--color-dark-grey)',
       },
@@ -56,12 +56,12 @@ const BasicLayout = ({ children }) => {
       },
       'section-title': {
         fontFamily: 'Black Han Sans, sans-serif',
-        fontWeight: '400',
-        fontSize: '2rem',
+        fontWeight: 'var(--weight-bold)',
+        fontSize: 'var(--font-large)',
       },
       'mast-head-title': {
         fontFamily: 'Black Han Sans, sans-serif',
-        fontWeight: '400',
+        fontWeight: 'var(--weight-semi-bold)',
         fontSize: '2rem',
         color: 'var(--color-white)',
       },
