@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import { getRandomColor } from '@/util/utils';
-import { useStacksByUserQuery } from '@/react-query/query-hooks/useStacksHook';
+import Masonry from '@mui/lab/Masonry';
 
 const SkillBadge = ({ skill }) => (
   <Image
@@ -19,7 +19,7 @@ const SkillBadge = ({ skill }) => (
   />
 );
 const SkillsSection = ({ title, skills }) => (
-  <SkillsContainer spacing={2}>
+  <SkillsContainer>
     <Grid item xs={12}>
       <Typography variant={'skillsTitle'}>{title}</Typography>
     </Grid>
@@ -38,18 +38,22 @@ const Skills = ({ skills }) => {
   return (
     <Wrapper id={'skills'}>
       <Typography variant={'section-title'}>SKILLS</Typography>
-      <SkillsSection title="Back End" skills={be} />
-      <SkillsSection title="Front End" skills={fe} />
-      <SkillsSection title="Deployment" skills={dp} />
-      <SkillsSection title="Version Control" skills={vc} />
-      <SkillsSection title="Communication" skills={cm} />
-      <SkillsSection title="Certification" skills={ct} />
+      <Masonry
+        columns={{ xs: 1, sm: 2, md: 3, lg: 3, xl: 3 }}
+        spacing={4}
+        sx={{ maxWidth: '1200px' }}
+      >
+        <SkillsSection title="Back End" skills={be} />
+        <SkillsSection title="Front End" skills={fe} />
+        <SkillsSection title="Deployment" skills={dp} />
+        <SkillsSection title="Version Control" skills={vc} />
+        <SkillsSection title="Communication" skills={cm} />
+        <SkillsSection title="Certification" skills={ct} />
+      </Masonry>
     </Wrapper>
   );
 };
-
 const SkillsContainer = styled(Box)`
-  width: 17rem;
   margin: 0 auto 2rem;
   padding: 1.5rem;
   border-radius: 1rem;
@@ -75,12 +79,8 @@ const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  gap: 20px;
   padding: 2rem;
+  gap: 2rem;
 `;
 
-const TypographyCustom = styled(Typography)`
-  font-weight: 900;
-`;
 export default Skills;

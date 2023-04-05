@@ -36,7 +36,9 @@ const About = ({ about: { name, phone, email } }) => {
 };
 
 const InfoWrapper = styled(Box)`
-  width: 100%;
+  ${({ theme }) => theme.breakpoints.only('xs')} {
+    width: 100%;
+  }
 `;
 
 const LabelWrapper = styled(Box)`
@@ -48,7 +50,6 @@ const LabelWrapper = styled(Box)`
 const ContentItem = styled(Grid)`
   display: flex;
   gap: 50px;
-
   ${({ theme }) => theme.breakpoints.up('xs')} {
     width: 100%;
     display: flex;
@@ -71,8 +72,12 @@ const IconCustom = styled(FontAwesomeIcon)`
 
 const ContentWrapper = styled(Grid)`
   display: flex;
-  gap: 2rem;
   justify-content: center;
+  gap: 6rem;
+
+  ${({ theme }) => theme.breakpoints.only('xs')} {
+    gap: 2rem;
+  }
 `;
 
 const Wrapper = styled(Box)`
