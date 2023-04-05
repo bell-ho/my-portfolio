@@ -13,8 +13,6 @@ public class BasicInfoInsertReq {
     private String name;
     private String description;
     private String link;
-    @JsonFormat(pattern = "yyyy.MM.dd")
-    private LocalDateTime startDate;
-    @JsonFormat(pattern = "yyyy.MM.dd")
-    private LocalDateTime endDate;
+    private String startDate;
+    private String endDate;
 }

@@ -13,5 +13,5 @@ public interface ProjectService {
 
     void removeProject(Long projectId);
 
-    Project basicInfo(Long projectId, String name, String description, LocalDateTime startDate, LocalDateTime endDate, String link);
+    Project basicInfo(Long projectId, String name, String description, String startDate, String endDate, String link);
 }

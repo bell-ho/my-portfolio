@@ -4,11 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -63,13 +63,18 @@ public class Project extends BaseEntity {
 
     public void updateBasicInfo(String name,
                                 String description,
-                                LocalDateTime startDate,
-                                LocalDateTime endDate,
+                                String startDate,
+                                String endDate,
                                 String link) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate startDateLocalDate = LocalDate.parse(startDate, formatter);
+        LocalDate endDateLocalDate = LocalDate.parse(endDate, formatter);
+
         this.name = name;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startDate = startDateLocalDate.atStartOfDay();
+        this.endDate = endDateLocalDate.atTime(LocalTime.MAX);
         this.link = link;
     }
 }

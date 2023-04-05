@@ -54,8 +54,8 @@ public class ProjectServiceImpl implements ProjectService {
     public Project basicInfo(Long projectId,
                              String name,
                              String description,
-                             LocalDateTime startDate,
-                             LocalDateTime endDate,
+                             String startDate,
+                             String endDate,
                              String link) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         project.updateBasicInfo(name, description, startDate, endDate, link);
