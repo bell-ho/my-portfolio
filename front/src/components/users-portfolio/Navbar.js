@@ -88,7 +88,7 @@ const Navbar = (props) => {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{
-              display: { xs: 'block', sm: 'none' },
+              display: { sm: 'none' },
               '& .MuiSvgIcon-root': {
                 width: '42px',
                 height: '42px',

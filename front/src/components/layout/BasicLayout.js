@@ -38,7 +38,6 @@ const BasicLayout = ({ children }) => {
         color: 'var(--color-black)',
       },
       label: {
-        marginBottom: '0.5rem',
         fontWeight: '700',
         fontSize: '1.25rem',
         textAlign: 'left',
@@ -54,6 +53,22 @@ const BasicLayout = ({ children }) => {
         color: 'var(--color-pink)',
         borderBottom: '1px solid #ccc',
         margin: '1rem 0',
+      },
+      'section-title': {
+        fontFamily: 'Black Han Sans, sans-serif',
+        fontWeight: '400',
+        fontSize: '2rem',
+      },
+      'mast-head-title': {
+        fontFamily: 'Black Han Sans, sans-serif',
+        fontWeight: '400',
+        fontSize: '2rem',
+        color: 'var(--color-white)',
+      },
+      'mast-subtitle': {
+        fontWeight: '400',
+        fontSize: '1rem',
+        color: 'var(--color-white)',
       },
     },
   });

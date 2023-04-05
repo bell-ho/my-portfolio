@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Children, Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled';
@@ -13,43 +13,54 @@ const About = ({ about: { name, phone, email } }) => {
 
   return (
     <Wrapper id={'about'}>
-      <TypographyCustom variant={'h1'}>ABOUT ME</TypographyCustom>
+      <Typography variant={'section-title'}>ABOUT ME</Typography>
       <ContentWrapper container>
-        {items.map((item) => (
-          <ContentItem item key={item.label} xs={12} md={3}>
-            <IconCustom icon={item.icon} />
-            <LabelWrapper>
-              <TypographyCustom variant={'label'}>{item.label}</TypographyCustom>
-              <TypographyCustom variant={'labelValue'}>{item.value}</TypographyCustom>
-            </LabelWrapper>
-          </ContentItem>
-        ))}
+        {Children.toArray(
+          items.map((item) => (
+            <InfoWrapper>
+              <ContentItem item key={item.label} xs={12} md={3}>
+                <IconCustom icon={item.icon} />
+                <LabelWrapper>
+                  <TypographyCustom variant={'label'}>{item.label}</TypographyCustom>
+                  <TypographyCustom variant={'labelValue'} sx={{ opacity: '0.8' }}>
+                    {item.value}
+                  </TypographyCustom>
+                </LabelWrapper>
+              </ContentItem>
+            </InfoWrapper>
+          )),
+        )}
       </ContentWrapper>
     </Wrapper>
   );
 };
 
+const InfoWrapper = styled(Box)`
+  width: 100%;
+`;
+
 const LabelWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
 `;
 
 const ContentItem = styled(Grid)`
   display: flex;
-  justify-content: center;
   gap: 50px;
 
   ${({ theme }) => theme.breakpoints.up('xs')} {
-    gap: 30px;
-    padding: 0 2rem;
-    justify-content: flex-start;
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    max-width: 14rem;
+    gap: 3rem;
   }
 `;
 
 const IconCustom = styled(FontAwesomeIcon)`
-  width: 30px;
-  height: 30px;
+  width: 3rem;
+  height: 3rem;
 
   ${({ theme }) => theme.breakpoints.up('md')} {
     width: 50px;
@@ -60,7 +71,7 @@ const IconCustom = styled(FontAwesomeIcon)`
 
 const ContentWrapper = styled(Grid)`
   display: flex;
-  gap: 30px;
+  gap: 2rem;
   justify-content: center;
 `;
 
@@ -69,7 +80,7 @@ const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 2rem;
 `;
 
 const TypographyCustom = styled(Typography)`

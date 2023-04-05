@@ -19,7 +19,7 @@ const SkillBadge = ({ skill }) => (
   />
 );
 const SkillsSection = ({ title, skills }) => (
-  <SkillsContainer container spacing={2}>
+  <SkillsContainer spacing={2}>
     <Grid item xs={12}>
       <Typography variant={'skillsTitle'}>{title}</Typography>
     </Grid>
@@ -37,7 +37,7 @@ const Skills = ({ skills }) => {
 
   return (
     <Wrapper id={'skills'}>
-      <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
+      <Typography variant={'section-title'}>SKILLS</Typography>
       <SkillsSection title="Back End" skills={be} />
       <SkillsSection title="Front End" skills={fe} />
       <SkillsSection title="Deployment" skills={dp} />

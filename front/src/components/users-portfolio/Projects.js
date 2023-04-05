@@ -9,17 +9,17 @@ import { useProjectsByPortfolioQuery } from '@/react-query/query-hooks/useProjec
 const Projects = ({ projects }) => {
   return (
     <Wrapper id={'projects'}>
-      <TypographyCustom variant={'h1'}>PROJECTS</TypographyCustom>
+      <Typography variant={'section-title'}>PROJECTS</Typography>
       {Children.toArray(
         projects.map((project) => (
           <ProjectWrapper container>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <Typography variant={'h1'}>{project?.name}</Typography>
               <Typography
                 variant={'h3'}
               >{`${project?.startDate} ~ ${project?.endDate}`}</Typography>
             </Grid>
-            <Grid item container spacing={4}>
+            <Grid item container spacing={2}>
               <Grid item xs={12} md={6}>
                 <ImageBox images={project?.images} />
               </Grid>

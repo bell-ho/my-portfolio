@@ -7,8 +7,8 @@ const Main = ({ imageSrc, title, description }) => {
   return (
     <Wrapper id={'main'}>
       <ImageCustom width={250} height={250} src={imageSrc} alt={'main_profile'} />
-      <TypographyCustom variant={'h1'}>{title}</TypographyCustom>
-      <TypographyCustom variant={'h2'}>{description}</TypographyCustom>
+      <Typography variant={'mast-head-title'}>{title}</Typography>
+      <Typography variant={'mast-subtitle'}>{description}</Typography>
     </Wrapper>
   );
 };
