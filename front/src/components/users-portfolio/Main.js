@@ -29,7 +29,4 @@ const ImageCustom = styled(Image)`
   border: 2px solid var(--color-light-white);
 `;
 
-const TypographyCustom = styled(Typography)`
-  color: var(--color-white);
-`;
 export default Main;

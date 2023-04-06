@@ -26,13 +26,13 @@ const nextAuthOptions = (req, res) => {
     ],
     session: {
       jwt: true,
+      maxAge: 24 * 60 * 60,
     },
     pages: {
       signIn: '/login',
     },
     jwt: {
       secret: process.env.JWT_SECRET,
-      maxAge: 24 * 60 * 60,
     },
     callbacks: {
       async signIn(user, account, metadata) {
