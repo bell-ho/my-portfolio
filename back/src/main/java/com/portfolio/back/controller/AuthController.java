@@ -5,6 +5,8 @@ import com.portfolio.back.dto.UserInsertReq;
 import com.portfolio.back.dto.UserRes;
 import com.portfolio.back.security.TokenProvider;
 import com.portfolio.back.service.UserService;
+import com.portfolio.back.trace.TraceStatus;
+import com.portfolio.back.trace.logtrace.LogTrace;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,16 @@ public class AuthController {
 
     private final UserService userService;
     private final TokenProvider tokenProvider;
+    private final LogTrace trace;
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
         ResponseData data;
 
+        TraceStatus status = null;
+
         try {
+            status = trace.begin("validationUser.controller");
             User user = userService.findByUniqueKey(uniqueKey);
             UserRes userRes = new UserRes(user);
 
@@ -31,8 +37,10 @@ public class AuthController {
             userRes.setToken(token);
 
             data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
-        } catch (IllegalArgumentException e) {
+            trace.end(status);
+        } catch (Exception e) {
             data = ResponseData.fromException(e).add("user", null);
+            trace.exception(status, e);
         }
         return ResponseEntity.ok(data);
     }
