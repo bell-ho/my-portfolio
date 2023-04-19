@@ -7,6 +7,7 @@ import com.portfolio.back.security.TokenProvider;
 import com.portfolio.back.service.UserService;
 import com.portfolio.back.trace.TraceStatus;
 import com.portfolio.back.trace.logtrace.LogTrace;
+import com.portfolio.back.trace.template.AbstractTemplate;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -24,25 +25,22 @@ public class AuthController {
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
-        ResponseData data;
-
-        TraceStatus status = null;
-
-        try {
-            status = trace.begin("validationUser.controller");
-            User user = userService.findByUniqueKey(uniqueKey);
-            UserRes userRes = new UserRes(user);
-
-            final String token = tokenProvider.create(userRes.toEntity());
-            userRes.setToken(token);
-
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
-            trace.end(status);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e).add("user", null);
-            trace.exception(status, e);
-        }
-        return ResponseEntity.ok(data);
+        AbstractTemplate<ResponseEntity<?>> template = new AbstractTemplate<>(trace) {
+            @Override
+            protected ResponseEntity<?> call() {
+                ResponseData data;
+                try {
+                    UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
+                    final String token = tokenProvider.create(userRes.toEntity());
+                    userRes.setToken(token);
+                    data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
+                } catch (Exception e) {
+                    data = ResponseData.fromException(e).add("user", null);
+                }
+                return ResponseEntity.ok(data);
+            }
+        };
+        return template.execute("validationUser");
     }
 
     @PostMapping("/signup")
