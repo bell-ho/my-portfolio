@@ -23,17 +23,17 @@ const SkillsSection = ({ title, skills }) => (
     <Grid item xs={12}>
       <Typography variant={'skillsTitle'}>{title}</Typography>
     </Grid>
-    {Children.toArray(skills.map((skill) => <SkillBadge skill={skill} />))}
+    {Children.toArray(skills?.map((skill) => <SkillBadge skill={skill} />))}
   </SkillsContainer>
 );
 
-const Skills = ({ skills }) => {
-  const be = skills.filter((v) => v.code === 'BE');
-  const fe = skills.filter((v) => v.code === 'FE');
-  const dp = skills.filter((v) => v.code === 'DP');
-  const vc = skills.filter((v) => v.code === 'VC');
-  const cm = skills.filter((v) => v.code === 'CM');
-  const ct = skills.filter((v) => v.code === 'CT');
+const Skills = ({ skills } = {}) => {
+  const be = skills?.filter((v) => v.code === 'BE');
+  const fe = skills?.filter((v) => v.code === 'FE');
+  const dp = skills?.filter((v) => v.code === 'DP');
+  const vc = skills?.filter((v) => v.code === 'VC');
+  const cm = skills?.filter((v) => v.code === 'CM');
+  const ct = skills?.filter((v) => v.code === 'CT');
 
   return (
     <Wrapper id={'skills'}>

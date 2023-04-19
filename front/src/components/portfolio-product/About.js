@@ -7,6 +7,7 @@ import { updatePortfolioAbout } from '@/pages/api/portfolio';
 import { queryKey } from '@/react-query/constants';
 import useInputHook from '@/util/useInputHook';
 import { isEmailFormat, isEmptyString, isPhoneNumFormat } from '@/util/utils';
+import { errorHandler } from '@/util/errorHandler';
 
 const About = ({ id, name, phone, email }) => {
   const queryClient = useQueryClient();
@@ -19,16 +20,7 @@ const About = ({ id, name, phone, email }) => {
     isError: isEmailError,
   } = useInputHook({
     initialValue: email,
-    errorHandler: (error) => {
-      switch (error) {
-        case 'formErr':
-          return '이메일 형식으로 입력해주세요.';
-        case 'emptyErr':
-          return '이메일을 입력해주세요.';
-        default:
-          return '';
-      }
-    },
+    errorHandler,
   });
 
   const {
@@ -39,16 +31,7 @@ const About = ({ id, name, phone, email }) => {
     isError: isPhoneError,
   } = useInputHook({
     initialValue: phone,
-    errorHandler: (error) => {
-      switch (error) {
-        case 'formErr':
-          return '번호 형식이 유효하지 않습니다.';
-        case 'emptyErr':
-          return '번호를 입력해주세요.';
-        default:
-          return '';
-      }
-    },
+    errorHandler,
   });
 
   const {
@@ -59,14 +42,7 @@ const About = ({ id, name, phone, email }) => {
     isError: isNameError,
   } = useInputHook({
     initialValue: name,
-    errorHandler: (error) => {
-      switch (error) {
-        case 'emptyErr':
-          return '이름을 입력해주세요.';
-        default:
-          return '';
-      }
-    },
+    errorHandler,
   });
 
   const updateAboutMutation = useMutation((params) => updatePortfolioAbout(params), {
@@ -81,19 +57,19 @@ const About = ({ id, name, phone, email }) => {
 
       // 유효성 검사
       if (isEmptyString(editedName)) {
-        return handleNameInputError('emptyErr');
+        return handleNameInputError('EmptyErr');
       }
       if (isEmptyString(editedPhone)) {
-        return handlePhoneInputError('emptyErr');
-      }
-      if (!isPhoneNumFormat(editedPhone)) {
-        return handlePhoneInputError('formErr');
+        return handlePhoneInputError('EmptyErr');
       }
       if (isEmptyString(editedEmail)) {
-        return handleEmailInputError('emptyErr');
+        return handleEmailInputError('EmptyErr');
+      }
+      if (!isPhoneNumFormat(editedPhone)) {
+        return handlePhoneInputError('PhoneFormErr');
       }
       if (!isEmailFormat(editedEmail)) {
-        return handleEmailInputError('formErr');
+        return handleEmailInputError('EmailFormErr');
       }
 
       const params = {

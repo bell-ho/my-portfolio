@@ -4,11 +4,11 @@ import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled';
 import { Box, Grid, Typography } from '@mui/material';
 
-const About = ({ about: { name, phone, email } }) => {
+const About = ({ about } = {}) => {
   const items = [
-    { icon: faUser, label: '이름', value: name },
-    { icon: faPhone, label: '연락처', value: phone },
-    { icon: faEnvelope, label: '이메일', value: email },
+    { icon: faUser, label: '이름', value: about?.name || '' },
+    { icon: faPhone, label: '연락처', value: about?.phone || '' },
+    { icon: faEnvelope, label: '이메일', value: about?.email || '' },
   ];
 
   return (

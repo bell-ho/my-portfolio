@@ -11,7 +11,7 @@ const Projects = ({ projects }) => {
     <Wrapper id={'projects'}>
       <Typography variant={'section-title'}>PROJECTS</Typography>
       {Children.toArray(
-        projects.map((project) => (
+        projects?.map((project) => (
           <ProjectWrapper container>
             <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <Typography variant={'h1'}>{project?.name}</Typography>

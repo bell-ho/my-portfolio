@@ -9,6 +9,7 @@ import { updatePortfolio, updatePortfolioImage } from '@/pages/api/portfolio';
 import { queryKey } from '@/react-query/constants';
 import useInputHook from '@/util/useInputHook';
 import { isEmptyString } from '@/util/utils';
+import { errorHandler } from '@/util/errorHandler';
 
 const Main = ({ id, imageSrc, title, description }) => {
   const queryClient = useQueryClient();
@@ -22,32 +23,18 @@ const Main = ({ id, imageSrc, title, description }) => {
     isError: isTitleError,
   } = useInputHook({
     initialValue: title,
-    errorHandler: (error) => {
-      switch (error) {
-        case 'emptyErr':
-          return '타이틀을 입력해주세요.';
-        default:
-          return '';
-      }
-    },
+    errorHandler,
   });
 
   const {
     input: editedDescription,
     errorMessage: descriptionErrorMessage,
-    changeHandler: DescriptionChangeHandler,
+    changeHandler: descriptionChangeHandler,
     handleInputError: handleDescriptionInputError,
     isError: isDescriptionError,
   } = useInputHook({
     initialValue: description,
-    errorHandler: (error) => {
-      switch (error) {
-        case 'emptyErr':
-          return '소제목을 입력해주세요.';
-        default:
-          return '';
-      }
-    },
+    errorHandler,
   });
 
   const updateImageMutation = useMutation((params) => updatePortfolioImage(params), {
@@ -84,10 +71,11 @@ const Main = ({ id, imageSrc, title, description }) => {
 
   const onClickUpdate = useCallback(async () => {
     if (isEmptyString(editedTitle)) {
-      return handleTitleInputError('emptyErr');
+      return handleTitleInputError('EmptyErr');
     }
+
     if (isEmptyString(editedDescription)) {
-      return handleDescriptionInputError('emptyErr');
+      return handleDescriptionInputError('EmptyErr');
     }
 
     const params = {
@@ -158,7 +146,7 @@ const Main = ({ id, imageSrc, title, description }) => {
         id="outlined-required"
         label="설명"
         value={editedDescription}
-        onChange={DescriptionChangeHandler}
+        onChange={descriptionChangeHandler}
         helperText={descriptionErrorMessage}
         error={isDescriptionError}
       />
