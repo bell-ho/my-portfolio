@@ -1,21 +1,20 @@
 package com.portfolio.back.controller;
 
-import com.portfolio.back.domain.User;
 import com.portfolio.back.dto.UserInsertReq;
 import com.portfolio.back.dto.UserRes;
 import com.portfolio.back.security.TokenProvider;
 import com.portfolio.back.service.UserService;
-import com.portfolio.back.trace.TraceStatus;
+import com.portfolio.back.trace.callback.TraceCallback;
+import com.portfolio.back.trace.callback.TraceTemplate;
 import com.portfolio.back.trace.logtrace.LogTrace;
-import com.portfolio.back.trace.template.AbstractTemplate;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 @RestController
 public class AuthController {
 
@@ -25,22 +24,21 @@ public class AuthController {
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
-        AbstractTemplate<ResponseEntity<?>> template = new AbstractTemplate<>(trace) {
-            @Override
-            protected ResponseEntity<?> call() {
-                ResponseData data;
-                try {
-                    UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
-                    final String token = tokenProvider.create(userRes.toEntity());
-                    userRes.setToken(token);
-                    data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
-                } catch (Exception e) {
-                    data = ResponseData.fromException(e).add("user", null);
+
+        return new TraceTemplate(trace).execute("validationUser.controller",
+                () -> {
+                    ResponseData data;
+                    try {
+                        UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
+                        final String token = tokenProvider.create(userRes.toEntity());
+                        userRes.setToken(token);
+                        data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
+                    } catch (Exception e) {
+                        data = ResponseData.fromException(e).add("user", null);
+                    }
+                    return ResponseEntity.ok(data);
                 }
-                return ResponseEntity.ok(data);
-            }
-        };
-        return template.execute("validationUser");
+        );
     }
 
     @PostMapping("/signup")
