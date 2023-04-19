@@ -39,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .from(project)
                 .leftJoin(project.mainFns, mainFn).fetchJoin()
                 .leftJoin(project.images, image).fetchJoin()
+                .where(project.portfolio.id.eq(portfolioId))
                 .orderBy(project.modifiedDate.desc())
                 .fetch();
     }

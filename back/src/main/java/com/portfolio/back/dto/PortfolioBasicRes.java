@@ -2,9 +2,7 @@ package com.portfolio.back.dto;
 
 import com.portfolio.back.domain.About;
 import com.portfolio.back.domain.Portfolio;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -24,7 +22,7 @@ public class PortfolioBasicRes {
         this.imageSrc = portfolio.getImage() != null ? portfolio.getImage().getSrc() : null;
         this.title = portfolio.getTitle() != null ? portfolio.getTitle() : null;
         this.description = portfolio.getDescription() != null ? portfolio.getDescription() : null;
-        this.about = new AboutDTO(portfolio.getAbout());
+        this.about = new AboutDTO(portfolio.getAbout() != null ? portfolio.getAbout() : null);
     }
 
     @Getter
