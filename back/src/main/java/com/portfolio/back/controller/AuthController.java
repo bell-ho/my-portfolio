@@ -4,7 +4,6 @@ import com.portfolio.back.dto.UserInsertReq;
 import com.portfolio.back.dto.UserRes;
 import com.portfolio.back.security.TokenProvider;
 import com.portfolio.back.service.UserService;
-import com.portfolio.back.trace.callback.TraceCallback;
 import com.portfolio.back.trace.callback.TraceTemplate;
 import com.portfolio.back.trace.logtrace.LogTrace;
 import com.portfolio.back.utils.RequestResultEnum;
@@ -24,21 +23,16 @@ public class AuthController {
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
-
-        return new TraceTemplate(trace).execute("validationUser.controller",
-                () -> {
-                    ResponseData data;
-                    try {
-                        UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
-                        final String token = tokenProvider.create(userRes.toEntity());
-                        userRes.setToken(token);
-                        data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
-                    } catch (Exception e) {
-                        data = ResponseData.fromException(e).add("user", null);
-                    }
-                    return ResponseEntity.ok(data);
-                }
-        );
+        ResponseData data;
+        try {
+            UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
+            final String token = tokenProvider.create(userRes.toEntity());
+            userRes.setToken(token);
+            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
+        } catch (Exception e) {
+            data = ResponseData.fromException(e).add("user", null);
+        }
+        return ResponseEntity.ok(data);
     }
 
     @PostMapping("/signup")
