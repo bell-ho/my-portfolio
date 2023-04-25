@@ -9,8 +9,6 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class AspectV4 {
 
-
-
     // 하위 패키지이면서 서비스 클래스인것
     @Around("com.portfolio.back.aop.Pointcuts.allAndService()") // 외부 포인트컷 사용
     public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -26,4 +24,4 @@ public class AspectV4 {
             log.info("transaction release {}", joinPoint.getSignature());
         }
     }
-}
+ }

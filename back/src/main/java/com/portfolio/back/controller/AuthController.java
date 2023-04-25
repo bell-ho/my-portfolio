@@ -19,7 +19,6 @@ public class AuthController {
 
     private final UserService userService;
     private final TokenProvider tokenProvider;
-    private final LogTrace trace;
 
     @GetMapping("/validation-user/{key}")
     public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
