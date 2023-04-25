@@ -2,7 +2,6 @@ package com.portfolio.back.service;
 
 import com.portfolio.back.domain.User;
 import com.portfolio.back.repository.UserRepository;
-import com.portfolio.back.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final LogTrace logTrace;
 
     @Override
     public User findByUniqueKey(String uniqueKey) {

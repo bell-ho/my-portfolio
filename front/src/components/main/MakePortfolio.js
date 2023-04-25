@@ -25,7 +25,7 @@ const MakePortfolio = ({ handleClose }) => {
     const name = nameInputRef.current.value;
     const portfolios = queryClient.getQueryData([queryKey.portfoliosByUser, session?.user?.id]);
 
-    if (portfolios.length >= 3) {
+    if (portfolios?.length >= 3) {
       alert('포트폴리오는 최대 3개까지 가능합니다');
       handleClose();
       return;

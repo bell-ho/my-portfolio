@@ -4,8 +4,6 @@ import com.portfolio.back.dto.UserInsertReq;
 import com.portfolio.back.dto.UserRes;
 import com.portfolio.back.security.TokenProvider;
 import com.portfolio.back.service.UserService;
-import com.portfolio.back.trace.callback.TraceTemplate;
-import com.portfolio.back.trace.logtrace.LogTrace;
 import com.portfolio.back.utils.RequestResultEnum;
 import com.portfolio.back.utils.ResponseData;
 import lombok.RequiredArgsConstructor;

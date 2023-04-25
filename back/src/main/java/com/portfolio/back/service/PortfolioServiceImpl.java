@@ -24,7 +24,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public List<Portfolio> getPortfolios(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
-
         return portfolioRepository.findAllByUserOrderById(user);
     }
 
@@ -50,6 +49,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public Portfolio detailPortfolio(Long portfolioId) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
     }
 

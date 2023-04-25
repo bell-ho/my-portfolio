@@ -19,7 +19,7 @@ public class AspectV3 {
 
     // 클래스 이름 패턴이 서비스
     @Pointcut("execution(* *..*Service.*(..))")
-    private void service() {
+    private void allService() {
 
     }
 
@@ -30,7 +30,7 @@ public class AspectV3 {
     }
 
     // 하위 패키지이면서 서비스 클래스인것
-    @Around("all() && service()")
+    @Around("all() && allService()")
     public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             log.info("transaction start {}", joinPoint.getSignature());

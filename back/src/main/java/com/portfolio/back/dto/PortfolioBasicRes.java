@@ -22,7 +22,7 @@ public class PortfolioBasicRes {
         this.imageSrc = portfolio.getImage() != null ? portfolio.getImage().getSrc() : null;
         this.title = portfolio.getTitle() != null ? portfolio.getTitle() : null;
         this.description = portfolio.getDescription() != null ? portfolio.getDescription() : null;
-        this.about = new AboutDTO(portfolio.getAbout() != null ? portfolio.getAbout() : null);
+        this.about = portfolio.getAbout() != null ? new AboutDTO(portfolio.getAbout()) : null;
     }
 
     @Getter
