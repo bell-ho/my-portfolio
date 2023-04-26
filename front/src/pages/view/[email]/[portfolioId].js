@@ -19,7 +19,7 @@ const UserPortfolio = ({ session }) => {
   } = usePortfolioInfoQuery(portfolioId);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    // return <div>Loading</div>;
   }
 
   return (

@@ -6,7 +6,7 @@ import Image from 'next/image';
 const Main = ({ imageSrc, title, description }) => {
   return (
     <Wrapper id={'main'}>
-      <ImageCustom width={250} height={250} src={imageSrc} alt={'main_profile'} />
+      <ImageCustom width={250} height={250} src={imageSrc ?? ''} alt={''} />
       <Typography variant={'mast-head-title'}>{title}</Typography>
       <Typography variant={'mast-subtitle'}>{description}</Typography>
     </Wrapper>
