@@ -2,7 +2,6 @@ package com.portfolio.back.service;
 
 import com.portfolio.back.domain.About;
 import com.portfolio.back.domain.Portfolio;
-import com.portfolio.back.dto.PortfolioRes;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ public interface PortfolioService {
     Portfolio createPortfolioContent(Long portfolioId, String title, String description);
 
     Portfolio detailPortfolio(Long portfolioId);
+
     Portfolio detailInfoPortfolio(Long portfolioId);
 
     Portfolio updatePortfolioMainImage(Long portfolioId, String src);

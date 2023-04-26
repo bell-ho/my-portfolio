@@ -2,13 +2,12 @@ package com.portfolio.back.aop;
 
 import com.portfolio.back.domain.Log;
 import com.portfolio.back.domain.StatusType;
-import com.portfolio.back.repository.LogRepository;
+import com.portfolio.back.service.LogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -16,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class LogTraceAspect {
 
-    private final LogRepository logRepository;
+    private final LogService logService;
     private static final long SLOW_QUERY_THRESHOLD = 1000;
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-    @Pointcut("execution(* com.portfolio.back.service.*Impl.*(..))")
+    @Pointcut("execution(* com.portfolio.back.service.*Impl.*(..)) && !execution(* com.portfolio.back.service.Log*.*(..))")
     private void allService() {
     }
 
@@ -38,7 +37,7 @@ public class LogTraceAspect {
 
             String serviceName = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            logRepository.save(
+            logService.save(
                     Log.createLog(serviceName, methodName, elapsedTime, StatusType.SLOW_QUERY, "")
             );
         }
@@ -48,7 +47,7 @@ public class LogTraceAspect {
     public void afterThrowing(JoinPoint joinPoint, Exception exception) {
         String serviceName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        logRepository.save(
+        logService.save(
                 Log.createLog(serviceName, methodName, null, StatusType.FAILURE, exception.getMessage())
         );
     }

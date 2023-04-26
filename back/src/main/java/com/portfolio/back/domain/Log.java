@@ -46,9 +46,11 @@ public class Log {
                                 String exceptionMsg) {
         Log log = new Log();
 
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
-//        LocalDate startDateLocalDate = LocalDate.parse(LocalDateTime.now(), formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String currentDateTimeFormatted = LocalDateTime.now().format(formatter);
+        LocalDateTime currentDateTime = LocalDateTime.parse(currentDateTimeFormatted, formatter);
 
+        log.setCreatedDate(currentDateTime);
         log.setService(service);
         log.setMethod(method);
         log.setExecutionTime(executionTime);
