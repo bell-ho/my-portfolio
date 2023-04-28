@@ -1,14 +1,15 @@
 package com.portfolio.back.service;
 
 import com.portfolio.back.domain.*;
+import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.ProjectRepository;
+import com.portfolio.back.utils.RequestResultEnum;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -23,7 +24,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Project createProject(Long portfolioId, String name) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
 
         return projectRepository.save(Project.createProject(portfolio, name));
     }
@@ -58,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
                              String startDate,
                              String endDate,
                              String link) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         project.updateBasicInfo(name, description, startDate, endDate, link);
         return project;
     }

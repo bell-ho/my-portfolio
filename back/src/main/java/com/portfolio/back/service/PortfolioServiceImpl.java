@@ -1,9 +1,14 @@
 package com.portfolio.back.service;
 
-import com.portfolio.back.domain.*;
+import com.portfolio.back.domain.About;
+import com.portfolio.back.domain.Image;
+import com.portfolio.back.domain.Portfolio;
+import com.portfolio.back.domain.User;
+import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.ImageRepository;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.UserRepository;
+import com.portfolio.back.utils.RequestResultEnum;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,18 +24,17 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
-    private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Portfolio> getPortfolios(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         return portfolioRepository.findAllByUserOrderById(user);
     }
 
     @Override
     @Transactional
     public Portfolio createPortfolio(String name, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         return portfolioRepository.save(Portfolio.createPortfolio(name, user));
     }
 
@@ -43,7 +47,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     @Transactional
     public Portfolio createPortfolioContent(Long portfolioId, String title, String description) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         return portfolio.update(title, description);
     }
 
@@ -54,12 +58,12 @@ public class PortfolioServiceImpl implements PortfolioService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
     }
 
     @Override
     public Portfolio detailInfoPortfolio(Long portfolioId) {
-        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        return portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
     }
 
     @Override
@@ -68,7 +72,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         Image image = Image.createImage(src, null);
         Image savedImage = imageRepository.save(image);
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         portfolio.setImage(savedImage);
         return portfolio;
     }
@@ -76,7 +80,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     @Transactional
     public Portfolio updatePortfolioAbout(Long portfolioId, About about) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         portfolio.setAbout(about);
         return portfolio;
     }

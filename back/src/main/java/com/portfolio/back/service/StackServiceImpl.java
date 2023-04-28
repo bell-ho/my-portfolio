@@ -3,7 +3,9 @@ package com.portfolio.back.service;
 import com.portfolio.back.domain.*;
 import com.portfolio.back.dto.StackByProjectRes;
 import com.portfolio.back.dto.StackByUserRes;
+import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.*;
+import com.portfolio.back.utils.RequestResultEnum;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -29,7 +31,7 @@ public class StackServiceImpl implements StackService {
 
     @Override
     public List<StackByUserRes> getStacksWithUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        User user = userRepository.findById(userId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
 
         QStack stack = QStack.stack;
         QUserStackMap userStackMap = QUserStackMap.userStackMap;
@@ -63,7 +65,7 @@ public class StackServiceImpl implements StackService {
 
     @Override
     public List<StackByProjectRes> getStacksWithProject(Long projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
 
         QStack stack = QStack.stack;
         QProjectStackMap projectStackMap = QProjectStackMap.projectStackMap;
@@ -103,10 +105,10 @@ public class StackServiceImpl implements StackService {
                 .orElseGet(() -> stackRepository.save(Stack.createStack(name, code)));
 
         if (target.equals("user")) {
-            User user = userRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            User user = userRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
             userStackMapRepository.save(UserStackMap.createUserStack(user, stack));
         } else {
-            Project project = projectRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            Project project = projectRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
             projectStackMapRepository.save(ProjectStackMap.createProjectStack(project, stack));
         }
 
@@ -116,10 +118,10 @@ public class StackServiceImpl implements StackService {
     @Override
     @Transactional
     public Stack updateTargetStacks(Long stackId, String target, Long targetId) {
-        Stack stack = stackRepository.findById(stackId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Stack stack = stackRepository.findById(stackId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
 
         if (target.equals("user")) {
-            User user = userRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            User user = userRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
 
             Optional<UserStackMap> foundUserStack = userStackMapRepository.findByUserIdAndStackId(targetId, stackId);
             foundUserStack.ifPresentOrElse(
@@ -128,7 +130,7 @@ public class StackServiceImpl implements StackService {
             );
 
         } else {
-            Project project = projectRepository.findById(targetId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+            Project project = projectRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
             Optional<ProjectStackMap> foundProjectStack = projectStackMapRepository.findByProjectIdAndStackId(targetId, stackId);
 
             foundProjectStack.ifPresentOrElse(

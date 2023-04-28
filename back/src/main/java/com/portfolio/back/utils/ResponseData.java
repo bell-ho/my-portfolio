@@ -1,5 +1,6 @@
 package com.portfolio.back.utils;
 
+import com.portfolio.back.exception.CustomException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,18 +35,11 @@ public class ResponseData implements Serializable {
     }
 
     public static ResponseData fromException(Exception e) {
+        CustomException customException = (CustomException) e;
         return new ResponseData(
-                RequestResultEnum.INTERNAL_SERVER_ERROR.getCode(),
-                RequestResultEnum.INTERNAL_SERVER_ERROR.getStatus(),
-                e.getMessage(),
-                Collections.emptyMap()
+                customException.getError().getCode(),
+                customException.getError().getStatus(),
+                customException.getError().getMessage()
         );
-    }
-
-    public ResponseData(int code, int status, String message, Map<String, Object> data) {
-        this.code = code;
-        this.status = status;
-        this.message = message;
-        this.data.putAll(data);
     }
 }
