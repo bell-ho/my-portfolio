@@ -6,7 +6,6 @@ export const getPortfoliosByUser = async (params) => {
 
   return data.data.portfolios;
 };
-
 export const createPortfolio = async (params) => {
   const { data } = await axios.post(`${apiKey.portfolios}`, params);
 
