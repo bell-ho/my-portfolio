@@ -19,6 +19,11 @@
 
 <br>
 
+## ERD
+![my_portfolio](https://github.com/user-attachments/assets/8d77b165-048f-48bb-994d-559b829aa3d8)
+
+<br>
+
 ## 📚 기술스택
 
 | 분야           | 사용 기술                                      | 비고 |
