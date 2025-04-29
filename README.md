@@ -36,7 +36,7 @@
 | 분야           | 사용 기술                                      | 비고 |
 | -------------- |--------------------------------------------| ---- |
 | FrontEnd       | React, Next.js, SSR, Next-Auth, React-Query, javascript, MUI |
-| BackEnd        | SpringBoot, JPA                                    |
+| BackEnd        | SpringBoot, JPA, QueryDsl                                    |
 | Database       | MySql                                      |
 | Cloud Services | AWS EC2, AWS S3, AWS RDS, AWS ROUTE53                            |
 
