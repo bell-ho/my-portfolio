@@ -8,10 +8,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "user_stack_map")
-@Builder
+@Table(name = "tmf_user_stack_map")
 @Getter
-@Setter
 @Entity
 public class UserStackMap extends BaseEntity {
 
@@ -26,14 +24,10 @@ public class UserStackMap extends BaseEntity {
     @JoinColumn(name = "stack_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Stack stack;
 
-    public static UserStackMap createUserStack(User user, Stack stack) {
-        UserStackId userStackId = new UserStackId(user.getId(), stack.getId());
-
-        UserStackMap userStack = new UserStackMap();
-        userStack.setId(userStackId);
-        userStack.setUser(user);
-        userStack.setStack(stack);
-
-        return userStack;
+    @Builder(builderMethodName = "create")
+    public UserStackMap(User user, Stack stack) {
+        this.id = new UserStackId(user.getId(), stack.getId());
+        this.user = user;
+        this.stack = stack;
     }
 }

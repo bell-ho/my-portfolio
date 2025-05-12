@@ -31,12 +31,12 @@ public class StackServiceImpl implements StackService {
 
     @Override
     public List<StackByUserRes> getStacksWithUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
 
         QStack stack = QStack.stack;
         QUserStackMap userStackMap = QUserStackMap.userStackMap;
 
-        List<StackByUserRes> stacks = queryFactory
+        return queryFactory
                 .select(
                         Projections.constructor(
                                 StackByUserRes.class,
@@ -59,8 +59,6 @@ public class StackServiceImpl implements StackService {
                 .on(userStackMap.user.eq(user), userStackMap.stack.eq(stack))
                 .orderBy(stack.code.asc(), stack.name.asc())
                 .fetch();
-
-        return stacks;
     }
 
     @Override
@@ -70,7 +68,7 @@ public class StackServiceImpl implements StackService {
         QStack stack = QStack.stack;
         QProjectStackMap projectStackMap = QProjectStackMap.projectStackMap;
 
-        List<StackByProjectRes> stacks = queryFactory
+        return queryFactory
                 .select(
                         Projections.constructor(
                                 StackByProjectRes.class,
@@ -94,22 +92,33 @@ public class StackServiceImpl implements StackService {
                 .where(stack.code.in(StackType.FE, StackType.BE, StackType.DP))
                 .orderBy(stack.code.asc(), stack.name.asc())
                 .fetch();
-
-        return stacks;
     }
 
     @Override
     @Transactional
     public Stack createStack(String target, Long targetId, String name, String code) {
         Stack stack = stackRepository.findByName(name)
-                .orElseGet(() -> stackRepository.save(Stack.createStack(name, code)));
+                .orElseGet(() -> stackRepository.save(
+                        Stack.create()
+                                .name(name)
+                                .code(StackType.valueOf(code))
+                                .build()
+                ));
 
         if (target.equals("user")) {
-            User user = userRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
-            userStackMapRepository.save(UserStackMap.createUserStack(user, stack));
+            User user = userRepository.findById(targetId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
+            userStackMapRepository.save(UserStackMap.create()
+                    .stack(stack)
+                    .user(user)
+                    .build());
         } else {
-            Project project = projectRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
-            projectStackMapRepository.save(ProjectStackMap.createProjectStack(project, stack));
+            Project project = projectRepository.findById(targetId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
+            projectStackMapRepository.save(
+                    ProjectStackMap.create()
+                            .project(project)
+                            .stack(stack)
+                            .build()
+            );
         }
 
         return stack;
@@ -118,31 +127,34 @@ public class StackServiceImpl implements StackService {
     @Override
     @Transactional
     public Stack updateTargetStacks(Long stackId, String target, Long targetId) {
-        Stack stack = stackRepository.findById(stackId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
+        Stack stack = stackRepository.findById(stackId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
 
         if (target.equals("user")) {
-            User user = userRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
+            User user = userRepository.findById(targetId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
 
             Optional<UserStackMap> foundUserStack = userStackMapRepository.findByUserIdAndStackId(targetId, stackId);
             foundUserStack.ifPresentOrElse(
                     userStackMapRepository::delete,
-                    () -> userStackMapRepository.save(UserStackMap.createUserStack(user, stack))
+                    () -> userStackMapRepository.save(UserStackMap.create()
+                            .stack(stack)
+                            .user(user)
+                            .build())
             );
 
         } else {
-            Project project = projectRepository.findById(targetId).orElseThrow(() ->new CustomException(RequestResultEnum.NOT_FOUND));
+            Project project = projectRepository.findById(targetId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
             Optional<ProjectStackMap> foundProjectStack = projectStackMapRepository.findByProjectIdAndStackId(targetId, stackId);
 
             foundProjectStack.ifPresentOrElse(
                     projectStackMapRepository::delete,
-                    () -> projectStackMapRepository.save(ProjectStackMap.createProjectStack(project, stack))
+                    () -> projectStackMapRepository.save(
+                            ProjectStackMap.create()
+                                    .project(project)
+                                    .stack(stack)
+                                    .build()
+                    )
             );
         }
         return stack;
-    }
-
-    private boolean validDuplicateStack(String name) {
-        Optional<Stack> stack = stackRepository.findByName(name);
-        return stack.isPresent();
     }
 }

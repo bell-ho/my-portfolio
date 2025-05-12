@@ -9,7 +9,6 @@ import com.portfolio.back.repository.ImageRepository;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.UserRepository;
 import com.portfolio.back.utils.RequestResultEnum;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,12 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Transactional
     public Portfolio createPortfolio(String name, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-        return portfolioRepository.save(Portfolio.createPortfolio(name, user));
+        return portfolioRepository.save(
+                Portfolio.create()
+                        .name(name)
+                        .user(user)
+                        .build()
+        );
     }
 
     @Override
@@ -69,11 +73,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     @Transactional
     public Portfolio updatePortfolioMainImage(Long portfolioId, String src) {
-        Image image = Image.createImage(src, null);
+        Image image = Image.create().src(src).project(null).build();
         Image savedImage = imageRepository.save(image);
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-        portfolio.setImage(savedImage);
+        portfolio.updateImage(savedImage);
         return portfolio;
     }
 
@@ -81,7 +85,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Transactional
     public Portfolio updatePortfolioAbout(Long portfolioId, About about) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-        portfolio.setAbout(about);
+        portfolio.updateAbout(about);
         return portfolio;
     }
 }

@@ -38,7 +38,13 @@ public class LogTraceAspect {
             String serviceName = joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
             logService.save(
-                    Log.createLog(serviceName, methodName, elapsedTime, StatusType.SLOW_QUERY, "")
+                    Log.create()
+                            .service(serviceName)
+                            .method(methodName)
+                            .executionTime(elapsedTime)
+                            .status(StatusType.SLOW_QUERY)
+                            .exceptionMsg("")
+                            .build()
             );
         }
     }
@@ -48,7 +54,13 @@ public class LogTraceAspect {
         String serviceName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
         logService.save(
-                Log.createLog(serviceName, methodName, null, StatusType.FAILURE, exception.getMessage())
+                Log.create()
+                        .service(serviceName)
+                        .method(methodName)
+                        .executionTime(null)
+                        .status(StatusType.FAILURE)
+                        .exceptionMsg(exception.getMessage())
+                        .build()
         );
     }
 }

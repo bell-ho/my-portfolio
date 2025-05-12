@@ -8,15 +8,13 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-@Builder
+@Table(name = "tmf_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Getter
-@Setter
 @Entity
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -43,4 +41,14 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @Builder(builderMethodName = "create")
+    public User(String name, String nickName, String uniqueKey, String email, String provider) {
+        this.name = name;
+        this.nickName = nickName;
+        this.uniqueKey = uniqueKey;
+        this.email = email;
+        this.provider = provider;
+        this.role = RoleType.ROLE_USER;
+    }
 }

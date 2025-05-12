@@ -29,10 +29,12 @@ public class ImageServiceImpl implements ImageService {
     @Transactional
     public void updateProjectImages(Long projectId, List<String> images) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-
-        images.forEach(v -> {
-            imageRepository.save(Image.createImage(v, project));
-        });
+        images.forEach(v ->
+                imageRepository.save(Image.create()
+                        .src(v)
+                        .project(project)
+                        .build())
+        );
     }
 
     @Override

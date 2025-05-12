@@ -29,7 +29,12 @@ public class MainFnServiceImpl implements MainFnService {
     @Transactional
     public void createMainFn(Long projectId, String name) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-        mainFnRepository.save(MainFn.createMainFn(project, name));
+        mainFnRepository.save(
+                MainFn.create()
+                        .name(name)
+                        .project(project)
+                        .build()
+        );
     }
 
     @Override

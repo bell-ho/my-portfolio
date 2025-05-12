@@ -8,15 +8,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "main_fn")
-@Builder
+@Table(name = "tmf_main_fn")
 @Getter
-@Setter
 @Entity
 public class MainFn  extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -27,10 +25,9 @@ public class MainFn  extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public static MainFn createMainFn(Project project, String name) {
-        MainFn mainFn = new MainFn();
-        mainFn.setProject(project);
-        mainFn.setName(name);
-        return mainFn;
+    @Builder(builderMethodName = "create")
+    public MainFn(String name, Project project) {
+        this.name = name;
+        this.project = project;
     }
 }

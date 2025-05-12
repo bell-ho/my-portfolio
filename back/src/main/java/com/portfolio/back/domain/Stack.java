@@ -6,15 +6,13 @@ import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "stack")
-@Builder
+@Table(name = "tmf_stack")
 @Getter
-@Setter
 @Entity
 public class Stack extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -24,10 +22,9 @@ public class Stack extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private StackType code;
 
-    public static Stack createStack(String name, String code) {
-        Stack stack = new Stack();
-        stack.setName(name);
-        stack.setCode(StackType.valueOf(code));
-        return stack;
+    @Builder(builderMethodName = "create")
+    public Stack(String name, StackType code) {
+        this.name = name;
+        this.code = code;
     }
 }

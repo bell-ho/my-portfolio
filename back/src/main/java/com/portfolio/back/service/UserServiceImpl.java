@@ -1,6 +1,7 @@
 package com.portfolio.back.service;
 
 import com.portfolio.back.domain.User;
+import com.portfolio.back.dto.UserInsertReq;
 import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.UserRepository;
 import com.portfolio.back.utils.RequestResultEnum;
@@ -22,12 +23,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User join(User user) {
-        try {
-            userRepository.save(user);
-            return user;
-        } catch (Exception e) {
-            throw e;
-        }
+    public User join(UserInsertReq params) {
+        return userRepository.save(
+                User.create()
+                        .name(params.getName())
+                        .nickName(params.getNickName())
+                        .uniqueKey(params.getUniqueKey())
+                        .email(params.getEmail())
+                        .provider(params.getProvider())
+                        .build()
+        );
     }
 }

@@ -26,12 +26,4 @@ public class UserRes {
             this.role = entity.getRole().name().toLowerCase();
         }
     }
-
-    public User toEntity() {
-        return User.builder()
-                .email(email)
-                .name(name)
-                .nickName(nickName)
-                .build();
-    }
 }

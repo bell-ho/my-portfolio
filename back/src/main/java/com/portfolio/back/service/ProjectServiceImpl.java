@@ -25,8 +25,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public Project createProject(Long portfolioId, String name) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-
-        return projectRepository.save(Project.createProject(portfolio, name));
+        return projectRepository.save(
+                Project.create()
+                        .name(name)
+                        .portfolio(portfolio)
+                        .build()
+        );
     }
 
     @Override

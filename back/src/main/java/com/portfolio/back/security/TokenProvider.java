@@ -16,13 +16,13 @@ public class TokenProvider {
     private static final String SECRET_KEY = "NSDGjsdfSDG35f3";
 
     //  토큰 생성
-    public String create(User user) {
+    public String create(String nickname) {
         Date expiryDate = Date.from(Instant.now().plus(1, ChronoUnit.DAYS));
 
         // 토큰 생성
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .setSubject(user.getNickName())
+                .setSubject(nickname)
                 .setIssuer("jh")
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate).compact();

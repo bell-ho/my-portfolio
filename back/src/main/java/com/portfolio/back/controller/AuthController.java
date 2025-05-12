@@ -23,7 +23,7 @@ public class AuthController {
         ResponseData data;
         try {
             UserRes userRes = new UserRes(userService.findByUniqueKey(uniqueKey));
-            final String token = tokenProvider.create(userRes.toEntity());
+            final String token = tokenProvider.create(userRes.getNickName());
             userRes.setToken(token);
             data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", userRes);
         } catch (Exception e) {
@@ -33,10 +33,10 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseData> createUser(@RequestBody UserInsertReq dto) {
-        UserRes user = new UserRes(userService.join(dto.toEntity()));
+    public ResponseEntity<ResponseData> createUser(@RequestBody UserInsertReq params) {
+        UserRes user = new UserRes(userService.join(params));
 
-        final String token = tokenProvider.create(user.toEntity());
+        final String token = tokenProvider.create(user.getNickName());
         user.setToken(token);
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("user", user);

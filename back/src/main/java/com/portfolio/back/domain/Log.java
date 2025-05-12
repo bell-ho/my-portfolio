@@ -3,21 +3,18 @@ package com.portfolio.back.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "log_collection")
-@Builder
+@Table(name = "tmf_log_collection")
 @Getter
-@Setter
 @Entity
 public class Log {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -39,23 +36,22 @@ public class Log {
     @Column(name = "exception_message")
     private String exceptionMsg;
 
-    public static Log createLog(String service,
-                                String method,
-                                Long executionTime,
-                                StatusType status,
-                                String exceptionMsg) {
-        Log log = new Log();
-
+    @Builder(builderMethodName = "create")
+    public Log(
+            String service,
+            String method,
+            Long executionTime,
+            StatusType status,
+            String exceptionMsg
+    ) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String currentDateTimeFormatted = LocalDateTime.now().format(formatter);
-        LocalDateTime currentDateTime = LocalDateTime.parse(currentDateTimeFormatted, formatter);
 
-        log.setCreatedDate(currentDateTime);
-        log.setService(service);
-        log.setMethod(method);
-        log.setExecutionTime(executionTime);
-        log.setStatus(status);
-        log.setExceptionMsg(exceptionMsg);
-        return log;
+        this.createdDate = LocalDateTime.parse(currentDateTimeFormatted, formatter);
+        this.service = service;
+        this.method = method;
+        this.executionTime = executionTime;
+        this.status = status;
+        this.exceptionMsg = exceptionMsg;
     }
 }

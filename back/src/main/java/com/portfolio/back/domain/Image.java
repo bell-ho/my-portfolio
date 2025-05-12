@@ -8,15 +8,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "image")
-@Builder
+@Table(name = "tmf_image")
 @Getter
-@Setter
 @Entity
 public class Image extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -27,10 +25,9 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public static Image createImage(String src, Project project) {
-        Image image = new Image();
-        image.setSrc(src);
-        image.setProject(project);
-        return image;
+    @Builder(builderMethodName = "create")
+    public Image(String src, Project project) {
+        this.src = src;
+        this.project = project;
     }
 }

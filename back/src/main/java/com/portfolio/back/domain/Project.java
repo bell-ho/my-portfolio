@@ -14,15 +14,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "project")
-@Builder
+@Table(name = "tmf_project")
 @Getter
-@Setter
 @Entity
 public class Project extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -54,11 +52,10 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MainFn> mainFns = new HashSet<>();
 
-    public static Project createProject(Portfolio portfolio, String name) {
-        Project project = new Project();
-        project.setPortfolio(portfolio);
-        project.setName(name);
-        return project;
+    @Builder(builderMethodName = "create")
+    public Project(String name,Portfolio portfolio){
+        this.name = name;
+        this.portfolio = portfolio;
     }
 
     public void updateBasicInfo(String name,

@@ -11,15 +11,13 @@ import static javax.persistence.FetchType.LAZY;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "portfolio")
-@Builder
+@Table(name = "tmf_portfolio")
 @Getter
-@Setter
 @Entity
 public class Portfolio extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -51,17 +49,23 @@ public class Portfolio extends BaseEntity {
     @JoinColumn(name = "image_id")
     private Image image;
 
-    public static Portfolio createPortfolio(String name, User user) {
-        Portfolio portfolio = new Portfolio();
-        portfolio.setUser(user);
-        portfolio.setName(name);
-
-        return portfolio;
+    @Builder(builderMethodName = "create")
+    public Portfolio(String name, User user) {
+        this.name = name;
+        this.user = user;
     }
 
     public Portfolio update(String title, String description) {
         this.title = title;
         this.description = description;
         return this;
+    }
+
+    public void updateImage(Image image) {
+        this.image = image;
+    }
+
+    public void updateAbout(About about) {
+        this.about = about;
     }
 }
