@@ -4,7 +4,6 @@ buildscript {
 	}
 }
 
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.10-SNAPSHOT'
@@ -54,6 +53,8 @@ dependencies {
 
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 }
 
 def querydslDir = "$buildDir/generated/querydsl"
