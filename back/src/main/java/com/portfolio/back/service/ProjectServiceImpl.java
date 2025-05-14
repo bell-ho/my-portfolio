@@ -1,6 +1,7 @@
 package com.portfolio.back.service;
 
 import com.portfolio.back.domain.*;
+import com.portfolio.back.dto.ProjectRes;
 import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.PortfolioRepository;
 import com.portfolio.back.repository.ProjectRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -23,18 +25,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public Project createProject(Long portfolioId, String name) {
+    public void createProject(Long portfolioId, String name) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
-        return projectRepository.save(
-                Project.create()
-                        .name(name)
-                        .portfolio(portfolio)
-                        .build()
-        );
+        projectRepository.save(Project.create().name(name).portfolio(portfolio).build());
     }
 
     @Override
-    public List<Project> getProjects(Long portfolioId) {
+    public List<ProjectRes> getProjects(Long portfolioId) {
         QProject project = QProject.project;
         QMainFn mainFn = QMainFn.mainFn;
         QImage image = QImage.image;
@@ -46,7 +43,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .leftJoin(project.images, image).fetchJoin()
                 .where(project.portfolio.id.eq(portfolioId))
                 .orderBy(project.modifiedDate.desc())
-                .fetch();
+                .fetch().stream().map(ProjectRes::new).collect(Collectors.toList());
     }
 
     @Override
@@ -57,14 +54,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public Project basicInfo(Long projectId,
-                             String name,
-                             String description,
-                             String startDate,
-                             String endDate,
-                             String link) {
+    public ProjectRes basicInfo(
+            Long projectId,
+            String name,
+            String description,
+            String startDate,
+            String endDate,
+            String link
+    ) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(RequestResultEnum.NOT_FOUND));
         project.updateBasicInfo(name, description, startDate, endDate, link);
-        return project;
+        return new ProjectRes(project);
     }
 }

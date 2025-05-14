@@ -2,24 +2,27 @@ package com.portfolio.back.service;
 
 import com.portfolio.back.domain.About;
 import com.portfolio.back.domain.Portfolio;
+import com.portfolio.back.dto.PortfolioBasicRes;
+import com.portfolio.back.dto.PortfolioInfoRes;
+import com.portfolio.back.dto.PortfolioRes;
 
 import java.util.List;
 
 public interface PortfolioService {
 
-    List<Portfolio> getPortfolios(Long userId);
+    List<PortfolioRes> getPortfolios(Long userId);
 
-    Portfolio createPortfolio(String name, Long userId);
+    PortfolioRes createPortfolio(String name, Long userId);
 
     void removePortfolio(Long portfolioId);
 
-    Portfolio createPortfolioContent(Long portfolioId, String title, String description);
+    void createPortfolioContent(Long portfolioId, String title, String description);
 
-    Portfolio detailPortfolio(Long portfolioId);
+    PortfolioBasicRes detailPortfolio(Long portfolioId);
 
-    Portfolio detailInfoPortfolio(Long portfolioId);
+    PortfolioInfoRes detailInfoPortfolio(Long portfolioId);
 
-    Portfolio updatePortfolioMainImage(Long portfolioId, String src);
+    void updatePortfolioMainImage(Long portfolioId, String src);
 
-    Portfolio updatePortfolioAbout(Long portfolioId, About about);
+    void updatePortfolioAbout(Long portfolioId, About about);
 }

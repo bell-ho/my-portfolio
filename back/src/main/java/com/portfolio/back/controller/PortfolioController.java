@@ -3,14 +3,14 @@ package com.portfolio.back.controller;
 import com.portfolio.back.domain.About;
 import com.portfolio.back.dto.*;
 import com.portfolio.back.service.PortfolioService;
-import com.portfolio.back.utils.RequestResultEnum;
-import com.portfolio.back.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.portfolio.back.utils.RequestResultEnum.SUCCESS;
+import static com.portfolio.back.utils.ResponseData.fromResult;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/portfolios")
@@ -21,102 +21,50 @@ public class PortfolioController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<?> getPortfolios(@PathVariable("userId") Long userId) {
-
-        List<PortfolioRes> portfolios =
-                portfolioService.getPortfolios(userId).stream()
-                        .map(PortfolioRes::new).collect(Collectors.toList());
-
-        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolios", portfolios);
-
-        return ResponseEntity.ok(data);
+        List<PortfolioRes> portfolios = portfolioService.getPortfolios(userId);
+        return ResponseEntity.ok(fromResult(SUCCESS).add("portfolios", portfolios));
     }
 
     @PostMapping("")
     public ResponseEntity<?> createPortfolio(@RequestBody PortfolioInsertReq params) {
-        ResponseData data;
-        try {
-            PortfolioRes newPortfolio = new PortfolioRes(portfolioService.createPortfolio(params.getName(), params.getUserId()));
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolio", newPortfolio);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        PortfolioRes newPortfolio = portfolioService.createPortfolio(params.getName(), params.getUserId());
+        return ResponseEntity.ok(fromResult(SUCCESS).add("portfolio", newPortfolio));
     }
 
     @DeleteMapping("/{portfolioId}")
     public ResponseEntity<?> removePortfolio(@PathVariable("portfolioId") Long portfolioId) {
-        ResponseData data;
-        try {
-            portfolioService.removePortfolio(portfolioId);
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        portfolioService.removePortfolio(portfolioId);
+        return ResponseEntity.ok(fromResult(SUCCESS));
     }
 
     @PutMapping("/{portfolioId}")
     public ResponseEntity<?> createPortfolioContent(@PathVariable("portfolioId") Long portfolioId, @RequestBody PortfolioContentInsertReq params) {
-        ResponseData data;
-        try {
-            portfolioService.createPortfolioContent(
-                    portfolioId,
-                    params.getTitle(),
-                    params.getDescription());
-
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        portfolioService.createPortfolioContent(portfolioId, params.getTitle(), params.getDescription());
+        return ResponseEntity.ok(fromResult(SUCCESS));
     }
 
     @GetMapping("/{portfolioId}")
     public ResponseEntity<?> detailPortfolio(@PathVariable("portfolioId") Long portfolioId) {
-        ResponseData data;
-        try {
-            PortfolioBasicRes portfolio = new PortfolioBasicRes(portfolioService.detailPortfolio(portfolioId));
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolio", portfolio);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        PortfolioBasicRes portfolio = portfolioService.detailPortfolio(portfolioId);
+        return ResponseEntity.ok(fromResult(SUCCESS).add("portfolio", portfolio));
     }
 
     @GetMapping("/info/{portfolioId}")
     public ResponseEntity<?> detailInfoPortfolio(@PathVariable("portfolioId") Long portfolioId) {
-        ResponseData data;
-        try {
-            PortfolioInfoRes portfolio = new PortfolioInfoRes(portfolioService.detailInfoPortfolio(portfolioId));
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("portfolio", portfolio);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        PortfolioInfoRes portfolio = portfolioService.detailInfoPortfolio(portfolioId);
+        return ResponseEntity.ok(fromResult(SUCCESS).add("portfolio", portfolio));
     }
 
     @PutMapping("/image/{portfolioId}")
     public ResponseEntity<?> updatePortfolioMainImage(@PathVariable("portfolioId") Long portfolioId, @RequestBody ImageInsertReq params) {
-        ResponseData data;
-        try {
-            portfolioService.updatePortfolioMainImage(portfolioId, params.getSrc());
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        portfolioService.updatePortfolioMainImage(portfolioId, params.getSrc());
+        return ResponseEntity.ok(fromResult(SUCCESS));
     }
 
     @PutMapping("/about/{portfolioId}")
     public ResponseEntity<?> updatePortfolioAbout(@PathVariable("portfolioId") Long portfolioId, @RequestBody AboutInsertReq params) {
-        ResponseData data;
-        try {
-            About about = new About(params.getName(), params.getPhone(), params.getEmail());
-            portfolioService.updatePortfolioAbout(portfolioId, about);
-            data = ResponseData.fromResult(RequestResultEnum.SUCCESS);
-        } catch (Exception e) {
-            data = ResponseData.fromException(e);
-        }
-        return ResponseEntity.ok(data);
+        About about = new About(params.getName(), params.getPhone(), params.getEmail());
+        portfolioService.updatePortfolioAbout(portfolioId, about);
+        return ResponseEntity.ok(fromResult(SUCCESS));
     }
 }

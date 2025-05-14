@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +22,8 @@ public class PortfolioInfoRes {
     private String title;
     private String description;
     private AboutDTO about;
-    @Builder.Default
-    private List<UserStackDTO> userSkills = new ArrayList<>();
-    @Builder.Default
-    private List<ProjectDTO> projects = new ArrayList<>();
+    private List<UserStackDTO> userSkills;
+    private List<ProjectDTO> projects;
 
     @Builder
     public PortfolioInfoRes(Portfolio portfolio) {
@@ -42,7 +39,7 @@ public class PortfolioInfoRes {
 
     @Getter
     @Setter
-    public static class ProjectDTO{
+    public static class ProjectDTO {
         private Long id;
         private String name;
         private String description;
@@ -51,12 +48,10 @@ public class PortfolioInfoRes {
         @JsonFormat(pattern = "yyyy.MM.dd")
         private LocalDateTime endDate;
         private String link;
-        @Builder.Default
-        private List<ImageDTO> images = new ArrayList<>();
-        @Builder.Default
-        private List<MainFnDTO> mainFns = new ArrayList<>();
-        @Builder.Default
-        private List<ProjectStackDTO> projectSkills = new ArrayList<>();
+        private List<ImageDTO> images;
+        private List<MainFnDTO> mainFns;
+        private List<ProjectStackDTO> projectSkills;
+
         @Builder
         public ProjectDTO(Project project) {
             this.id = project.getId();
@@ -72,7 +67,7 @@ public class PortfolioInfoRes {
 
         @Getter
         @Setter
-        public static class ProjectStackDTO{
+        public static class ProjectStackDTO {
             private Long id;
             private String name;
             private String code;
@@ -88,7 +83,7 @@ public class PortfolioInfoRes {
 
     @Getter
     @Setter
-    public static class UserStackDTO{
+    public static class UserStackDTO {
         private Long id;
         private String name;
         private String code;

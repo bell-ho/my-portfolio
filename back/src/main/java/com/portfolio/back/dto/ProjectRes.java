@@ -1,11 +1,12 @@
 package com.portfolio.back.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.portfolio.back.domain.*;
+import com.portfolio.back.domain.Image;
+import com.portfolio.back.domain.MainFn;
+import com.portfolio.back.domain.Project;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +22,8 @@ public class ProjectRes {
     @JsonFormat(pattern = "yyyy.MM.dd")
     private LocalDateTime endDate;
     private String link;
-    @Builder.Default
-    private List<ImageDTO> images = new ArrayList<>();
-    @Builder.Default
-    private List<MainFnDTO> mainFns = new ArrayList<>();
+    private List<ImageDTO> images;
+    private List<MainFnDTO> mainFns;
 
     @Builder
     public ProjectRes(Project project) {
@@ -39,9 +38,7 @@ public class ProjectRes {
     }
 
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ImageDTO{
+    public static class ImageDTO {
         private Long id;
         private String src;
 
@@ -51,10 +48,9 @@ public class ProjectRes {
             this.src = image.getSrc();
         }
     }
+
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MainFnDTO{
+    public static class MainFnDTO {
         private Long id;
         private String name;
 

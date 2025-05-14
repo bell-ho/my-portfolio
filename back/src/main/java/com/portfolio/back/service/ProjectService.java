@@ -1,17 +1,18 @@
 package com.portfolio.back.service;
 
 import com.portfolio.back.domain.Project;
+import com.portfolio.back.dto.ProjectRes;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ProjectService {
 
-    Project createProject(Long portfolioId, String name);
+    void createProject(Long portfolioId, String name);
 
-    List<Project> getProjects(Long portfolioId);
+    List<ProjectRes> getProjects(Long portfolioId);
 
     void removeProject(Long projectId);
 
-    Project basicInfo(Long projectId, String name, String description, String startDate, String endDate, String link);
+    ProjectRes basicInfo(Long projectId, String name, String description, String startDate, String endDate, String link);
 }

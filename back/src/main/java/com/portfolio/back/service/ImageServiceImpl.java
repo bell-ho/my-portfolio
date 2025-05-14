@@ -2,6 +2,7 @@ package com.portfolio.back.service;
 
 import com.portfolio.back.domain.Image;
 import com.portfolio.back.domain.Project;
+import com.portfolio.back.dto.ImageRes;
 import com.portfolio.back.exception.CustomException;
 import com.portfolio.back.repository.ImageRepository;
 import com.portfolio.back.repository.ProjectRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,8 +23,8 @@ public class ImageServiceImpl implements ImageService {
     private final ProjectRepository projectRepository;
 
     @Override
-    public List<Image> getImagesByProject(Long projectId) {
-        return imageRepository.findByProjectId(projectId);
+    public List<ImageRes> getImagesByProject(Long projectId) {
+        return imageRepository.findByProjectId(projectId).stream().map(ImageRes::new).collect(Collectors.toList());
     }
 
     @Override
