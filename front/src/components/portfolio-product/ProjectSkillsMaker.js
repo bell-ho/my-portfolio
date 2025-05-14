@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import DoneIcon from '@mui/icons-material/Done';
 import styled from '@emotion/styled';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createSkill, targetSkillUpdate, userSkillUpdate } from '@/pages/api/stack';
+import { createSkill, targetSkillUpdate } from '@/pages/api/stack';
 import { queryKey } from '@/react-query/constants';
 import { useStacksByProjectQuery } from '@/react-query/query-hooks/useStacksHook';
 import { useDelayed } from '@/util/usePageSearchUtil';
@@ -75,12 +75,10 @@ const ProjectSkillsMaker = ({ projectId }) => {
 
   return (
     <Wrapper>
-      <Box>
-        <TypographyCustom variant={'h5'}>프로젝트에 사용한 STACK을 선택해주세요.</TypographyCustom>
-        <TypographyCustom variant={'h5'}>없으면 추가해주세요.</TypographyCustom>
-      </Box>
+      <TypographyCustom variant={'h5'}>프로젝트에 사용한 STACK을 추가해주세요.</TypographyCustom>
       <SkillInputWrapper>
         <Autocomplete
+          size={'small'}
           id="combo-box-demo"
           options={skillGroup}
           getOptionLabel={(option) => option.name}
@@ -90,7 +88,7 @@ const ProjectSkillsMaker = ({ projectId }) => {
           )}
         />
         <Box className={'input-btn'}>
-          <TextField inputRef={skillNameRef} />
+          <TextField sx={{ flex: 1 }} size={'small'} inputRef={skillNameRef} />
           <Button variant={'contained'} onClick={onClickSkillInsert}>
             추가
           </Button>

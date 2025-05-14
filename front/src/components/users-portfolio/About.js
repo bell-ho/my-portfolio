@@ -1,6 +1,6 @@
-import React, { Children, Fragment } from 'react';
+import React, { Children } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import styled from '@emotion/styled';
 import { Box, Grid, Typography } from '@mui/material';
 
@@ -50,6 +50,7 @@ const LabelWrapper = styled(Box)`
 const ContentItem = styled(Grid)`
   display: flex;
   gap: 50px;
+
   ${({ theme }) => theme.breakpoints.up('xs')} {
     width: 100%;
     display: flex;
@@ -81,7 +82,7 @@ const ContentWrapper = styled(Grid)`
 `;
 
 const Wrapper = styled(Box)`
-  padding: 2rem;
+  padding: 4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,6 +90,7 @@ const Wrapper = styled(Box)`
 `;
 
 const TypographyCustom = styled(Typography)`
-  font-weight: 900;
+  font-weight: 800;
 `;
+
 export default About;

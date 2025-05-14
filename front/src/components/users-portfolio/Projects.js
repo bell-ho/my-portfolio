@@ -4,7 +4,6 @@ import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import ImageBox from '@/components/users-portfolio/ImageBox';
 import Content from '@/components/users-portfolio/Content';
-import { useProjectsByPortfolioQuery } from '@/react-query/query-hooks/useProjectsHook';
 
 const Projects = ({ projects }) => {
   return (
@@ -15,12 +14,15 @@ const Projects = ({ projects }) => {
           <ProjectWrapper container>
             <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <Typography variant={'h1'}>{project?.name}</Typography>
-              <Typography
-                variant={'h3'}
-              >{`${project?.startDate} ~ ${project?.endDate}`}</Typography>
+              <Typography variant={'h3'}>{`${project?.startDate || ''} ~ ${
+                project?.endDate || ''
+              }`}</Typography>
             </Grid>
             <Grid item container spacing={2}>
               <Grid item xs={12} md={6}>
+                {project?.images?.length <= 0 && (
+                  <Typography variant={'section-title'}>이미지가 없습니다.</Typography>
+                )}
                 <ImageBox images={project?.images} />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -58,10 +60,6 @@ const Wrapper = styled(Box)`
 
   gap: 2rem;
   padding: 2rem;
-`;
-
-const TypographyCustom = styled(Typography)`
-  font-weight: 900;
 `;
 
 export default Projects;

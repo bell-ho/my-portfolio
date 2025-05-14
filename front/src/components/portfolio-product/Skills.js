@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createSkill, targetSkillUpdate } from '@/pages/api/stack';
 import { queryKey } from '@/react-query/constants';
 import { useDelayed } from '@/util/usePageSearchUtil';
+import { useSnackbar } from '@/util/useSnackbar';
 
 const skillGroup = [
   { name: 'Front End', code: 'FE' },
@@ -82,10 +83,10 @@ const Skills = ({ userId }) => {
       <TypographyCustom variant={'h1'}>SKILLS</TypographyCustom>
 
       <SkillsContainer>
-        <TypographyCustom variant={'h7'}>사용하는 STACK을 클릭해주세요</TypographyCustom>
-        <TypographyCustom variant={'h7'}>없으면 추가해주세요.</TypographyCustom>
+        <TypographyCustom variant={'h7'}>사용하는 STACK을 추가해주세요</TypographyCustom>
         <SkillInputWrapper>
           <Autocomplete
+            size={'small'}
             id="combo-box-demo"
             options={skillGroup}
             getOptionLabel={(option) => option.name}
@@ -94,8 +95,8 @@ const Skills = ({ userId }) => {
             )}
           />
           <Box className={'input-btn'}>
-            <TextField inputRef={skillNameRef} />
-            <Button variant={'contained'} onClick={onClickSkillInsert}>
+            <TextField size={'small'} inputRef={skillNameRef} />
+            <Button variant={'outlined'} onClick={onClickSkillInsert}>
               추가
             </Button>
           </Box>
@@ -127,7 +128,7 @@ const Skills = ({ userId }) => {
                   onClick={() => handleClick(stack)}
                   deleteIcon={<DoneIcon />}
                   style={{
-                    backgroundColor: stack.userStack ? '#1976d2' : '',
+                    backgroundColor: stack.userStack ? '#5d80f3' : '',
                     color: stack.userStack ? '#ffffff' : '',
                   }}
                 />
@@ -159,27 +160,23 @@ const SkillInputWrapper = styled(Box)`
   }
 `;
 
-const SkillsContainer = styled(Box)`
-  width: 17rem;
+const SkillsContainer = styled(Stack)`
+  width: 25rem;
   margin: 0 auto 2rem;
   padding: 1.5rem;
   border-radius: 1rem;
   background-color: #fff;
   box-shadow: 1rem 1rem 1rem 0 rgb(68 68 68 / 20%);
 
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 
   transform: translateY(10px);
   transition: all var(--animation-duration) ease;
 `;
 
-const Wrapper = styled(Box)`
+const Wrapper = styled(Stack)`
   background-color: #f9c51d;
-  display: flex;
-  flex-direction: column;
   align-items: center;
 
   gap: 20px;
@@ -189,4 +186,5 @@ const Wrapper = styled(Box)`
 const TypographyCustom = styled(Typography)`
   font-weight: 900;
 `;
+
 export default Skills;

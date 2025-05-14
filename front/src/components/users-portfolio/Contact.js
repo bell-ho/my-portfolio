@@ -8,6 +8,9 @@ import Image from 'next/image';
 const Contact = () => {
   return (
     <Wrapper id={'contact'}>
+      <TypographyCustom>
+        2023. Lee Jong Ho <br /> All rights reserved
+      </TypographyCustom>
       <IconWrapper>
         <a href={'https://github.com/bell-ho'} target={'_blank'}>
           <GitHubIcon style={{ fontSize: 46, color: 'white' }} />
@@ -22,9 +25,6 @@ const Contact = () => {
           />
         </a>
       </IconWrapper>
-      <TypographyCustom>
-        2023. Lee Jong Ho <br /> All rights reserved
-      </TypographyCustom>
     </Wrapper>
   );
 };

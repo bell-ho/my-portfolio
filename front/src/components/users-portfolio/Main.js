@@ -6,7 +6,9 @@ import Image from 'next/image';
 const Main = ({ imageSrc, title, description }) => {
   return (
     <Wrapper id={'main'}>
-      <ImageCustom width={250} height={250} src={imageSrc ?? ''} alt={''} />
+      {imageSrc && (
+        <ImageCustom width={250} height={250} src={imageSrc ?? ''} alt={''} />
+      )}
       <Typography variant={'mast-head-title'}>{title}</Typography>
       <Typography variant={'mast-subtitle'}>{description}</Typography>
     </Wrapper>
@@ -14,19 +16,21 @@ const Main = ({ imageSrc, title, description }) => {
 };
 
 const Wrapper = styled(Box)`
-  background: url('/images/home_background.png') center/cover no-repeat;
-  padding: 7.5rem 2.5rem 2.5rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+    background: url('/images/home_background.png') center/cover no-repeat;
+    padding: 7.5rem 2.5rem 2.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-height: 378px;
 `;
 
 const ImageCustom = styled(Image)`
-  border-radius: 50%;
-  background-color: #e06b6b;
-  border: 2px solid var(--color-light-white);
+    border-radius: 50%;
+    background-color: #e06b6b;
+    border: 2px solid var(--color-light-white);
 `;
 
 export default Main;

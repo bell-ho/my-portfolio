@@ -24,6 +24,7 @@ export const getPortfolioDetail = async (params) => {
   const { data } = await axios.get(`${apiKey.portfolios}/${params}`);
   return data.data.portfolio;
 };
+
 export const getPortfolioInfo = async (params) => {
   const { data } = await axios.get(`${apiKey.portfolios}/info/${params}`);
   return data.data.portfolio;

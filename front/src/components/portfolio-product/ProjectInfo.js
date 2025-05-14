@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { TextField, Typography } from '@mui/material';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import { Stack, TextField, Typography } from '@mui/material';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { DateRange } from 'react-date-range';
 import { ko } from 'date-fns/locale';
 import styled from '@emotion/styled';
@@ -11,8 +11,11 @@ import { TextareaAutosize } from '@mui/base';
 import { useMutation } from '@tanstack/react-query';
 import { updateProjectBasicInfo } from '@/pages/api/project';
 import { formatDate } from '@/util/utils';
+import { useSnackbar } from '@/util/useSnackbar';
 
 const ProjectInfo = ({ projectId, name, description, startDate, endDate, link }) => {
+  const { showSnackbar, SnackbarComponent } = useSnackbar();
+
   const [state, setState] = useState([
     {
       startDate: startDate ? new Date(startDate) : new Date(),
@@ -41,6 +44,7 @@ const ProjectInfo = ({ projectId, name, description, startDate, endDate, link })
       setEditedName(name);
       setEditedDescription(description);
       setEditedLink(link);
+      showSnackbar('저장 되었습니다.', 'success');
     },
   });
 
@@ -83,10 +87,11 @@ const ProjectInfo = ({ projectId, name, description, startDate, endDate, link })
         onChange={handleDescChange}
         minRows={3}
         placeholder="프로젝트의 간략한 설명을 적어주세요."
-        style={{ width: 'auto', border: '1px solid black' }}
+        style={{ width: 'auto', border: '1px solid black', padding: '10px' }}
       />
 
       <TextField
+        size={'small'}
         required
         label={'깃 주소'}
         autoFocus
@@ -97,14 +102,14 @@ const ProjectInfo = ({ projectId, name, description, startDate, endDate, link })
       <Button onClick={onClickUpdate} fullWidth variant="contained">
         저장
       </Button>
+      {SnackbarComponent}
     </Wrapper>
   );
 };
 
-const DateInputWrapper = styled(Box)`
-  display: flex;
-  flex-direction: column;
+const DateInputWrapper = styled(Stack)`
   gap: 10px;
+  max-width: 500px;
 `;
 
 const Wrapper = styled(Box)`
