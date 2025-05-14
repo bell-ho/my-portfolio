@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import styled from '@emotion/styled';
-import { Collapse, FormControlLabel, Grid, Paper, Switch } from '@mui/material';
+import { Collapse, FormControlLabel, Grid, Stack, Switch } from '@mui/material';
 import ProjectInfo from '@/components/portfolio-product/ProjectInfo';
 import ImageMaker from '@/components/portfolio-product/ImageMaker';
 import Content from '@/components/portfolio-product/Content';
@@ -23,7 +23,7 @@ const Project = ({ project }) => {
 
   const projectRemoveMutation = useMutation((params) => removeProject(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.projectsByPortfolio, portfolioId]);
+      queryClient.invalidateQueries([queryKey.projectsByPortfolio, project.id]);
     },
   });
 
@@ -68,13 +68,11 @@ const Project = ({ project }) => {
               link={project?.link}
             />
           </Grid>
-          <Grid item container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <ImageMaker projectId={project?.id} />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Content projectId={project?.id} mainFns={project?.mainFns ?? []} />
-            </Grid>
+          <Grid item xs={12}>
+            <ImageMaker projectId={project?.id} />
+          </Grid>
+          <Grid item xs={12}>
+            <Content projectId={project?.id} mainFns={project?.mainFns ?? []} />
           </Grid>
           <ButtonWrapper>
             <Button onClick={handleClickOpen} fullWidth variant="contained" color={'error'}>
@@ -107,7 +105,7 @@ const ProjectWrapper = styled(Grid)`
 
   text-align: center;
   margin: auto;
-  max-width: 1200px;
+  max-width: 500px;
 
   opacity: ${({ checked }) => (checked ? 1 : 0.3)};
 `;
@@ -116,9 +114,8 @@ const Wrapper = styled(Box)`
   background-color: rgb(255, 255, 255);
   border-radius: 20px;
 
-  width: 100%;
   height: 100%;
-  padding: 1rem;
+  padding: 2rem;
 `;
 
 export default Project;

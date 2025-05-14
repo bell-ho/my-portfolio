@@ -20,6 +20,7 @@ const MainFnMaker = ({ projectId }) => {
       queryClient.invalidateQueries([queryKey.mainFnByProject, projectId]);
     },
   });
+
   const handleDelete = useCallback(
     async (id) => {
       await removeMainFnMutation.mutate(id);
@@ -38,11 +39,7 @@ const MainFnMaker = ({ projectId }) => {
 
   const onClickMainFnInsert = useCallback(async () => {
     const name = fnNameRef.current.value;
-
-    const newMainFn = {
-      name,
-      projectId,
-    };
+    const newMainFn = { name, projectId };
 
     await mainFnInsertMutation.mutate(newMainFn);
   }, [mainFnInsertMutation, projectId]);
@@ -51,8 +48,8 @@ const MainFnMaker = ({ projectId }) => {
     <Wrapper>
       <TypographyCustom variant={'h5'}>주요 기능을 추가해 주세요</TypographyCustom>
       <InputWrapper>
-        <TextField inputRef={fnNameRef} />
-        <Button variant={'contained'} onClick={onClickMainFnInsert}>
+        <TextField sx={{ flex: 1 }} size={'small'} inputRef={fnNameRef} />
+        <Button variant={'outlined'} onClick={onClickMainFnInsert}>
           추가
         </Button>
       </InputWrapper>

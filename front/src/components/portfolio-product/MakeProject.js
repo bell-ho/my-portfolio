@@ -7,7 +7,6 @@ import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { queryKey } from '@/react-query/constants';
 import { createProject } from '@/pages/api/project';
-import { useProjectsByPortfolioQuery } from '@/react-query/query-hooks/useProjectsHook';
 
 const MakeProject = ({ handleClose }) => {
   const router = useRouter();
@@ -64,4 +63,5 @@ const Wrapper = styled(Box)`
   flex-direction: column;
   gap: 20px;
 `;
+
 export default MakeProject;

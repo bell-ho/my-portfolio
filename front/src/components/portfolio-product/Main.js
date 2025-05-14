@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import styled from '@emotion/styled';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Stack, TextField } from '@mui/material';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
 import { uploadImages } from '@/util/uploadFileToS3';
@@ -10,8 +10,11 @@ import { queryKey } from '@/react-query/constants';
 import useInputHook from '@/util/useInputHook';
 import { isEmptyString } from '@/util/utils';
 import { errorHandler } from '@/util/errorHandler';
+import { useSnackbar } from '@/util/useSnackbar';
 
 const Main = ({ id, imageSrc, title, description }) => {
+  const { showSnackbar, SnackbarComponent } = useSnackbar();
+
   const queryClient = useQueryClient();
   const imageInputRef = useRef(null);
 
@@ -59,13 +62,14 @@ const Main = ({ id, imageSrc, title, description }) => {
     [id, updateImageMutation],
   );
 
-  const imageButtonClick = useCallback((e) => {
+  const imageButtonClick = useCallback(() => {
     imageInputRef.current?.click();
   }, []);
 
   const portfolioUpdateMutation = useMutation((params) => updatePortfolio(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.portfolios, id]);
+      showSnackbar('수정되었습니다.', 'success');
     },
   });
 
@@ -98,13 +102,8 @@ const Main = ({ id, imageSrc, title, description }) => {
     <Wrapper id={'main'}>
       <ImageContentWrapper>
         {!imageSrc ? (
-          <Button
-            onClick={imageButtonClick}
-            fullWidth
-            variant={'contained'}
-            sx={{ fontSize: '20px' }}
-          >
-            이미지를 올려주세요
+          <Button onClick={imageButtonClick} variant={'contained'} sx={{ fontSize: '20px' }}>
+            대표 이미지를 올려주세요
           </Button>
         ) : (
           <ImageBox>
@@ -132,28 +131,39 @@ const Main = ({ id, imageSrc, title, description }) => {
         />
       </ImageContentWrapper>
 
-      <TextField
-        required
-        id="outlined-required"
-        label="타이틀"
-        value={editedTitle}
-        onChange={titleChangeHandler}
-        helperText={titleErrorMessage}
-        error={isTitleError}
-      />
-      <TextField
-        required
-        id="outlined-required"
-        label="설명"
-        value={editedDescription}
-        onChange={descriptionChangeHandler}
-        helperText={descriptionErrorMessage}
-        error={isDescriptionError}
-      />
+      <Stack spacing={3}>
+        <TextField
+          size={'small'}
+          required
+          id="outlined-required"
+          label="타이틀"
+          value={editedTitle}
+          onChange={titleChangeHandler}
+          helperText={titleErrorMessage}
+          error={isTitleError}
+        />
+        <TextField
+          size={'small'}
+          required
+          id="outlined-required"
+          label="설명"
+          value={editedDescription}
+          onChange={descriptionChangeHandler}
+          helperText={descriptionErrorMessage}
+          error={isDescriptionError}
+        />
 
-      <Button onClick={onClickUpdate} variant={'contained'} sx={{ fontSize: '15px' }}>
-        수정
-      </Button>
+        <Button
+          size={'small'}
+          color={'primary'}
+          onClick={onClickUpdate}
+          variant={'contained'}
+          sx={{ fontSize: '15px' }}
+        >
+          수정
+        </Button>
+      </Stack>
+      {SnackbarComponent}
     </Wrapper>
   );
 };
@@ -165,12 +175,9 @@ const ImageBox = styled(Box)`
   align-items: center;
 `;
 
-const Wrapper = styled(Box)`
+const Wrapper = styled(Stack)`
   background: url('/images/home_background.png') center/cover no-repeat;
   padding: 7.5rem 2.5rem 2.5rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 20px;
 `;
@@ -191,4 +198,5 @@ const ImageCustom = styled(Image)`
   background-color: #e06b6b;
   border: 2px solid var(--color-light-white);
 `;
+
 export default Main;
