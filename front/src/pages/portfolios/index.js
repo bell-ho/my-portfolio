@@ -8,15 +8,15 @@ import BasicModal from '@/components/common/BasicModal';
 import MakePortfolio from '@/components/main/MakePortfolio';
 import Portfolio from '@/components/main/Portfolio';
 import { getSession } from 'next-auth/react';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { queryKey } from '@/react-query/constants';
+import { axios } from '@/util/axios';
+import { apiKey } from '@/pages/api/constants';
+import { withAuth } from '@/auth/withAuth';
 
 const Portfolios = () => {
-  const { data: session, status } = useSession();
-
-  const { data: portfolios, isLoading } = usePortfoliosQuery(session?.user?.id);
-
-  if (!portfolios) {
-    return <div>Loading...</div>;
-  }
+  const { data: session } = useSession();
+  const { data: portfolios } = usePortfoliosQuery(session?.user?.id);
 
   return (
     <Fragment>
@@ -47,23 +47,28 @@ const Wrapper = styled(Box)`
   gap: 20px;
 `;
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withAuth(async (context) => {
+  const queryClient = new QueryClient();
   const session = await getSession({ req: context.req });
 
-  if (!session && !session?.accessToken) {
+  try {
+    await Promise.all([
+      queryClient.prefetchQuery([queryKey.portfoliosByUser, session?.user?.id], async () => {
+        const { data } = await axios.get(`${apiKey.portfolios}/users/${session?.user?.id}`, {
+          headers: { Authorization: `Bearer ${session?.accessToken}` },
+        });
+        return data.data.portfolios;
+      }),
+    ]);
+
     return {
-      redirect: {
-        destination: '/',
-        permanent: false,
+      props: {
+        dehydratedState: dehydrate(queryClient),
       },
     };
+  } catch (e) {
+    return { notFound: true };
   }
-
-  return {
-    props: {
-      session,
-    },
-  };
-}
+});
 
 export default Portfolios;
