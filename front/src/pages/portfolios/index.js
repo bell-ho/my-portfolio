@@ -49,13 +49,13 @@ const Wrapper = styled(Box)`
 
 export const getServerSideProps = withAuth(async (context) => {
   const queryClient = new QueryClient();
-  const session = await getSession({ req: context.req });
+  const { accessToken, user } = context.session;
 
   try {
     await Promise.all([
-      queryClient.prefetchQuery([queryKey.portfoliosByUser, session?.user?.id], async () => {
-        const { data } = await axios.get(`${apiKey.portfolios}/users/${session?.user?.id}`, {
-          headers: { Authorization: `Bearer ${session?.accessToken}` },
+      queryClient.prefetchQuery([queryKey.portfoliosByUser, user?.id], async () => {
+        const { data } = await axios.get(`${apiKey.portfolios}/users/${user?.id}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
         });
         return data.data.portfolios;
       }),

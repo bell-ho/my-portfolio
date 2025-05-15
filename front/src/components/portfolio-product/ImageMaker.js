@@ -19,7 +19,7 @@ import { Typography } from '@mui/material';
 
 const ImageMaker = ({ projectId }) => {
   const queryClient = useQueryClient();
-  const { data: images, isLoading } = useImagesByProjectQuery(projectId);
+  const { data: images } = useImagesByProjectQuery(projectId);
   const imageInputRef = useRef(null);
 
   const uploadImagesMutation = useMutation((params) => updateProjectImages(params), {

@@ -8,7 +8,7 @@ import { useProjectsByPortfolioQuery } from '@/react-query/query-hooks/useProjec
 import Project from '@/components/portfolio-product/Project';
 
 const Projects = ({ portfolioId }) => {
-  const { data: projects, isLoading } = useProjectsByPortfolioQuery(portfolioId);
+  const { data: projects } = useProjectsByPortfolioQuery(portfolioId);
 
   return (
     <Wrapper id={'projects'}>

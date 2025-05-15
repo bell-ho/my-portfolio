@@ -8,7 +8,7 @@ export async function middleware(req) {
   const session = await getToken({ req, secret, raw: true });
 
   if (!session) {
-    // return NextResponse.redirect(new URL('/', req.url));
+    return NextResponse.redirect(new URL('/', req.url));
   }
 }
 
